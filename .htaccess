@@ -1,0 +1,12 @@
+RewriteEngine On
+
+# Redirect root URL to /src/
+RewriteRule ^$ /src/ [L,R=301]
+
+# Redirect /index.php and any path after it to /src/index.php preserving the path and query string
+RewriteRule ^index\.php(.*)$ /src/index.php$1 [L,QSA]
+
+# Rewrite rule for pretty URLs
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /src/index.php?url=$1 [L,QSA]
