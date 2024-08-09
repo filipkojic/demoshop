@@ -9,9 +9,8 @@ use Application\Presentation\Controllers\Front\HomeController;
 use Application\Presentation\Controllers\Front\LoginController;
 use Application\Presentation\Controllers\Front\ProductController;
 use Application\Presentation\Controllers\Front\ProductSearchController;
+use Dotenv\Dotenv;
 use Exception;
-use Infrastructure\Utility\Router\Router;
-use Infrastructure\Utility\Router\RouteRegistry;
 use Infrastructure\Utility\ServiceRegistry;
 
 
@@ -29,14 +28,12 @@ class Bootstrap
      */
     public static function initialize(): void
     {
-        // Load environment variables
-        //$dotenv = Dotenv::createUnsafeImmutable(__DIR__ . '/../../');
-        //$dotenv->load();
+        $dotenv = Dotenv::createUnsafeImmutable(__DIR__ . '/../../');
+        $dotenv->load();
 
         self::registerRepos();
         self::registerServices();
         self::registerControllers();
-        self::registerRoutes();
     }
 
     /**
@@ -57,7 +54,6 @@ class Bootstrap
      */
     protected static function registerServices(): void
     {
-        ServiceRegistry::getInstance()->register(Router::class, Router::getInstance());
         /*ServiceRegistry::getInstance()->register(AuthorServiceInterface::class, new AuthorService(
             ServiceRegistry::getInstance()->get(AuthorRepositoryInterface::class),
             ServiceRegistry::getInstance()->get(BookRepositoryInterface::class)
@@ -87,12 +83,6 @@ class Bootstrap
         ServiceRegistry::getInstance()->register(DashboardController::class, new DashboardController());
         ServiceRegistry::getInstance()->register(CategoryController::class, new CategoryController());
         ServiceRegistry::getInstance()->register(AdminProductController::class, new AdminProductController());
-    }
-
-
-    protected static function registerRoutes(): void
-    {
-        RouteRegistry::registerRoutes();
     }
 
 }

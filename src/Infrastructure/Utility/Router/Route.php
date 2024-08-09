@@ -7,14 +7,16 @@ namespace Infrastructure\Utility\Router;
  *
  * Represents a single route with its associated method, URL, controller, and action.
  */
-class Route
+readonly class Route
 {
     public function __construct(
-        private readonly string $method,
-        private readonly string $url,
-        private readonly string $controller,
-        private readonly string $action
-    ) {}
+        private string $method,
+        private string $url,
+        private string $controller,
+        private string $action
+    )
+    {
+    }
 
     /**
      * Get the HTTP method (GET, POST, etc.).
