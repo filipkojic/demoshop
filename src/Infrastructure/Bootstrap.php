@@ -2,9 +2,16 @@
 
 namespace Infrastructure;
 
+use Application\Presentation\Controllers\Admin\AdminProductController;
+use Application\Presentation\Controllers\Admin\CategoryController;
+use Application\Presentation\Controllers\Admin\DashboardController;
+use Application\Presentation\Controllers\Front\HomeController;
+use Application\Presentation\Controllers\Front\LoginController;
+use Application\Presentation\Controllers\Front\ProductController;
+use Application\Presentation\Controllers\Front\ProductSearchController;
 use Exception;
-use Infrastructure\Utility\Router;
-use Infrastructure\Utility\RouteRegistry;
+use Infrastructure\Utility\Router\Router;
+use Infrastructure\Utility\Router\RouteRegistry;
 use Infrastructure\Utility\ServiceRegistry;
 
 
@@ -69,13 +76,20 @@ class Bootstrap
      */
     protected static function registerControllers(): void
     {
-        /*ServiceRegistry::getInstance()->register(AuthorController::class, new AuthorController(
-            ServiceRegistry::getInstance()->get(AuthorServiceInterface::class)
-        ));
-        ServiceRegistry::getInstance()->register(BookController::class, new BookController(
-            ServiceRegistry::getInstance()->get(BookServiceInterface::class)
-        ));*/
+
+        // Front Controllers
+        ServiceRegistry::getInstance()->register(HomeController::class, new HomeController());
+        ServiceRegistry::getInstance()->register(ProductSearchController::class, new ProductSearchController());
+        ServiceRegistry::getInstance()->register(ProductController::class, new ProductController());
+        ServiceRegistry::getInstance()->register(LoginController::class, new LoginController());
+
+        // Admin Controllers
+        ServiceRegistry::getInstance()->register(DashboardController::class, new DashboardController());
+        ServiceRegistry::getInstance()->register(CategoryController::class, new CategoryController());
+        ServiceRegistry::getInstance()->register(AdminProductController::class, new AdminProductController());
     }
+
+
     protected static function registerRoutes(): void
     {
         RouteRegistry::registerRoutes();

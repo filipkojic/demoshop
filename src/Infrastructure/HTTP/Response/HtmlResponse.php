@@ -32,7 +32,7 @@ class HtmlResponse extends HttpResponse
      * Static method to create an HtmlResponse from a view file.
      *
      * @param string $viewFile The path to the view file.
-     * @param array $data Data to be extracted and passed to the view.
+     * @param array $data Persistence to be extracted and passed to the view.
      * @param int $statusCode HTTP status code (e.g., 200, 404).
      * @param array $headers Headers to be sent with the response.
      * @return HtmlResponse
