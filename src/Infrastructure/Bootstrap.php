@@ -2,6 +2,8 @@
 
 namespace Infrastructure;
 
+use Application\Business\Services\LoginService;
+use Application\Persistence\Repositories\AdminRepository;
 use Application\Presentation\Controllers\Admin\AdminProductController;
 use Application\Presentation\Controllers\Admin\CategoryController;
 use Application\Presentation\Controllers\Admin\DashboardController;
@@ -77,7 +79,9 @@ class Bootstrap
         ServiceRegistry::getInstance()->register(HomeController::class, new HomeController());
         ServiceRegistry::getInstance()->register(ProductSearchController::class, new ProductSearchController());
         ServiceRegistry::getInstance()->register(ProductController::class, new ProductController());
-        ServiceRegistry::getInstance()->register(LoginController::class, new LoginController());
+        ServiceRegistry::getInstance()->register(LoginController::class, new LoginController(
+            new LoginService(new AdminRepository())
+        ));
 
         // Admin Controllers
         ServiceRegistry::getInstance()->register(DashboardController::class, new DashboardController());

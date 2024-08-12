@@ -19,5 +19,10 @@ class RouteRegistry
             new Route('GET', '/src/admin', LoginController::class, 'index')
         );
 
+        Router::getInstance()->addRoute(
+            new Route('POST', '/src/admin', LoginController::class, 'login')
+        );
+
+
     }
 }

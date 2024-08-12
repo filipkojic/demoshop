@@ -10,7 +10,7 @@
 <div class="login-container">
     <h1>Welcome</h1>
     <p>To demo shop administration!</p>
-    <form action="/src/admin/login" method="POST">
+    <form action="/src/admin" method="POST">
         <div class="input-group">
             <label for="username">User name</label>
             <input type="text" id="username" name="username" required>
