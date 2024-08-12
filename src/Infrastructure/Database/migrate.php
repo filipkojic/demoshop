@@ -13,6 +13,7 @@ require '../../../vendor/autoload.php';
 
 use Dotenv\Dotenv;
 use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Support\Carbon;
 use Infrastructure\Database\Migrations\CreateAdminTable;
 use Infrastructure\Database\Migrations\CreateCategoriesTable;
 use Infrastructure\Database\Migrations\CreateProductsTable;
@@ -101,6 +102,8 @@ try {
         Capsule::table('admins')->insert([
             'username' => $username,
             'password' => $hashedPassword,
+            'created_at' => Carbon::now('Europe/Belgrade'),
+            'updated_at' => Carbon::now('Europe/Belgrade'),
         ]);
 
         echo "User '$username' successfully added in table 'admins'." . PHP_EOL;
