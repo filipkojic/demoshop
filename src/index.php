@@ -1,5 +1,6 @@
 <?php
 
+use Application\Persistence\Entities\Admin;
 use Infrastructure\Kernel;
 use Infrastructure\HTTP\HttpRequest;
 use Infrastructure\HTTP\Response\HtmlResponse;
