@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Migration Script
+ *
+ * This script initializes the database connection using Eloquent ORM,
+ * creates the specified database if it doesn't exist, runs the defined
+ * migrations, and inserts a new admin user into the 'admins' table if
+ * the username is not already taken.
+ */
+
 require '../../../vendor/autoload.php';
 
 use Dotenv\Dotenv;
@@ -9,7 +18,7 @@ use Infrastructure\Database\Migrations\CreateCategoriesTable;
 use Infrastructure\Database\Migrations\CreateProductsTable;
 use Infrastructure\Database\Migrations\CreateStatisticsTable;
 
-// Inicijalizacija .env konfiguracije
+// Initialize .env configuration
 $dotenv = Dotenv::createUnsafeImmutable(__DIR__ . '/../../../');
 $dotenv->load();
 
@@ -27,21 +36,21 @@ $capsule->addConnection([
 $capsule->setAsGlobal();
 $capsule->bootEloquent();
 
-// Proveri da li baza postoji i kreiraj je ako ne postoji
+// Create database
 try {
     $dbName = getenv('DB_DATABASE');
     $databaseExists = Capsule::select("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?", [$dbName]);
 
     if (empty($databaseExists)) {
         Capsule::statement("CREATE DATABASE IF NOT EXISTS $dbName");
-        echo "Baza podataka '$dbName' je kreirana." . PHP_EOL;
+        echo "Database '$dbName' created." . PHP_EOL;
     } else {
-        echo "Baza podataka '$dbName' već postoji." . PHP_EOL;
+        echo "Database '$dbName' already exists." . PHP_EOL;
     }
 
     Capsule::statement("USE $dbName");
 
-    // Izvrši migracije
+    // Migrations
     $migrations = [
         CreateAdminTable::class,
         CreateCategoriesTable::class,
@@ -51,19 +60,53 @@ try {
 
     foreach ($migrations as $migrationClass) {
         $migration = new $migrationClass();
-        $migration->up();
-        echo "Migracija za " . get_class($migration) . " je uspešno izvršena." . PHP_EOL;
+
+        // Check if table already exists
+        $tableName = (new $migrationClass)->getTableName();
+        $tableExists = Capsule::select("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?", [$dbName, $tableName]);
+
+        if (empty($tableExists)) {
+            $migration->up();
+            echo "Migration for " . get_class($migration) . " successfull." . PHP_EOL;
+        } else {
+            echo "Table '$tableName' already exists, skipping migration." . PHP_EOL;
+        }
     }
 
-    // Proveri prisutne tabele
+    // Print tables
     $tables = Capsule::select('SHOW TABLES');
-    echo "Prisutne tabele u bazi '" . getenv('DB_DATABASE') . "':" . PHP_EOL;
+    echo "Tables in database '" . getenv('DB_DATABASE') . "':" . PHP_EOL;
     foreach ($tables as $table) {
-        $tableName = array_values((array) $table)[0];
+        $tableName = array_values((array)$table)[0];
         echo $tableName . PHP_EOL;
     }
 
+    // Create admin
+    $username = readline("Enter username (default 'admin'): ");
+    $password = readline("Enter password (default 'admin'): ");
+
+    $username = $username ?: 'admin';
+    $password = $password ?: 'admin';
+
+    // Check if username is taken
+    $existingUser = Capsule::table('admins')->where('username', $username)->first();
+
+    if ($existingUser) {
+        echo "User with username '$username' already exists." . PHP_EOL;
+    } else {
+        // Hash password
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
+        // Insert admin
+        Capsule::table('admins')->insert([
+            'username' => $username,
+            'password' => $hashedPassword,
+        ]);
+
+        echo "User '$username' successfully added in table 'admins'." . PHP_EOL;
+    }
+
 } catch (\Exception $e) {
-    echo 'Došlo je do greške: ' . $e->getMessage();
+    echo 'Error: ' . $e->getMessage();
 }
 
