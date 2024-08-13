@@ -47,7 +47,7 @@ class Router extends Singleton
                     $action = $route->getAction();
                     $controller = ServiceRegistry::getInstance()->get($controllerClass);
 
-                    return call_user_func_array([$controller, $action], $params);
+                    return call_user_func_array([$controller, $action], array_merge([$request], $params));
                 }
             }
         }
