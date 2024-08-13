@@ -8,7 +8,7 @@ body {
     margin: 0;
 }
 
-.login-container {
+.loginContainer {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
@@ -28,7 +28,7 @@ p {
     color: #666;
 }
 
-.input-group {
+.inputGroup {
     margin-bottom: 15px;
     text-align: left;
 }
@@ -49,12 +49,12 @@ input[type="password"] {
     border: 1px solid #ccc;
 }
 
-.checkbox-group {
+.checkboxGroup {
     display: flex;
     align-items: center;
 }
 
-.checkbox-group input {
+.checkboxGroup input {
     margin-right: 5px;
 }
 
@@ -71,4 +71,10 @@ button {
 
 button:hover {
     background-color: #0056b3;
+}
+
+.errorMessage {
+    color: red;
+    display: none;
+    margin-top: 5px;
 }
