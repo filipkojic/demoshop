@@ -68,48 +68,53 @@ try {
 
         if (empty($tableExists)) {
             $migration->up();
-            echo "Migration for " . get_class($migration) . " successfull." . PHP_EOL;
+            echo "Migration for " . get_class($migration) . " successful." . PHP_EOL;
         } else {
             echo "Table '$tableName' already exists, skipping migration." . PHP_EOL;
         }
     }
 
-    // Print tables
-    $tables = Capsule::select('SHOW TABLES');
-    echo "Tables in database '" . getenv('DB_DATABASE') . "':" . PHP_EOL;
-    foreach ($tables as $table) {
-        $tableName = array_values((array)$table)[0];
-        echo $tableName . PHP_EOL;
-    }
+    // Validate username
+    do {
+        $username = readline("Enter username (default 'admin'): ");
+        $username = $username ?: 'admin';
 
-    // Create admin
-    $username = readline("Enter username (default 'admin'): ");
-    $password = readline("Enter password (default 'admin'): ");
+        // Check if username is taken
+        $existingUser = Capsule::table('admins')->where('username', $username)->first();
 
-    $username = $username ?: 'admin';
-    $password = $password ?: 'admin';
+        if ($existingUser) {
+            echo "User with username '$username' already exists. Please choose a different username." . PHP_EOL;
+        }
+    } while ($existingUser);
 
-    // Check if username is taken
-    $existingUser = Capsule::table('admins')->where('username', $username)->first();
+    // Password validation instructions
+    echo "Password must be at least 8 characters long, contain an uppercase letter, a lowercase letter, a number, and a special character." . PHP_EOL;
 
-    if ($existingUser) {
-        echo "User with username '$username' already exists." . PHP_EOL;
-    } else {
-        // Hash password
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+    // Validate password
+    do {
+        $password = readline("Enter password (default 'Admin123#'): ");
+        $password = $password ?: 'Admin123#';
 
-        // Insert admin
-        Capsule::table('admins')->insert([
-            'username' => $username,
-            'password' => $hashedPassword,
-            'created_at' => Carbon::now('Europe/Belgrade'),
-            'updated_at' => Carbon::now('Europe/Belgrade'),
-        ]);
+        // Password validation
+        if (strlen($password) < 8 || !preg_match('/[A-Z]/', $password) || !preg_match('/[a-z]/', $password) || !preg_match('/[0-9]/', $password) || !preg_match('/[!@#$%^&*]/', $password)) {
+            echo "Invalid password. Please ensure it meets the criteria." . PHP_EOL;
+        }
+    } while (strlen($password) < 8 || !preg_match('/[A-Z]/', $password) || !preg_match('/[a-z]/', $password) || !preg_match('/[0-9]/', $password) || !preg_match('/[!@#$%^&*]/', $password));
 
-        echo "User '$username' successfully added in table 'admins'." . PHP_EOL;
-    }
+    // Hash password
+    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
+    // Insert admin
+    Capsule::table('admins')->insert([
+        'username' => $username,
+        'password' => $hashedPassword,
+        'created_at' => Carbon::now('Europe/Belgrade'),
+        'updated_at' => Carbon::now('Europe/Belgrade'),
+    ]);
+
+    echo "User '$username' successfully added in table 'admins'." . PHP_EOL;
 
 } catch (\Exception $e) {
-    echo 'Error: ' . $e->getMessage();
+    echo 'Error: ' . $e->getMessage() . PHP_EOL;
 }
 

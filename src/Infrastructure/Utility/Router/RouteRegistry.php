@@ -14,7 +14,7 @@ class RouteRegistry
      */
     public static function registerRoutes(): void
     {
-        // register routes
+        // Login controller routes
         Router::getInstance()->addRoute(
             new Route('GET', '/src/admin', LoginController::class, 'index')
         );
