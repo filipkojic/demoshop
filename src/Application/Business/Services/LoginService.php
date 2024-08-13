@@ -32,6 +32,7 @@ class LoginService implements LoginServiceInterface
         if (password_verify($password, $admin->getPassword())) {
             return [
                 'success' => true,
+                'userId' => $admin->getId(),
                 'message' => 'Login successful.'
             ];
         }
