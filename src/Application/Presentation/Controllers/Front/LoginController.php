@@ -18,18 +18,17 @@ class LoginController extends FrontController
 
     public function login(): HtmlResponse
     {
-        // Dobavljanje podataka iz POST zahteva
         $username = $_POST['username'] ?? '';
         $password = $_POST['password'] ?? '';
 
-        // Provera da li je prijava uspešna
-        if ($this->loginService->login($username, $password)) {
-            // Uspešna prijava, preusmeravanje na dashboard
+        $loginResult = $this->loginService->login($username, $password);
+
+        if ($loginResult['success']) {
             return HtmlResponse::fromView(__DIR__ . '/../../Views/dashboard.php', []);
         } else {
-            // Neuspešna prijava, vraćanje na login stranicu sa greškom
             return HtmlResponse::fromView(__DIR__ . '/../../Views/login.php', [
-                'error' => 'Invalid username or password. Please try again.',
+                'error' => $loginResult['message'],
+                'username' => $username
             ]);
         }
     }

@@ -11,5 +11,5 @@ interface LoginServiceInterface
      * @param string $password
      * @return bool True if login is successful, false otherwise.
      */
-    public function login(string $username, string $password): bool;
+    public function login(string $username, string $password): array;
 }

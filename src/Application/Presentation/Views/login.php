@@ -10,16 +10,20 @@
 <div class="loginContainer">
     <h1>Welcome</h1>
     <p>To demo shop administration!</p>
+
+    <?php if (!empty($error)): ?>
+        <div class="errorMessageBack"><?php echo htmlspecialchars($error); ?></div>
+    <?php endif; ?>
+
+
     <form id="loginForm" action="/src/admin" method="POST">
         <div class="inputGroup">
             <label for="username">User name</label>
             <input type="text" id="username" name="username">
-            <div id="usernameError" class="errorMessage">Invalid username.</div>
         </div>
         <div class="inputGroup">
             <label for="password">Password</label>
             <input type="password" id="password" name="password">
-            <div id="passwordError" class="errorMessage">Invalid password.</div>
         </div>
         <div class="inputGroup checkboxGroup">
             <input type="checkbox" id="keepLoggedIn" name="keepLoggedIn">

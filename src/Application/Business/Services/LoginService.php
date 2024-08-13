@@ -16,17 +16,29 @@ class LoginService implements LoginServiceInterface
      *
      * @param string $username
      * @param string $password
-     * @return bool True if login is successful, false otherwise.
+     * @return array An array containing the result and a message.
      */
-    public function login(string $username, string $password): bool
+    public function login(string $username, string $password): array
     {
         $admin = $this->adminRepository->findByUsername($username);
 
-        if ($admin && password_verify($password, $admin->getPassword())) {
-            // Set session, generate token, etc.
-            return true;
+        if (!$admin) {
+            return [
+                'success' => false,
+                'message' => 'Invalid username or password. Please try again.'
+            ];
         }
 
-        return false;
+        if (password_verify($password, $admin->getPassword())) {
+            return [
+                'success' => true,
+                'message' => 'Login successful.'
+            ];
+        }
+
+        return [
+            'success' => false,
+            'message' => 'Invalid username or password. Please try again.'
+        ];
     }
 }
