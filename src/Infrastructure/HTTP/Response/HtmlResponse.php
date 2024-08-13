@@ -9,10 +9,6 @@ namespace Infrastructure\HTTP\Response;
  */
 class HtmlResponse extends HttpResponse
 {
-    /**
-     * @var string The body content of the response.
-     */
-    protected string $body;
 
     /**
      * HtmlResponse constructor.
@@ -22,7 +18,7 @@ class HtmlResponse extends HttpResponse
      * @param array $headers Headers to be sent with the response.
      * @param string $body The body content of the response.
      */
-    public function __construct(int $statusCode = 200, array $headers = [], string $body = '')
+    public function __construct(protected int $statusCode = 200, protected array $headers = [], protected string $body = '')
     {
         parent::__construct($statusCode, $headers);
         $this->body = $body;

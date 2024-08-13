@@ -10,11 +10,6 @@ namespace Infrastructure\HTTP\Response;
 class JsonResponse extends HttpResponse
 {
     /**
-     * @var array The body of the JSON response.
-     */
-    protected array $body;
-
-    /**
      * JsonResponse constructor.
      * Initializes the response with a default status code and headers, and sets the body as an array.
      *
@@ -22,7 +17,7 @@ class JsonResponse extends HttpResponse
      * @param array $headers Headers to be sent with the response.
      * @param array $body Body of the response.
      */
-    public function __construct(int $statusCode = 200, array $headers = [], array $body = [])
+    public function __construct(protected int $statusCode = 200, protected array $headers = [], protected array $body = [])
     {
         parent::__construct($statusCode, $headers);
         $this->body = $body;
