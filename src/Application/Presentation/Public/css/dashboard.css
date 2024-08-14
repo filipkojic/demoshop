@@ -1,0 +1,68 @@
+/* dashboard.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.sideMenu {
+    width: 200px;
+    background-color: #333;
+    color: #fff;
+    padding-top: 20px;
+}
+
+.sideMenu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sideMenu ul li {
+    padding: 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #444;
+    text-align: center;
+}
+
+.sideMenu ul li.active,
+.sideMenu ul li:hover {
+    background-color: #444;
+}
+
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #fff;
+}
+
+.dashboardGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.dashboardGrid div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+label {
+    font-weight: bold;
+}
+
+input {
+    width: 60px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+    margin: 5px;
+}
