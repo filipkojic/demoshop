@@ -33,11 +33,11 @@ class LoginController extends FrontController
     {
         // If the user is already logged in, redirect to the dashboard
         if (SessionManager::getInstance()->get('user_id')) {
-            return HtmlResponse::fromView(__DIR__ . '/../../Views/dashboard.php', []);
+            return HtmlResponse::fromView(__DIR__ . '/../../Views/dashboard.php');
         }
 
         // Otherwise, show the login page
-        return HtmlResponse::fromView(__DIR__ . '/../../Views/login.php', []);
+        return HtmlResponse::fromView(__DIR__ . '/../../Views/login.php');
     }
 
     /**
@@ -73,6 +73,6 @@ class LoginController extends FrontController
         SessionManager::getInstance()->setCookie(session_name(), session_id(), $cookieLifetime);
 
         // Redirect to the dashboard after successful login
-        return HtmlResponse::fromView(__DIR__ . '/../../Views/dashboard.php', []);
+        return HtmlResponse::fromView(__DIR__ . '/../../Views/dashboard.php');
     }
 }

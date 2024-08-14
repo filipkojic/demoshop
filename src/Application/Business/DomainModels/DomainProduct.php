@@ -43,7 +43,8 @@ class DomainProduct
         private bool    $enabled = true,
         private bool    $featured = false,
         private int     $viewCount = 0
-    ) {
+    )
+    {
     }
 
     /**

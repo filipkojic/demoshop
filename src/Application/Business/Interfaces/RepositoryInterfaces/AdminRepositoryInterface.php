@@ -4,6 +4,11 @@ namespace Application\Business\Interfaces\RepositoryInterfaces;
 
 use Application\Business\DomainModels\DomainAdmin;
 
+/**
+ * Interface AdminRepositoryInterface
+ *
+ * This interface defines the contract for admin repository.
+ */
 interface AdminRepositoryInterface
 {
     /**

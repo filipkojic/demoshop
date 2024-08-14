@@ -34,7 +34,8 @@ class DomainCategory
         private string  $code,
         private string  $title,
         private ?string $description = null
-    ) {
+    )
+    {
     }
 
     /**

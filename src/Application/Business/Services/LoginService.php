@@ -5,6 +5,11 @@ namespace Application\Business\Services;
 use Application\Business\Interfaces\ServiceInterfaces\LoginServiceInterface;
 use Application\Business\Interfaces\RepositoryInterfaces\AdminRepositoryInterface;
 
+/**
+ * Class LoginService
+ *
+ * This class implements the LoginServiceInterface interface.
+ */
 class LoginService implements LoginServiceInterface
 {
     public function __construct(protected AdminRepositoryInterface $adminRepository)
