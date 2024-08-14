@@ -22,7 +22,7 @@ class ServiceRegistry extends Singleton
      * @param string $key The key to identify the service.
      * @param mixed $service The service to register.
      */
-    public function register(string $key, $service): void
+    public function register(string $key, mixed $service): void
     {
         $this->services[$key] = $service;
     }
