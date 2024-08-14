@@ -20,7 +20,6 @@ class JsonResponse extends HttpResponse
     public function __construct(protected int $statusCode = 200, protected array $headers = [], protected array $body = [])
     {
         parent::__construct($statusCode, $headers);
-        $this->body = $body;
         $this->addHeader('Content-Type', 'application/json');
     }
 

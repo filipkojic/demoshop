@@ -21,7 +21,6 @@ class HtmlResponse extends HttpResponse
     public function __construct(protected int $statusCode = 200, protected array $headers = [], protected string $body = '')
     {
         parent::__construct($statusCode, $headers);
-        $this->body = $body;
     }
 
     /**
