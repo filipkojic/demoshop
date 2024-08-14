@@ -24,13 +24,11 @@ class RouteRegistry
             new Route('POST', '/src/admin', LoginController::class, 'login')
         );
 
-        // test
+        // middleware test
         Router::getInstance()->addRoute(
             (new Route('GET', '/src/admin/test', LoginController::class, 'test'))
                 ->addMiddleware(new AdminMiddleware())
         );
-
-
 
     }
 }

@@ -14,6 +14,12 @@ use Infrastructure\Utility\Singleton;
  */
 class Router extends Singleton
 {
+    /**
+     * @var Route[] An array that holds all registered routes.
+     *
+     * This array stores routes grouped by HTTP method (e.g., GET, POST).
+     * Each method key in the array contains a list of Route objects that are registered for that method.
+     */
     protected array $routes = [];
 
     /**

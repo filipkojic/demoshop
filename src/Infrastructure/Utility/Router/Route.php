@@ -11,12 +11,23 @@ use Infrastructure\Middleware\MiddlewareInterface;
  */
 class Route
 {
+    /**
+     * Route constructor.
+     *
+     * Initializes a new route with the specified HTTP method, URL, controller, action, and optional middleware.
+     *
+     * @param string $method The HTTP method (e.g., GET, POST) for this route.
+     * @param string $url The URL pattern that this route should match.
+     * @param string $controller The controller class that will handle the request.
+     * @param string $action The specific method in the controller that will be executed.
+     * @param array $middlewares Optional array of middleware that should be applied to this route.
+     */
     public function __construct(
         private string $method,
         private string $url,
         private string $controller,
         private string $action,
-        private array $middlewares = []
+        private array  $middlewares = []
     )
     {
     }
