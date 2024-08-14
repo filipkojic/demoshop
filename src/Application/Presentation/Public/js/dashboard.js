@@ -2,6 +2,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const contentDiv = document.getElementById('content');
     const menuItems = document.querySelectorAll('.sideMenu ul li');
 
+    /**
+     * Function to create an HTML element
+     * @param {string} tag - The HTML tag to create (e.g., 'div', 'span', 'input')
+     * @param {object} attributes - The attributes to add to the element (e.g., { id: 'myId', class: 'myClass' })
+     * @param {string} textContent - The text content to set inside the element (optional)
+     * @returns {HTMLElement} - The created HTML element
+     */
     function createElement(tag, attributes = {}, textContent = '') {
         const element = document.createElement(tag);
         for (const [key, value] of Object.entries(attributes)) {
@@ -13,6 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return element;
     }
 
+    /**
+     * Function to load the Dashboard page content
+     */
     function loadDashboard() {
         contentDiv.innerHTML = '';
 
@@ -85,6 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
         contentDiv.appendChild(dashboardGrid);
     }
 
+    /**
+     * Function to load content for the "Products" page
+     */
     function loadProducts() {
         contentDiv.innerHTML = '';
         const productsHeading = createElement('h2', {}, 'Products Section');
@@ -93,6 +106,9 @@ document.addEventListener('DOMContentLoaded', () => {
         contentDiv.appendChild(noDataMessage);
     }
 
+    /**
+     * Function to load content for the "Product Categories" page
+     */
     function loadCategories() {
         contentDiv.innerHTML = '';
         const categoriesHeading = createElement('h2', {}, 'Product Categories Section');
