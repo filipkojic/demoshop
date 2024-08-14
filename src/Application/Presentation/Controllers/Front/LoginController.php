@@ -75,4 +75,16 @@ class LoginController extends FrontController
         // Redirect to the dashboard after successful login
         return HtmlResponse::fromView(__DIR__ . '/../../Views/dashboard.php');
     }
+
+
+    /**
+     * Test for admin middleware
+     *
+     * @param HttpRequest $request The HTTP request object.
+     * @return HtmlResponse The HTML response with the appropriate view.
+     */
+    public function test(HttpRequest $request): HtmlResponse
+    {
+        return HtmlResponse::fromView(__DIR__ . '/../../Views/dashboard.php');
+    }
 }

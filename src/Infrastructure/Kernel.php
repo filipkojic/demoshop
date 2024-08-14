@@ -3,6 +3,7 @@
 namespace Infrastructure;
 
 use Exception;
+use Infrastructure\Exceptions\UnauthorizedException;
 use Infrastructure\HTTP\HttpRequest;
 use Infrastructure\HTTP\Response\HtmlResponse;
 use Infrastructure\Utility\Router\Router;
@@ -54,6 +55,8 @@ class Kernel
             $request = new HttpRequest();
             $response = Router::getInstance()->matchRoute($request);
             $response->send();
+        } catch (UnauthorizedException $e) {
+            self::handleError(403, 'Unauthorized access');
         } catch (Exception $e) {
             self::handleError(404, 'Page not found');
         }
