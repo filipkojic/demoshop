@@ -2,18 +2,21 @@
 
 namespace Infrastructure\Utility\Router;
 
+use Infrastructure\Middleware\MiddlewareInterface;
+
 /**
  * Class Route
  *
  * Represents a single route with its associated method, URL, controller, and action.
  */
-readonly class Route
+class Route
 {
     public function __construct(
         private string $method,
         private string $url,
         private string $controller,
-        private string $action
+        private string $action,
+        private array $middlewares = []
     )
     {
     }
@@ -56,5 +59,27 @@ readonly class Route
     public function getAction(): string
     {
         return $this->action;
+    }
+
+    /**
+     * Add middleware to the route.
+     *
+     * @param MiddlewareInterface $middleware The middleware to add.
+     * @return $this
+     */
+    public function addMiddleware(MiddlewareInterface $middleware): self
+    {
+        $this->middlewares[] = $middleware;
+        return $this;
+    }
+
+    /**
+     * Get the list of middleware associated with the route.
+     *
+     * @return MiddlewareInterface[]
+     */
+    public function getMiddlewares(): array
+    {
+        return $this->middlewares;
     }
 }

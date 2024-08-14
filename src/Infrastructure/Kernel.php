@@ -56,9 +56,9 @@ class Kernel
             $response = Router::getInstance()->matchRoute($request);
             $response->send();
         } catch (UnauthorizedException $e) {
-            self::handleError(403, 'Unauthorized access');
+            self::handleError(403, $e->getMessage());
         } catch (Exception $e) {
-            self::handleError(404, 'Page not found');
+            self::handleError(404, 'Page not found!');
         }
     }
 

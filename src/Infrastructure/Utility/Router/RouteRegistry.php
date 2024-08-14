@@ -3,6 +3,7 @@
 namespace Infrastructure\Utility\Router;
 
 use Application\Presentation\Controllers\Front\LoginController;
+use Infrastructure\Middleware\AdminMiddleware;
 
 /**
  * Class for registering routes
@@ -22,6 +23,13 @@ class RouteRegistry
         Router::getInstance()->addRoute(
             new Route('POST', '/src/admin', LoginController::class, 'login')
         );
+
+        // test
+        Router::getInstance()->addRoute(
+            (new Route('GET', '/src/admin/test', LoginController::class, 'test'))
+                ->addMiddleware(new AdminMiddleware())
+        );
+
 
 
     }
