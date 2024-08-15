@@ -25,10 +25,6 @@ class Bootstrap
      */
     public static function initialize(): void
     {
-        // Load environment variables
-        $dotenv = Dotenv::createUnsafeImmutable(__DIR__ . '/../../');
-        $dotenv->load();
-
         // Register repositories, services, and controllers
         self::registerRepos();
         self::registerServices();

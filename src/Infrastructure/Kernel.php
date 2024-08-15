@@ -3,11 +3,11 @@
 namespace Infrastructure;
 
 use Exception;
+use Infrastructure\Database\DatabaseManager;
 use Infrastructure\Exceptions\UnauthorizedException;
 use Infrastructure\HTTP\HttpRequest;
 use Infrastructure\HTTP\Response\HtmlResponse;
 use Infrastructure\Utility\Router\Router;
-use Illuminate\Database\Capsule\Manager as Capsule;
 use Infrastructure\Utility\Router\RouteRegistry;
 
 class Kernel
@@ -22,19 +22,7 @@ class Kernel
             Bootstrap::initialize();
 
             // Initialize Eloquent ORM
-            $capsule = new Capsule;
-            $capsule->addConnection([
-                'driver' => getenv('DB_CONNECTION'),
-                'host' => getenv('DB_HOST'),
-                'database' => getenv('DB_DATABASE'),
-                'username' => getenv('DB_USERNAME'),
-                'password' => getenv('DB_PASSWORD'),
-                'charset' => 'utf8',
-                'collation' => 'utf8_unicode_ci',
-                'prefix' => '',
-            ]);
-            $capsule->setAsGlobal();
-            $capsule->bootEloquent();
+            DatabaseManager::initialize();
 
             // Register routes
             RouteRegistry::registerRoutes();
