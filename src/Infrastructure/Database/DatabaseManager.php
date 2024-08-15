@@ -2,6 +2,7 @@
 
 namespace Infrastructure\Database;
 
+use Application\Presentation\Utility\PathHelper;
 use Dotenv\Dotenv;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
@@ -10,7 +11,7 @@ class DatabaseManager
     public static function initialize(): void
     {
         // Load environment variables
-        $dotenv = Dotenv::createUnsafeImmutable(__DIR__ . '/../../../');
+        $dotenv = Dotenv::createUnsafeImmutable(PathHelper::env());
         $dotenv->load();
 
         $capsule = new Capsule;

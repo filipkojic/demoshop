@@ -11,12 +11,13 @@
 
 require '../../../../vendor/autoload.php';
 
+use Application\Presentation\Utility\PathHelper;
 use Dotenv\Dotenv;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Support\Carbon;
 
 // Initialize .env configuration
-$dotenv = Dotenv::createUnsafeImmutable(__DIR__ . '/../../../../');
+$dotenv = Dotenv::createUnsafeImmutable(PathHelper::env());
 $dotenv->load();
 
 // Initialize Eloquent ORM

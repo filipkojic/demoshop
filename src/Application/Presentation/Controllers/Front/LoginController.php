@@ -3,6 +3,7 @@
 namespace Application\Presentation\Controllers\Front;
 
 use Application\Business\Interfaces\ServiceInterfaces\LoginServiceInterface;
+use Application\Presentation\Utility\PathHelper;
 use Infrastructure\HTTP\HttpRequest;
 use Infrastructure\HTTP\Response\HtmlResponse;
 use Infrastructure\Utility\SessionManager;
@@ -33,11 +34,11 @@ class LoginController extends FrontController
     {
         // If the user is already logged in, redirect to the dashboard
         if (SessionManager::getInstance()->get('user_id')) {
-            return HtmlResponse::fromView(__DIR__ . '/../../Views/dashboard.php');
+            return HtmlResponse::fromView(PathHelper::view('dashboard.php'));
         }
 
         // Otherwise, show the login page
-        return HtmlResponse::fromView(__DIR__ . '/../../Views/login.php');
+        return HtmlResponse::fromView(PathHelper::view('login.php'));
     }
 
     /**
@@ -60,7 +61,7 @@ class LoginController extends FrontController
 
         // If login fails, return to the login page with an error message
         if (!$loginResult['success']) {
-            return HtmlResponse::fromView(__DIR__ . '/../../Views/login.php', [
+            return HtmlResponse::fromView(PathHelper::view('login.php'), [
                 'error' => $loginResult['message']
             ]);
         }
