@@ -9,16 +9,16 @@
  * the username is not already taken.
  */
 
-require '../../../../vendor/autoload.php';
+require '../../../../../vendor/autoload.php';
 
+use Application\Integration\Database\Migrations\CreateAdminTable;
+use Application\Integration\Database\Migrations\CreateCategoriesTable;
+use Application\Integration\Database\Migrations\CreateProductsTable;
+use Application\Integration\Database\Migrations\CreateStatisticsTable;
 use Application\Integration\Utility\PathHelper;
 use Dotenv\Dotenv;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Support\Carbon;
-use Infrastructure\Database\Migrations\CreateAdminTable;
-use Infrastructure\Database\Migrations\CreateCategoriesTable;
-use Infrastructure\Database\Migrations\CreateProductsTable;
-use Infrastructure\Database\Migrations\CreateStatisticsTable;
 
 // Initialize .env configuration
 $dotenv = Dotenv::createUnsafeImmutable(PathHelper::env());

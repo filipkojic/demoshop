@@ -1,6 +1,6 @@
 <?php
 
-namespace Infrastructure\Utility\Router;
+namespace Application\Integration\Router;
 
 use Infrastructure\HTTP\HttpRequest;
 use Infrastructure\HTTP\Response\HttpResponse;

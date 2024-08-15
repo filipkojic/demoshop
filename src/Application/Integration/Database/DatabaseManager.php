@@ -1,6 +1,6 @@
 <?php
 
-namespace Infrastructure\Database;
+namespace Application\Integration\Database;
 
 use Application\Integration\Utility\PathHelper;
 use Dotenv\Dotenv;

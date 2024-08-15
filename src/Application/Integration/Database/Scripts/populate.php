@@ -9,7 +9,7 @@
  * 10 products distributed across these categories.
  */
 
-require '../../../../vendor/autoload.php';
+require '../../../../../vendor/autoload.php';
 
 use Application\Integration\Utility\PathHelper;
 use Dotenv\Dotenv;

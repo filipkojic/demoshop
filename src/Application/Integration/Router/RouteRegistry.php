@@ -1,6 +1,6 @@
 <?php
 
-namespace Infrastructure\Utility\Router;
+namespace Application\Integration\Router;
 
 use Application\Integration\Middleware\AdminMiddleware;
 use Application\Presentation\Controllers\Front\LoginController;
