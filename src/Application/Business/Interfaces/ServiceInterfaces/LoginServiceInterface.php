@@ -2,6 +2,8 @@
 
 namespace Application\Business\Interfaces\ServiceInterfaces;
 
+use Application\Integration\Exceptions\UnauthorizedException;
+
 interface LoginServiceInterface
 {
     /**
@@ -9,7 +11,8 @@ interface LoginServiceInterface
      *
      * @param string $username
      * @param string $password
-     * @return bool True if login is successful, false otherwise.
-     */
-    public function login(string $username, string $password): array;
+     * @param bool $keepLoggedIn
+     * @return bool The indicator of successfully login.
+ */
+    public function login(string $username, string $password, bool $keepLoggedIn): bool;
 }

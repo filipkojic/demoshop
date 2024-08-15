@@ -4,6 +4,8 @@ namespace Application\Business\Services;
 
 use Application\Business\Interfaces\ServiceInterfaces\LoginServiceInterface;
 use Application\Business\Interfaces\RepositoryInterfaces\AdminRepositoryInterface;
+use Application\Integration\Exceptions\UnauthorizedException;
+use Infrastructure\Utility\SessionManager;
 
 /**
  * Class LoginService
@@ -21,30 +23,22 @@ class LoginService implements LoginServiceInterface
      *
      * @param string $username
      * @param string $password
-     * @return array An array containing the result and a message.
+     * @param bool $keepLoggedIn
+     * @return bool The indicator of successfully login.
      */
-    public function login(string $username, string $password): array
+    public function login(string $username, string $password, bool $keepLoggedIn): bool
     {
         $admin = $this->adminRepository->findByUsername($username);
 
-        if (!$admin) {
-            return [
-                'success' => false,
-                'message' => 'Invalid username or password. Please try again.'
-            ];
+        if (!($admin && password_verify($password, $admin->getPassword()))) {
+            return false;
         }
 
-        if (password_verify($password, $admin->getPassword())) {
-            return [
-                'success' => true,
-                'userId' => $admin->getId(),
-                'message' => 'Login successful.'
-            ];
-        }
+        SessionManager::getInstance()->set('user_id', $admin->getId());
 
-        return [
-            'success' => false,
-            'message' => 'Invalid username or password. Please try again.'
-        ];
+        $cookieLifetime = $keepLoggedIn ? time() + (24 * 60 * 60) : 0; // 1 dan
+        SessionManager::getInstance()->setCookie(session_name(), session_id(), $cookieLifetime);
+
+        return true;
     }
 }

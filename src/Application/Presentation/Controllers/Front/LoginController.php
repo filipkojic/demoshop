@@ -3,6 +3,7 @@
 namespace Application\Presentation\Controllers\Front;
 
 use Application\Business\Interfaces\ServiceInterfaces\LoginServiceInterface;
+use Application\Integration\Exceptions\UnauthorizedException;
 use Application\Integration\Utility\PathHelper;
 use Infrastructure\HTTP\HttpRequest;
 use Infrastructure\HTTP\Response\HtmlResponse;
@@ -51,30 +52,19 @@ class LoginController extends FrontController
      */
     public function login(HttpRequest $request): HtmlResponse
     {
-        // Retrieve form data from the request
         $username = $request->getBodyParam('username', '');
         $password = $request->getBodyParam('password', '');
         $keepLoggedIn = $request->getBodyParam('keepLoggedIn', false);
 
-        // Attempt to log in using the provided credentials
-        $loginResult = $this->loginService->login($username, $password);
+        $loginSuccessful = $this->loginService->login($username, $password, $keepLoggedIn);
 
-        // If login fails, return to the login page with an error message
-        if (!$loginResult['success']) {
-            return HtmlResponse::fromView(PathHelper::view('login.php'), [
-                'error' => $loginResult['message']
-            ]);
+        if ($loginSuccessful) {
+            return HtmlResponse::fromView(PathHelper::view('dashboard.php'));
         }
 
-        // If login is successful, store the user ID in the session
-        SessionManager::getInstance()->set('user_id', $loginResult['userId']);
-
-        // Set the session cookie lifetime based on the 'Keep me logged in' option
-        $cookieLifetime = $keepLoggedIn ? time() + (24 * 60 * 60) : 0; // 1 day
-        SessionManager::getInstance()->setCookie(session_name(), session_id(), $cookieLifetime);
-
-        // Redirect to the dashboard after successful login
-        return HtmlResponse::fromView(__DIR__ . '/../../Views/dashboard.php');
+        return HtmlResponse::fromView(PathHelper::view('login.php'), [
+            'error' => 'Invalid username or password. Please try again.'
+        ]);
     }
 
 
@@ -86,6 +76,6 @@ class LoginController extends FrontController
      */
     public function test(HttpRequest $request): HtmlResponse
     {
-        return HtmlResponse::fromView(__DIR__ . '/../../Views/dashboard.php');
+        return HtmlResponse::fromView(PathHelper::view('dashboard.php'));
     }
 }
