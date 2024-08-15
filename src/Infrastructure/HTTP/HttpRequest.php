@@ -28,8 +28,8 @@ class HttpRequest
             $this->queryParams = GlobalWrapper::getGet();
             $this->bodyParams = GlobalWrapper::getPost();
             $this->headers = GlobalWrapper::getAllHeaders();
-            $this->method = GlobalWrapper::getServer()['REQUEST_METHOD'];
-            $this->uri = GlobalWrapper::getServer()['REQUEST_URI'];
+            $this->method = GlobalWrapper::getRequestMethod();
+            $this->uri = GlobalWrapper::getRequestUri();
         } catch (Exception $e) {
             error_log($e->getMessage());
             $this->queryParams = [];

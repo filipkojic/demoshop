@@ -53,6 +53,26 @@ class GlobalWrapper
     }
 
     /**
+     * Get the HTTP method from the $_SERVER superglobal.
+     *
+     * @return string The HTTP method (e.g., GET, POST).
+     */
+    public static function getRequestMethod(): string
+    {
+        return $_SERVER['REQUEST_METHOD'] ?? '';
+    }
+
+    /**
+     * Get the request URI from the $_SERVER superglobal.
+     *
+     * @return string The request URI.
+     */
+    public static function getRequestUri(): string
+    {
+        return $_SERVER['REQUEST_URI'] ?? '';
+    }
+
+    /**
      * Get the $_REQUEST array.
      *
      * @return array The $_REQUEST array.
