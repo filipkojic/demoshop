@@ -33,12 +33,10 @@ class LoginController extends FrontController
      */
     public function index(HttpRequest $request): HtmlResponse
     {
-        // If the user is already logged in, redirect to the dashboard
         if (SessionManager::getInstance()->get('user_id')) {
             return HtmlResponse::fromView(PathHelper::view('dashboard.php'));
         }
 
-        // Otherwise, show the login page
         return HtmlResponse::fromView(PathHelper::view('login.php'));
     }
 
