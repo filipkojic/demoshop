@@ -11,7 +11,7 @@
 
 require '../../../../vendor/autoload.php';
 
-use Application\Presentation\Utility\PathHelper;
+use Application\Integration\Utility\PathHelper;
 use Dotenv\Dotenv;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Support\Carbon;

@@ -3,7 +3,7 @@
 namespace Application\Presentation\Controllers\Front;
 
 use Application\Business\Interfaces\ServiceInterfaces\LoginServiceInterface;
-use Application\Presentation\Utility\PathHelper;
+use Application\Integration\Utility\PathHelper;
 use Infrastructure\HTTP\HttpRequest;
 use Infrastructure\HTTP\Response\HtmlResponse;
 use Infrastructure\Utility\SessionManager;

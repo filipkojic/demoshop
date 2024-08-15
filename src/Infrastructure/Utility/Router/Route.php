@@ -2,7 +2,7 @@
 
 namespace Infrastructure\Utility\Router;
 
-use Infrastructure\Middleware\MiddlewareInterface;
+use Application\Integration\Middleware\MiddlewareInterface;
 
 /**
  * Class Route

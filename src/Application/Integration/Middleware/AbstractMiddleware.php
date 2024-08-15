@@ -1,6 +1,6 @@
 <?php
 
-namespace Infrastructure\Middleware;
+namespace Application\Integration\Middleware;
 
 use Infrastructure\HTTP\HttpRequest;
 

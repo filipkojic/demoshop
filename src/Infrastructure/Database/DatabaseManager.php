@@ -2,7 +2,7 @@
 
 namespace Infrastructure\Database;
 
-use Application\Presentation\Utility\PathHelper;
+use Application\Integration\Utility\PathHelper;
 use Dotenv\Dotenv;
 use Illuminate\Database\Capsule\Manager as Capsule;
 

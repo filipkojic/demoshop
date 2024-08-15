@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Presentation\Utility;
+namespace Application\Integration\Utility;
 
 /**
  * Class PathHelper

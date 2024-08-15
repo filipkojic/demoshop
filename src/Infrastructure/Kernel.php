@@ -2,9 +2,9 @@
 
 namespace Infrastructure;
 
+use Application\Integration\Exceptions\UnauthorizedException;
 use Exception;
 use Infrastructure\Database\DatabaseManager;
-use Infrastructure\Exceptions\UnauthorizedException;
 use Infrastructure\HTTP\HttpRequest;
 use Infrastructure\HTTP\Response\HtmlResponse;
 use Infrastructure\Utility\Router\Router;

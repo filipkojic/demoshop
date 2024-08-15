@@ -1,10 +1,10 @@
 <?php
 
-namespace Infrastructure\Middleware;
+namespace Application\Integration\Middleware;
 
+use Application\Integration\Exceptions\UnauthorizedException;
 use Infrastructure\HTTP\HttpRequest;
 use Infrastructure\Utility\SessionManager;
-use Infrastructure\Exceptions\UnauthorizedException;
 
 /**
  * Class AdminMiddleware

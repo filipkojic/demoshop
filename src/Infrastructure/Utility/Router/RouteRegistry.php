@@ -2,8 +2,8 @@
 
 namespace Infrastructure\Utility\Router;
 
+use Application\Integration\Middleware\AdminMiddleware;
 use Application\Presentation\Controllers\Front\LoginController;
-use Infrastructure\Middleware\AdminMiddleware;
 
 /**
  * Class for registering routes
