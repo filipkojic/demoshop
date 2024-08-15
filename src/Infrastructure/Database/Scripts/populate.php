@@ -9,14 +9,14 @@
  * 10 products distributed across these categories.
  */
 
-require '../../../vendor/autoload.php';
+require '../../../../vendor/autoload.php';
 
 use Dotenv\Dotenv;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Support\Carbon;
 
 // Initialize .env configuration
-$dotenv = Dotenv::createUnsafeImmutable(__DIR__ . '/../../../');
+$dotenv = Dotenv::createUnsafeImmutable(__DIR__ . '/../../../../');
 $dotenv->load();
 
 // Initialize Eloquent ORM

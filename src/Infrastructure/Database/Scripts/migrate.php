@@ -9,7 +9,7 @@
  * the username is not already taken.
  */
 
-require '../../../vendor/autoload.php';
+require '../../../../vendor/autoload.php';
 
 use Dotenv\Dotenv;
 use Illuminate\Database\Capsule\Manager as Capsule;
@@ -20,7 +20,7 @@ use Infrastructure\Database\Migrations\CreateProductsTable;
 use Infrastructure\Database\Migrations\CreateStatisticsTable;
 
 // Initialize .env configuration
-$dotenv = Dotenv::createUnsafeImmutable(__DIR__ . '/../../../');
+$dotenv = Dotenv::createUnsafeImmutable(__DIR__ . '/../../../../');
 $dotenv->load();
 
 // Initialize Eloquent ORM
