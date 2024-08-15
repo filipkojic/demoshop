@@ -25,11 +25,11 @@ class HttpRequest
     )
     {
         try {
-            $this->queryParams = GlobalWrapper::getGlobal('_GET');
-            $this->bodyParams = GlobalWrapper::getGlobal('_POST');
+            $this->queryParams = GlobalWrapper::getGet();
+            $this->bodyParams = GlobalWrapper::getPost();
             $this->headers = GlobalWrapper::getAllHeaders();
-            $this->method = GlobalWrapper::getGlobal('_SERVER')['REQUEST_METHOD'];
-            $this->uri = GlobalWrapper::getGlobal('_SERVER')['REQUEST_URI'];
+            $this->method = GlobalWrapper::getServer()['REQUEST_METHOD'];
+            $this->uri = GlobalWrapper::getServer()['REQUEST_URI'];
         } catch (Exception $e) {
             error_log($e->getMessage());
             $this->queryParams = [];
@@ -131,3 +131,4 @@ class HttpRequest
         return json_decode($jsonData, true);
     }
 }
+

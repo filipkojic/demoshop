@@ -2,39 +2,94 @@
 
 namespace Infrastructure\Utility;
 
-use Exception;
-
+/**
+ * Class GlobalWrapper
+ *
+ * A utility class for safely accessing and manipulating global PHP variables.
+ * This class provides methods to retrieve, set, and unset values from common
+ * global arrays such as $_GET, $_POST, $_SESSION, $_SERVER, and $_COOKIE.
+ * Additionally, it offers methods to manage HTTP headers and cookies.
+ */
 class GlobalWrapper
 {
     /**
-     * Get a global array by name.
+     * Get the $_GET array.
      *
-     * @param string $globalName The name of the global array.
-     * @return array The global array.
-     * @throws Exception If the global array does not exist.
+     * @return array The $_GET array.
      */
-    public static function getGlobal(string $globalName): array
+    public static function getGet(): array
     {
-        switch ($globalName) {
-            case '_GET':
-                return $_GET;
-            case '_POST':
-                return $_POST;
-            case '_SESSION':
-                return $_SESSION;
-            case '_SERVER':
-                return $_SERVER;
-            case '_REQUEST':
-                return $_REQUEST;
-            case '_FILES':
-                return $_FILES;
-            case '_ENV':
-                return $_ENV;
-            case '_COOKIE':
-                return $_COOKIE;
-            default:
-                throw new Exception("Global variable $globalName does not exist.");
-        }
+        return $_GET;
+    }
+
+    /**
+     * Get the $_POST array.
+     *
+     * @return array The $_POST array.
+     */
+    public static function getPost(): array
+    {
+        return $_POST;
+    }
+
+    /**
+     * Get the $_SESSION array.
+     *
+     * @return array The $_SESSION array.
+     */
+    public static function getSession(): array
+    {
+        return $_SESSION;
+    }
+
+    /**
+     * Get the $_SERVER array.
+     *
+     * @return array The $_SERVER array.
+     */
+    public static function getServer(): array
+    {
+        return $_SERVER;
+    }
+
+    /**
+     * Get the $_REQUEST array.
+     *
+     * @return array The $_REQUEST array.
+     */
+    public static function getRequest(): array
+    {
+        return $_REQUEST;
+    }
+
+    /**
+     * Get the $_FILES array.
+     *
+     * @return array The $_FILES array.
+     */
+    public static function getFiles(): array
+    {
+        return $_FILES;
+    }
+
+    /**
+     * Get the $_ENV array.
+     *
+     * @return array The $_ENV array.
+     */
+    public static function getEnv(): array
+    {
+        return $_ENV;
+    }
+
+    /**
+     * Get the $_COOKIE array.
+     *
+     * @return array The $_COOKIE array.
+     */
+    public static function getCookie(): array
+    {
+        return $_COOKIE;
     }
 
     /**
@@ -107,7 +162,7 @@ class GlobalWrapper
      * @param string $name The name of the cookie to retrieve.
      * @return mixed|null The value of the cookie, or null if not set.
      */
-    public static function getCookie(string $name): mixed
+    public static function getCookieValue(string $name): mixed
     {
         return $_COOKIE[$name] ?? null;
     }
