@@ -17,17 +17,21 @@ class RouteRegistry
     {
         // Login controller routes
         Router::getInstance()->addRoute(
-            new Route('GET', '/src/admin', LoginController::class, 'index')
+            new Route('GET', '/admin', LoginController::class, 'index')
         );
 
         Router::getInstance()->addRoute(
-            new Route('POST', '/src/admin', LoginController::class, 'login')
+            new Route('POST', '/admin', LoginController::class, 'login')
         );
 
         // middleware test
         Router::getInstance()->addRoute(
-            (new Route('GET', '/src/admin/test', LoginController::class, 'test'))
+            (new Route('GET', '/admin/test', LoginController::class, 'test'))
                 ->addMiddleware(new AdminMiddleware())
+        );
+
+        Router::getInstance()->addRoute(
+            new Route('GET', '/', LoginController::class, 'index')
         );
 
     }

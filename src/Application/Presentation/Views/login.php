@@ -15,7 +15,7 @@
         <div class="errorMessageBack"><?php echo htmlspecialchars($error); ?></div>
     <?php endif; ?>
 
-    <form id="loginForm" action="/src/admin" method="POST">
+    <form id="loginForm" action="/admin" method="POST">
         <div class="inputGroup">
             <label for="username">User name</label>
             <input type="text" id="username" name="username">
