@@ -63,6 +63,7 @@ body {
     border-radius: 4px;
     display: flex;
     align-items: center;
+    margin-left: 10px; /* Da bi subkategorije bile uvučene */
 }
 
 .category-item .toggle-btn {
@@ -82,6 +83,10 @@ body {
 
 .hidden {
     display: none;
+}
+
+.subcategory-list {
+    margin-left: 20px; /* Uvlačenje subkategorija */
 }
 
 .selected-category {
@@ -150,4 +155,9 @@ body {
 
 .add-category button:hover {
     background-color: #0069d9;
+}
+
+.category-item.selected {
+    background-color: #b3d9ff;
+    border-color: #007bff;
 }
