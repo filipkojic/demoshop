@@ -111,7 +111,7 @@ try {
      * @param int|null $parentId The ID of the parent category (null for root categories)
      * @return void
      */
-    function insertCategoryWithSubcategories(array $categories, int $parentId = null):void
+    function insertCategoryWithSubcategories(array $categories, int $parentId = null): void
     {
         foreach ($categories as $category) {
             $categoryId = Capsule::table('categories')->insertGetId([
@@ -132,7 +132,6 @@ try {
     insertCategoryWithSubcategories($categories);
 
     // Insert products
-    // Proveri pre umetanja proizvoda
     $products = [
         ['sku' => 'IPH13', 'title' => 'iPhone 13', 'brand' => 'Apple', 'price' => 999.99, 'category_code' => 'IOS', 'view_count' => 120],
         ['sku' => 'GALAXY21', 'title' => 'Samsung Galaxy S21', 'brand' => 'Samsung', 'price' => 899.99, 'category_code' => 'AND', 'view_count' => 90],
@@ -151,7 +150,7 @@ try {
 
         if (!$category) {
             echo "Error: Category with code {$product['category_code']} not found for product {$product['sku']}" . PHP_EOL;
-            continue; // Preskoči proizvod ako kategorija nije pronađena
+            continue;
         }
 
         Capsule::table('products')->insert([
