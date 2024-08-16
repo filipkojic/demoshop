@@ -10,14 +10,16 @@
 <div class="container">
     <aside class="sideMenu">
         <ul>
-            <li data-section="dashboard" class="active">Dashboard</li>
-            <li data-section="products">Products</li>
-            <li data-section="categories">Product Categories</li>
+            <li data-section="admin/dashboard" class="active">Dashboard</li>
+            <li data-section="admin/products">Products</li>
+            <li data-section="admin/categories">Product Categories</li>
+
         </ul>
     </aside>
     <main id="content" class="content">
     </main>
 </div>
+<script src="/src/Application/Presentation/Public/js/router.js"></script>
 <script src="/src/Application/Presentation/Public/js/dashboard.js"></script>
 </body>
 </html>

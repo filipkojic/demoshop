@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const contentDiv = document.getElementById('content');
-    const menuItems = document.querySelectorAll('.sideMenu ul li');
+    const router = new Router(contentDiv);
 
     /**
      * Function to create an HTML element
@@ -119,20 +119,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadDashboard();
 
+    // Register routes with the router
+    router.registerRoute('/admin/dashboard', loadDashboard);
+    router.registerRoute('/admin/products', loadProducts);
+    router.registerRoute('/admin/categories', loadCategories);
+
+    // Initialize the router
+    router.init();
+
+    // Default to load the dashboard initially
+    // Default to load the dashboard initially
+    router.navigate('/admin/dashboard');
+
+
+    // Handle side menu navigation clicks
+    const menuItems = document.querySelectorAll('.sideMenu ul li');
     menuItems.forEach(item => {
         item.addEventListener('click', function () {
             menuItems.forEach(i => i.classList.remove('active'));
             this.classList.add('active');
 
             const sectionId = this.getAttribute('data-section');
-
-            if (sectionId === 'dashboard') {
-                loadDashboard();
-            } else if (sectionId === 'products') {
-                loadProducts();
-            } else if (sectionId === 'categories') {
-                loadCategories();
-            }
+            router.navigate(`/${sectionId}`);
         });
     });
+
 });
