@@ -20,6 +20,23 @@ document.addEventListener('DOMContentLoaded', () => {
         return element;
     }
 
+    function loadCssFile(filename) {
+        const existingLink = document.querySelector(`link[href="${filename}"]`);
+        if (!existingLink) {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = filename;
+            document.head.appendChild(link);
+        }
+    }
+
+    function removeCssFile(filename) {
+        const existingLink = document.querySelector(`link[href="${filename}"]`);
+        if (existingLink) {
+            existingLink.remove();
+        }
+    }
+
     /**
      * Function to load the Dashboard page content
      */
@@ -27,6 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
      * Function to load the Dashboard page content
      */
     async function loadDashboard() {
+        removeCssFile('/src/Application/Presentation/Public/css/categories.css');
+        loadCssFile('/src/Application/Presentation/Public/css/dashboard.css');
         contentDiv.innerHTML = '';
 
         // Send AJAX request to get statistics
@@ -117,11 +136,112 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     function loadCategories() {
         contentDiv.innerHTML = '';
-        const categoriesHeading = createElement('h2', {}, 'Product Categories Section');
-        const noDataMessage = createElement('p', {}, 'No data available.');
-        contentDiv.appendChild(categoriesHeading);
-        contentDiv.appendChild(noDataMessage);
+
+        removeCssFile('/src/Application/Presentation/Public/css/dashboard.css');
+        loadCssFile('/src/Application/Presentation/Public/css/categories.css');
+
+        // Kreiranje kontejnera za listu kategorija i detalje selektovane kategorije
+        const categoryContainer = createElement('div', { class: 'category-container' });
+
+        // Leva strana: Lista kategorija
+        const categoryListDiv = createElement('div', { class: 'category-list' });
+
+        // Hardkodovane kategorije za sada
+        const categories = [
+            { id: 1, title: 'Laptops', parent: null, subcategories: [
+                    { id: 2, title: 'Office', parent: 'Laptops' },
+                    { id: 3, title: 'Gaming', parent: 'Laptops', selected: true },
+                    { id: 4, title: 'Multimedia', parent: 'Laptops' },
+                ] },
+            { id: 5, title: 'Processors', parent: null, subcategories: [] },
+            { id: 6, title: 'Motherboards', parent: null, subcategories: [] }
+        ];
+
+        // Dodavanje kategorija sa plusevima za proširivanje
+        categories.forEach(category => {
+            const categoryDiv = createElement('div', {
+                class: 'category-item'
+            });
+
+            const toggleBtn = createElement('span', {
+                class: 'toggle-btn'
+            }, category.subcategories.length ? '+' : '');
+
+            const categoryTitle = createElement('span', {}, category.title);
+            categoryDiv.appendChild(toggleBtn);
+            categoryDiv.appendChild(categoryTitle);
+
+            // Dodaj subkategorije
+            if (category.subcategories.length) {
+                const subcategoryDiv = createElement('div', {
+                    class: 'subcategory-list hidden'
+                });
+
+                category.subcategories.forEach(subcategory => {
+                    const subcategoryItem = createElement('div', {
+                        class: `category-item${subcategory.selected ? ' selected' : ''}`
+                    }, subcategory.title);
+                    subcategoryDiv.appendChild(subcategoryItem);
+                });
+
+                categoryDiv.appendChild(subcategoryDiv);
+
+                // Event listener za toggle
+                toggleBtn.addEventListener('click', () => {
+                    const isHidden = subcategoryDiv.classList.toggle('hidden');
+                    toggleBtn.textContent = isHidden ? '+' : '-';
+                });
+            }
+
+            categoryListDiv.appendChild(categoryDiv);
+        });
+
+        // Dodavanje dugmića za dodavanje root i podkategorije
+        const addRootButton = createElement('button', {}, 'Add root category');
+        const addSubButton = createElement('button', {}, 'Add subcategory');
+        const addCategoryDiv = createElement('div', { class: 'add-category' });
+        addCategoryDiv.appendChild(addRootButton);
+        addCategoryDiv.appendChild(addSubButton);
+        categoryListDiv.appendChild(addCategoryDiv);
+
+        categoryContainer.appendChild(categoryListDiv);
+
+        // Desna strana: Detalji selektovane kategorije
+        const selectedCategoryDiv = createElement('div', { class: 'selected-category' });
+
+        const selectedCategory = categories.flatMap(cat => cat.subcategories).find(cat => cat.selected);
+
+        if (selectedCategory) {
+            const titleInput = createElement('input', { type: 'text', value: selectedCategory.title });
+            const parentCategoryInput = createElement('input', { type: 'text', value: selectedCategory.parent });
+            const codeInput = createElement('input', { type: 'text', value: 'GAM1' });
+            const descriptionTextarea = createElement('textarea', {}, 'Gaming laptops with high performance');
+
+            selectedCategoryDiv.appendChild(createElement('label', {}, 'Title:'));
+            selectedCategoryDiv.appendChild(titleInput);
+
+            selectedCategoryDiv.appendChild(createElement('label', {}, 'Parent category:'));
+            selectedCategoryDiv.appendChild(parentCategoryInput);
+
+            selectedCategoryDiv.appendChild(createElement('label', {}, 'Code:'));
+            selectedCategoryDiv.appendChild(codeInput);
+
+            selectedCategoryDiv.appendChild(createElement('label', {}, 'Description:'));
+            selectedCategoryDiv.appendChild(descriptionTextarea);
+
+            const deleteButton = createElement('button', { class: 'delete' }, 'Delete');
+            const editButton = createElement('button', {}, 'Edit');
+
+            selectedCategoryDiv.appendChild(deleteButton);
+            selectedCategoryDiv.appendChild(editButton);
+        }
+
+        categoryContainer.appendChild(selectedCategoryDiv);
+
+        // Append the container to the contentDiv
+        contentDiv.appendChild(categoryContainer);
     }
+
 
     //loadDashboard();
 

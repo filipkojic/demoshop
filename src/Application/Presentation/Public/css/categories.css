@@ -1,0 +1,153 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.category-container {
+    display: flex;
+    gap: 20px;
+    height: calc(100vh - 40px);
+}
+
+.category-list {
+    width: 50%;
+    border-right: 1px solid #ccc;
+    padding-right: 20px;
+    overflow-y: auto;
+}
+
+.category-item {
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.category-item .toggle-btn {
+    cursor: pointer;
+    margin-right: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+.category-item.selected {
+    background-color: #ddd;
+}
+
+.category-item:hover {
+    background-color: #eee;
+}
+
+.hidden {
+    display: none;
+}
+
+.selected-category {
+    flex-grow: 1;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.selected-category label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.selected-category input,
+.selected-category textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.selected-category textarea {
+    resize: none;
+    height: 100px;
+}
+
+.selected-category button {
+    padding: 10px 15px;
+    margin-right: 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.selected-category button:hover {
+    background-color: #218838;
+}
+
+.selected-category button.delete {
+    background-color: #dc3545;
+}
+
+.selected-category button.delete:hover {
+    background-color: #c82333;
+}
+
+.add-category {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+}
+
+.add-category button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.add-category button:hover {
+    background-color: #0069d9;
+}
+
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.sideMenu {
+    width: 200px;
+    background-color: #333;
+    color: #fff;
+    padding-top: 20px;
+}
+
+.sideMenu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sideMenu ul li {
+    padding: 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #444;
+    text-align: center;
+}
+
+.sideMenu ul li.active,
+.sideMenu ul li:hover {
+    background-color: #444;
+}
+
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #fff;
+}
