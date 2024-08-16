@@ -3,6 +3,7 @@
 namespace Application\Integration\Router;
 
 use Application\Integration\Middleware\AdminMiddleware;
+use Application\Presentation\Controllers\Admin\CategoryController;
 use Application\Presentation\Controllers\Admin\DashboardController;
 use Application\Presentation\Controllers\Front\LoginController;
 
@@ -49,6 +50,10 @@ class RouteRegistry
             (new Route('GET', '/getStatistics', DashboardController::class, 'getStatistics'))
                 ->addMiddleware(new AdminMiddleware())
         );
+
+        // Category controller routes
+        Router::getInstance()->addRoute(
+            new Route('GET', '/getCategories', CategoryController::class, 'getAllCategories'));
 
 
         // middleware test

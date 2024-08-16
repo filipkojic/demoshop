@@ -18,6 +18,7 @@ use Application\Persistence\Repositories\AdminRepository;
 use Application\Persistence\Repositories\CategoryRepository;
 use Application\Persistence\Repositories\ProductRepository;
 use Application\Persistence\Repositories\StatisticsRepository;
+use Application\Presentation\Controllers\Admin\CategoryController;
 use Application\Presentation\Controllers\Admin\DashboardController;
 use Application\Presentation\Controllers\Front\LoginController;
 use Exception;
@@ -94,5 +95,10 @@ class Bootstrap
             ServiceRegistry::getInstance()->get(ProductServiceInterface::class),
             ServiceRegistry::getInstance()->get(StatisticsServiceInterface::class)
         ));
+
+        ServiceRegistry::getInstance()->register(CategoryController::class, new CategoryController(
+            ServiceRegistry::getInstance()->get(CategoryServiceInterface::class)
+        ));
+
     }
 }

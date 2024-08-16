@@ -2,28 +2,27 @@
 
 namespace Application\Presentation\Controllers\Admin;
 
+use Application\Business\Interfaces\ServiceInterfaces\CategoryServiceInterface;
 use Infrastructure\HTTP\Response\HtmlResponse;
 use Infrastructure\HTTP\Response\JsonResponse;
 
 class CategoryController extends AdminController
 {
-    public function index(): HtmlResponse
+
+    public function __construct(
+        protected CategoryServiceInterface $categoryService,
+    )
     {
-        // Code for managing product categories
     }
 
-    public function newCategory(): JsonResponse
+    /**
+     * Get all categories
+     *
+     * @return JsonResponse
+     */
+    public function getAllCategories(): JsonResponse
     {
-        // Code for handling AJAX request to create a new category
-    }
-
-    public function updateCategory(int $id): JsonResponse
-    {
-        // Code for handling AJAX request to update a category
-    }
-
-    public function deleteCategory(int $id): JsonResponse
-    {
-        // Code for handling AJAX request to delete a category
+        $categories = $this->categoryService->getAllCategories();
+        return new JsonResponse(200, [], array_map(fn($category) => $category->toArray(), $categories));
     }
 }

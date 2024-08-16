@@ -2,6 +2,7 @@
 
 namespace Application\Business\Services;
 
+use Application\Business\DomainModels\DomainCategory;
 use Application\Business\Interfaces\RepositoryInterfaces\CategoryRepositoryInterface;
 use Application\Business\Interfaces\ServiceInterfaces\CategoryServiceInterface;
 
@@ -24,5 +25,15 @@ class CategoryService implements CategoryServiceInterface
     public function getCategoriesCount(): int
     {
         return $this->categoryRepository->getCategoriesCount();
+    }
+
+    /**
+     * Get all categories as domain models
+     *
+     * @return DomainCategory[] An array of domain category models.
+     */
+    public function getAllCategories(): array
+    {
+        return $this->categoryRepository->getAllCategories();
     }
 }

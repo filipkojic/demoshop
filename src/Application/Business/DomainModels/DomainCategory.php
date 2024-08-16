@@ -39,6 +39,25 @@ class DomainCategory
     }
 
     /**
+     * Converts the object to an array.
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'parentId' => $this->getParentId(),
+            'code' => $this->getCode(),
+            'title' => $this->getTitle(),
+            'description' => $this->getDescription(),
+            'subcategories' => array_map(fn($subcategory) => $subcategory->toArray(), $this->getSubcategories()),
+            //'products' => array_map(fn($product) => $product->toArray(), $this->getProducts()),
+        ];
+    }
+
+
+    /**
      * Get the unique identifier for the category.
      *
      * @return int The ID of the category.

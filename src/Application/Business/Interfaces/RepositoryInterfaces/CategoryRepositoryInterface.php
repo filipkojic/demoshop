@@ -2,6 +2,8 @@
 
 namespace Application\Business\Interfaces\RepositoryInterfaces;
 
+use Application\Business\DomainModels\DomainCategory;
+
 /**
  * Interface CategoryRepositoryInterface
  *
@@ -16,4 +18,11 @@ interface CategoryRepositoryInterface
      * @return int The number of categories.
      */
     public function getCategoriesCount(): int;
+
+    /**
+     * Get all categories as domain models.
+     *
+     * @return DomainCategory[] An array of domain category models.
+     */
+    public function getAllCategories(): array;
 }
