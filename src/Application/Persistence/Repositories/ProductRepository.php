@@ -4,6 +4,7 @@ namespace Application\Persistence\Repositories;
 
 use Application\Business\DomainModels\DomainProduct;
 use Application\Business\Interfaces\RepositoryInterfaces\ProductRepositoryInterface;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 /**
  * Class ProductRepository

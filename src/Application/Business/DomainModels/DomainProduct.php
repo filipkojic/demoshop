@@ -48,6 +48,29 @@ class DomainProduct
     }
 
     /**
+     * Converts the object to an array.
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'categoryId' => $this->getCategoryId(),
+            'sku' => $this->getSku(),
+            'title' => $this->getTitle(),
+            'brand' => $this->getBrand(),
+            'price' => $this->getPrice(),
+            'shortDescription' => $this->getShortDescription(),
+            'description' => $this->getDescription(),
+            'image' => $this->getImage(),
+            'enabled' => $this->isEnabled(),
+            'featured' => $this->isFeatured(),
+            'viewCount' => $this->getViewCount(),
+        ];
+    }
+
+    /**
      * Get the unique identifier for the product.
      *
      * @return int The ID of the product.

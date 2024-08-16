@@ -34,6 +34,9 @@ class RouteRegistry
             new Route('GET', '/admin/dashboard', DashboardController::class, 'index')
         );
 
+        Router::getInstance()->addRoute(
+            new Route('GET', '/getStatistics', DashboardController::class, 'getStatistics')
+        );
 
 
         // middleware test

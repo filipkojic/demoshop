@@ -111,7 +111,7 @@ try {
             'category_id' => $categoryId,
             'enabled' => true,
             'featured' => false,
-            'view_count' => 0,
+            'view_count' => $product['view_count'],
             'created_at' => Carbon::now('Europe/Belgrade'),
             'updated_at' => Carbon::now('Europe/Belgrade'),
         ]);

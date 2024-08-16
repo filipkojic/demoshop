@@ -55,7 +55,7 @@ class DashboardController extends AdminController
             'productCount' => $this->productService->getProductsCount(),
             'categoryCount' => $this->categoryService->getCategoriesCount(),
             'homeViewCount' => $this->statisticsService->getHomeViewCount(),
-            'mostViewedProduct' => $this->productService->getMostViewedProduct(),
+            'mostViewedProduct' => $this->productService->getMostViewedProduct()->toArray(),
         ];
 
         return new JsonResponse(200, [], $statistics);

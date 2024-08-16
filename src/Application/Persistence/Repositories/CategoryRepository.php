@@ -3,6 +3,7 @@
 namespace Application\Persistence\Repositories;
 
 use Application\Business\Interfaces\RepositoryInterfaces\CategoryRepositoryInterface;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 /**
  * Class CategoryRepository
