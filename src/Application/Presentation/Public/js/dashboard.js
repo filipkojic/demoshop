@@ -20,6 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
         return element;
     }
 
+    /**
+     * Loads a CSS file dynamically into the document's head.
+     * If the CSS file is already loaded, it won't load it again.
+     *
+     * @param {string} filename - The path to the CSS file to load.
+     */
     function loadCssFile(filename) {
         const existingLink = document.querySelector(`link[href="${filename}"]`);
         if (!existingLink) {
@@ -30,6 +36,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    /**
+     * Removes a CSS file dynamically from the document's head.
+     * If the CSS file is not found, it does nothing.
+     *
+     * @param {string} filename - The path to the CSS file to remove.
+     */
     function removeCssFile(filename) {
         const existingLink = document.querySelector(`link[href="${filename}"]`);
         if (existingLink) {
@@ -51,10 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Send AJAX request to get statistics
         const stats = await ajaxGet('/getStatistics');
 
-        const dashboardGrid = createElement('div', { class: 'dashboardGrid' });
+        const dashboardGrid = createElement('div', {class: 'dashboardGrid'});
 
         const productCountDiv = createElement('div');
-        const productCountLabel = createElement('label', { for: 'productCount' }, 'Products count:');
+        const productCountLabel = createElement('label', {for: 'productCount'}, 'Products count:');
         const productCountInput = createElement('input', {
             type: 'text',
             id: 'productCount',
@@ -65,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         productCountDiv.appendChild(productCountInput);
 
         const categoryCountDiv = createElement('div');
-        const categoryCountLabel = createElement('label', { for: 'categoryCount' }, 'Categories count:');
+        const categoryCountLabel = createElement('label', {for: 'categoryCount'}, 'Categories count:');
         const categoryCountInput = createElement('input', {
             type: 'text',
             id: 'categoryCount',
@@ -76,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         categoryCountDiv.appendChild(categoryCountInput);
 
         const homepageCountDiv = createElement('div');
-        const homepageCountLabel = createElement('label', { for: 'homepageCount' }, 'Home page opening count:');
+        const homepageCountLabel = createElement('label', {for: 'homepageCount'}, 'Home page opening count:');
         const homepageCountInput = createElement('input', {
             type: 'text',
             id: 'homepageCount',
@@ -87,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         homepageCountDiv.appendChild(homepageCountInput);
 
         const mostViewedProductDiv = createElement('div');
-        const mostViewedProductLabel = createElement('label', { for: 'mostViewedProduct' }, 'Most often viewed product:');
+        const mostViewedProductLabel = createElement('label', {for: 'mostViewedProduct'}, 'Most often viewed product:');
         const mostViewedProductInput = createElement('input', {
             type: 'text',
             id: 'mostViewedProduct',
@@ -98,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
         mostViewedProductDiv.appendChild(mostViewedProductInput);
 
         const productViewsDiv = createElement('div');
-        const productViewsLabel = createElement('label', { for: 'productViews' }, 'Number of most viewed product views:');
+        const productViewsLabel = createElement('label', {for: 'productViews'}, 'Number of most viewed product views:');
         const productViewsInput = createElement('input', {
             type: 'text',
             id: 'productViews',
@@ -134,46 +146,59 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Function to load content for the "Product Categories" page
      */
-    function loadCategories() {
+    async function loadCategories() {
         contentDiv.innerHTML = '';
 
         removeCssFile('/src/Application/Presentation/Public/css/dashboard.css');
         loadCssFile('/src/Application/Presentation/Public/css/categories.css');
 
-        const categoryContainer = createElement('div', { class: 'category-container' });
-        const categoryListDiv = createElement('div', { class: 'category-list' });
+        const categoryContainer = createElement('div', {class: 'category-container'});
+        const categoryListDiv = createElement('div', {class: 'category-list'});
 
-        const categories = [
-            { id: 1, title: 'Laptops', parent: null, subcategories: [
-                    { id: 2, title: 'Office', parent: 'Laptops', subcategories: [] },
-                    { id: 3, title: 'Gaming', parent: 'Laptops', selected: true, subcategories: []},
-                    { id: 4, title: 'Multimedia', parent: 'Laptops', subcategories: [
-                            { id: 7, title: 'Office', parent: 'Processors' , subcategories: []},
-                            { id: 8, title: 'Gaming', parent: 'Processors', subcategories: [] },
-                            { id: 9, title: 'Multimedia', parent: 'Processors', subcategories: [] }
-                        ] },
-                ] },
-            { id: 5, title: 'Processors', parent: null, subcategories: [
-                    { id: 7, title: 'Office', parent: 'Processors' , subcategories: []},
-                    { id: 8, title: 'Gaming', parent: 'Processors', subcategories: [] },
-                    { id: 9, title: 'Multimedia', parent: 'Processors', subcategories: [] }
-                ] },
-            { id: 6, title: 'Motherboards', parent: null, subcategories: [
-                    { id: 10, title: 'Office', parent: 'Motherboards', subcategories: [] },
-                    { id: 11, title: 'Gaming', parent: 'Motherboards', subcategories: [] },
-                    { id: 12, title: 'Multimedia', parent: 'Motherboards', subcategories: [] }
-                ] }
-        ];
+        const categories = await ajaxGet('/getCategories');
 
         // Kreiranje forme za desnu stranu
-        const selectedCategoryDiv = createElement('div', { class: 'selected-category' });
+        const selectedCategoryDiv = createElement('div', {class: 'selected-category'});
 
+
+        /**
+         * Recursively searches for a category by its ID within a nested categories structure.
+         *
+         * @param {number} id - The ID of the category to find.
+         * @param {Array} categories - The array of categories to search through.
+         * @returns {object|null} - The found category object or null if not found.
+         */
+        function findCategoryById(id, categories) {
+            for (const category of categories) {
+                if (category.id === id) {
+                    return category;
+                } else if (category.subcategories.length) {
+                    const found = findCategoryById(id, category.subcategories);
+                    if (found) return found;
+                }
+            }
+            return null;
+        }
+
+
+        /**
+         * Updates the selected category's details in the right-hand form, displaying the category's information.
+         *
+         * @param {object} category - The category object containing details to display.
+         */
         function updateSelectedCategory(category) {
             selectedCategoryDiv.innerHTML = ''; // Brisanje prethodnog sadržaja forme
 
-            const titleInput = createElement('input', { type: 'text', value: category.title });
-            const parentCategoryInput = createElement('input', { type: 'text', value: category.parent });
-            const codeInput = createElement('input', { type: 'text', value: `CODE-${category.id}` });
+            const parentCategory = findCategoryById(category.parentId, categories);
+            const parentCategoryName = parentCategory ? parentCategory.title : 'Root category';
+
+            const titleInput = createElement('input', {type: 'text', value: category.title});
+            const parentCategoryInput = createElement('input', {
+                type: 'text',
+                value: parentCategoryName,
+                readonly: true
+            });
+            const codeInput = createElement('input', {type: 'text', value: `CODE-${category.id}`});
             const descriptionTextarea = createElement('textarea', {}, `Description for ${category.title}`);
 
             selectedCategoryDiv.appendChild(createElement('label', {}, 'Title:'));
@@ -188,13 +213,19 @@ document.addEventListener('DOMContentLoaded', () => {
             selectedCategoryDiv.appendChild(createElement('label', {}, 'Description:'));
             selectedCategoryDiv.appendChild(descriptionTextarea);
 
-            const deleteButton = createElement('button', { class: 'delete' }, 'Delete');
+            const deleteButton = createElement('button', {class: 'delete'}, 'Delete');
             const editButton = createElement('button', {}, 'Edit');
 
             selectedCategoryDiv.appendChild(deleteButton);
             selectedCategoryDiv.appendChild(editButton);
         }
 
+        /**
+         * Creates a DOM element representing a category and its subcategories, with the ability to toggle visibility.
+         *
+         * @param {object} category - The category object containing details to create the element.
+         * @returns {HTMLElement} - The created DOM element representing the category.
+         */
         function createCategoryElement(category) {
             const categoryDiv = createElement('div', {
                 class: 'category-item'
@@ -248,7 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const addRootButton = createElement('button', {}, 'Add root category');
         const addSubButton = createElement('button', {}, 'Add subcategory');
-        const addCategoryDiv = createElement('div', { class: 'add-category' });
+        const addCategoryDiv = createElement('div', {class: 'add-category'});
         addCategoryDiv.appendChild(addRootButton);
         addCategoryDiv.appendChild(addSubButton);
         categoryListDiv.appendChild(addCategoryDiv);
@@ -266,11 +297,6 @@ document.addEventListener('DOMContentLoaded', () => {
         contentDiv.appendChild(categoryContainer);
     }
 
-
-
-
-
-
     //loadDashboard();
 
     // Register routes with the router
@@ -282,9 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
     router.init();
 
     // Default to load the dashboard initially
-    // Default to load the dashboard initially
     router.navigate('/admin/dashboard');
-
 
     // Handle side menu navigation clicks
     const menuItems = document.querySelectorAll('.sideMenu ul li');
@@ -297,5 +321,4 @@ document.addEventListener('DOMContentLoaded', () => {
             router.navigate(`/${sectionId}`);
         });
     });
-
 });
