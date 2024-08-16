@@ -29,12 +29,22 @@ class RouteRegistry
             new Route('POST', '/admin', LoginController::class, 'login')
         );
 
-        // Dashboard controller routes
 //        Router::getInstance()->addRoute(
-//            (new Route('GET', '/admin/dashboard', DashboardController::class, 'index'))
+//            (new Route('GET', '/admin/dashboard', LoginController::class, 'index'))
 //                ->addMiddleware(new AdminMiddleware())
 //        );
+//
+//        Router::getInstance()->addRoute(
+//            (new Route('GET', '/admin/products', LoginController::class, 'index'))
+//                ->addMiddleware(new AdminMiddleware())
+//        );
+//
+//        Router::getInstance()->addRoute(
+//            new Route('GET', '/admin/categories', LoginController::class, 'index')
+//        );
 
+
+        // Dashboard controller routes
         Router::getInstance()->addRoute(
             (new Route('GET', '/getStatistics', DashboardController::class, 'getStatistics'))
                 ->addMiddleware(new AdminMiddleware())
