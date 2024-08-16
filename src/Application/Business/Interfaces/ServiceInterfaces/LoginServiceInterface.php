@@ -2,8 +2,6 @@
 
 namespace Application\Business\Interfaces\ServiceInterfaces;
 
-use Application\Integration\Exceptions\UnauthorizedException;
-
 interface LoginServiceInterface
 {
     /**

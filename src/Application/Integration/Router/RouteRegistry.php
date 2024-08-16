@@ -3,6 +3,7 @@
 namespace Application\Integration\Router;
 
 use Application\Integration\Middleware\AdminMiddleware;
+use Application\Presentation\Controllers\Admin\DashboardController;
 use Application\Presentation\Controllers\Front\LoginController;
 
 /**
@@ -17,6 +18,10 @@ class RouteRegistry
     {
         // Login controller routes
         Router::getInstance()->addRoute(
+            new Route('GET', '/', LoginController::class, 'index')
+        );
+
+        Router::getInstance()->addRoute(
             new Route('GET', '/admin', LoginController::class, 'index')
         );
 
@@ -24,14 +29,17 @@ class RouteRegistry
             new Route('POST', '/admin', LoginController::class, 'login')
         );
 
+        // Dashboard controller routes
+        Router::getInstance()->addRoute(
+            new Route('GET', '/admin/dashboard', DashboardController::class, 'index')
+        );
+
+
+
         // middleware test
         Router::getInstance()->addRoute(
             (new Route('GET', '/admin/test', LoginController::class, 'test'))
                 ->addMiddleware(new AdminMiddleware())
-        );
-
-        Router::getInstance()->addRoute(
-            new Route('GET', '/', LoginController::class, 'index')
         );
 
     }

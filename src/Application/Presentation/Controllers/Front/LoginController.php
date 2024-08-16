@@ -3,7 +3,6 @@
 namespace Application\Presentation\Controllers\Front;
 
 use Application\Business\Interfaces\ServiceInterfaces\LoginServiceInterface;
-use Application\Integration\Exceptions\UnauthorizedException;
 use Application\Integration\Utility\PathHelper;
 use Infrastructure\HTTP\HttpRequest;
 use Infrastructure\HTTP\Response\HtmlResponse;

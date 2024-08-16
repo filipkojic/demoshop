@@ -87,16 +87,16 @@ try {
 
     // Sample products data
     $products = [
-        ['sku' => 'IPH13', 'title' => 'iPhone 13', 'brand' => 'Apple', 'price' => 999.99, 'category_code' => 'MOB'],
-        ['sku' => 'GALAXY21', 'title' => 'Samsung Galaxy S21', 'brand' => 'Samsung', 'price' => 899.99, 'category_code' => 'MOB'],
-        ['sku' => 'MBP13', 'title' => 'MacBook Pro', 'brand' => 'Apple', 'price' => 1999.99, 'category_code' => 'LAP'],
-        ['sku' => 'DELLXPS13', 'title' => 'Dell XPS 13', 'brand' => 'Dell', 'price' => 1299.99, 'category_code' => 'LAP'],
-        ['sku' => 'BLENDER100', 'title' => 'Blender', 'brand' => 'Blendtec', 'price' => 49.99, 'category_code' => 'KIT'],
-        ['sku' => 'MICRO800', 'title' => 'Microwave', 'brand' => 'LG', 'price' => 89.99, 'category_code' => 'KIT'],
-        ['sku' => 'WASH5000', 'title' => 'Washing Machine', 'brand' => 'Bosch', 'price' => 499.99, 'category_code' => 'LAUN'],
-        ['sku' => 'DRY4000', 'title' => 'Dryer', 'brand' => 'Bosch', 'price' => 399.99, 'category_code' => 'LAUN'],
-        ['sku' => 'FRIDGE200', 'title' => 'Refrigerator', 'brand' => 'Whirlpool', 'price' => 699.99, 'category_code' => 'KIT'],
-        ['sku' => 'AC6000', 'title' => 'Air Conditioner', 'brand' => 'Samsung', 'price' => 599.99, 'category_code' => 'LAUN'],
+        ['sku' => 'IPH13', 'title' => 'iPhone 13', 'brand' => 'Apple', 'price' => 999.99, 'category_code' => 'MOB', 'view_count' => 120],
+        ['sku' => 'GALAXY21', 'title' => 'Samsung Galaxy S21', 'brand' => 'Samsung', 'price' => 899.99, 'category_code' => 'MOB', 'view_count' => 90],
+        ['sku' => 'MBP13', 'title' => 'MacBook Pro', 'brand' => 'Apple', 'price' => 1999.99, 'category_code' => 'LAP', 'view_count' => 75],
+        ['sku' => 'DELLXPS13', 'title' => 'Dell XPS 13', 'brand' => 'Dell', 'price' => 1299.99, 'category_code' => 'LAP', 'view_count' => 60],
+        ['sku' => 'BLENDER100', 'title' => 'Blender', 'brand' => 'Blendtec', 'price' => 49.99, 'category_code' => 'KIT', 'view_count' => 45],
+        ['sku' => 'MICRO800', 'title' => 'Microwave', 'brand' => 'LG', 'price' => 89.99, 'category_code' => 'KIT', 'view_count' => 80],
+        ['sku' => 'WASH5000', 'title' => 'Washing Machine', 'brand' => 'Bosch', 'price' => 499.99, 'category_code' => 'LAUN', 'view_count' => 50],
+        ['sku' => 'DRY4000', 'title' => 'Dryer', 'brand' => 'Bosch', 'price' => 399.99, 'category_code' => 'LAUN', 'view_count' => 65],
+        ['sku' => 'FRIDGE200', 'title' => 'Refrigerator', 'brand' => 'Whirlpool', 'price' => 699.99, 'category_code' => 'KIT', 'view_count' => 110],
+        ['sku' => 'AC6000', 'title' => 'Air Conditioner', 'brand' => 'Samsung', 'price' => 599.99, 'category_code' => 'LAUN', 'view_count' => 95],
     ];
 
     // Insert products
@@ -116,6 +116,14 @@ try {
             'updated_at' => Carbon::now('Europe/Belgrade'),
         ]);
     }
+
+    // Insert home page view count into statistics table
+    Capsule::table('statistics')->insert([
+        'home_view_count' => 2500,
+        'created_at' => Carbon::now('Europe/Belgrade'),
+        'updated_at' => Carbon::now('Europe/Belgrade'),
+    ]);
+
 
     echo "Database populated with categories and products." . PHP_EOL;
 
