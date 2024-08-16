@@ -153,8 +153,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     { id: 3, title: 'Gaming', parent: 'Laptops', selected: true },
                     { id: 4, title: 'Multimedia', parent: 'Laptops' },
                 ] },
-            { id: 5, title: 'Processors', parent: null, subcategories: [] },
-            { id: 6, title: 'Motherboards', parent: null, subcategories: [] }
+            { id: 5, title: 'Processors', parent: null, subcategories: [
+                    { id: 2, title: 'Office', parent: 'Laptops' },
+                    { id: 3, title: 'Gaming', parent: 'Laptops', selected: true },
+                    { id: 4, title: 'Multimedia', parent: 'Laptops' }
+                ] },
+            { id: 6, title: 'Motherboards', parent: null, subcategories: [
+                    { id: 2, title: 'Office', parent: 'Laptops' },
+                    { id: 3, title: 'Gaming', parent: 'Laptops', selected: true },
+                    { id: 4, title: 'Multimedia', parent: 'Laptops' }
+                ] }
         ];
 
         // Dodavanje kategorija sa plusevima za proširivanje

@@ -5,6 +5,43 @@ body {
     background-color: #f4f4f4;
 }
 
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.sideMenu {
+    width: 200px;
+    background-color: #333;
+    color: #fff;
+    padding-top: 20px;
+}
+
+.sideMenu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sideMenu ul li {
+    padding: 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #444;
+    text-align: center;
+}
+
+.sideMenu ul li.active,
+.sideMenu ul li:hover {
+    background-color: #444;
+}
+
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #fff;
+}
+
 .category-container {
     display: flex;
     gap: 20px;
@@ -113,41 +150,4 @@ body {
 
 .add-category button:hover {
     background-color: #0069d9;
-}
-
-
-.container {
-    display: flex;
-    height: 100vh;
-}
-
-.sideMenu {
-    width: 200px;
-    background-color: #333;
-    color: #fff;
-    padding-top: 20px;
-}
-
-.sideMenu ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.sideMenu ul li {
-    padding: 15px;
-    cursor: pointer;
-    border-bottom: 1px solid #444;
-    text-align: center;
-}
-
-.sideMenu ul li.active,
-.sideMenu ul li:hover {
-    background-color: #444;
-}
-
-.content {
-    flex-grow: 1;
-    padding: 20px;
-    background-color: #fff;
 }
