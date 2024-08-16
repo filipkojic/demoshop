@@ -31,11 +31,14 @@ class RouteRegistry
 
         // Dashboard controller routes
         Router::getInstance()->addRoute(
-            new Route('GET', '/admin/dashboard', DashboardController::class, 'index')
+            (new Route('GET', '/admin/dashboard', DashboardController::class, 'index'))
+                ->addMiddleware(new AdminMiddleware())
+
         );
 
         Router::getInstance()->addRoute(
-            new Route('GET', '/getStatistics', DashboardController::class, 'getStatistics')
+            (new Route('GET', '/getStatistics', DashboardController::class, 'getStatistics'))
+                ->addMiddleware(new AdminMiddleware())
         );
 
 
