@@ -20,6 +20,7 @@
     </main>
 </div>
 <script src="/src/Application/Presentation/Public/js/router.js"></script>
+<script src="/src/Application/Presentation/Public/js/ajax.js"></script>
 <script src="/src/Application/Presentation/Public/js/dashboard.js"></script>
 </body>
 </html>

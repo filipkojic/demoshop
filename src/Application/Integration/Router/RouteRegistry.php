@@ -30,11 +30,10 @@ class RouteRegistry
         );
 
         // Dashboard controller routes
-        Router::getInstance()->addRoute(
-            (new Route('GET', '/admin/dashboard', DashboardController::class, 'index'))
-                ->addMiddleware(new AdminMiddleware())
-
-        );
+//        Router::getInstance()->addRoute(
+//            (new Route('GET', '/admin/dashboard', DashboardController::class, 'index'))
+//                ->addMiddleware(new AdminMiddleware())
+//        );
 
         Router::getInstance()->addRoute(
             (new Route('GET', '/getStatistics', DashboardController::class, 'getStatistics'))
