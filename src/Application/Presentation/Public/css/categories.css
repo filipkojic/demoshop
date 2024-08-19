@@ -63,7 +63,7 @@ body {
     border-radius: 4px;
     display: flex;
     align-items: center;
-    margin-left: 10px; /* Da bi subkategorije bile uvučene */
+    margin-left: 10px;
 }
 
 .category-item .toggle-btn {
@@ -86,7 +86,7 @@ body {
 }
 
 .subcategory-list {
-    margin-left: 20px; /* Uvlačenje subkategorija */
+    margin-left: 20px;
 }
 
 .selected-category {
@@ -95,6 +95,13 @@ body {
     border: 1px solid #ccc;
     border-radius: 4px;
     background-color: #f9f9f9;
+}
+
+.selected-category-header {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #007bff;
 }
 
 .selected-category label {

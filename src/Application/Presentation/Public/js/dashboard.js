@@ -157,7 +157,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const categories = await ajaxGet('/getCategories');
 
-        // Kreiranje forme za desnu stranu
         const selectedCategoryDiv = createElement('div', {class: 'selected-category'});
 
 
@@ -187,7 +186,10 @@ document.addEventListener('DOMContentLoaded', () => {
          * @param {object} category - The category object containing details to display.
          */
         function updateSelectedCategory(category) {
-            selectedCategoryDiv.innerHTML = ''; // Brisanje prethodnog sadržaja forme
+            selectedCategoryDiv.innerHTML = '';
+
+            const header = createElement('div', { class: 'selected-category-header' }, 'Selected category');
+            selectedCategoryDiv.appendChild(header);
 
             const parentCategory = findCategoryById(category.parentId, categories);
             const parentCategoryName = parentCategory ? parentCategory.title : 'Root category';
@@ -265,7 +267,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 categoryDiv.classList.add('selected');
 
-                // Ažuriraj formu sa podacima o selektovanoj kategoriji
                 updateSelectedCategory(category);
             });
 
@@ -286,7 +287,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         categoryContainer.appendChild(categoryListDiv);
 
-        // Inicijalno prikazivanje forme sa podacima selektovane kategorije
         const selectedCategory = categories.flatMap(cat => cat.subcategories).find(cat => cat.selected);
         if (selectedCategory) {
             updateSelectedCategory(selectedCategory);

@@ -4,7 +4,6 @@ namespace Application\Business\Services;
 
 use Application\Business\Interfaces\ServiceInterfaces\LoginServiceInterface;
 use Application\Business\Interfaces\RepositoryInterfaces\AdminRepositoryInterface;
-use Application\Integration\Exceptions\UnauthorizedException;
 use Infrastructure\Utility\SessionManager;
 
 /**

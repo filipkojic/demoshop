@@ -6,7 +6,6 @@ use Application\Business\Interfaces\ServiceInterfaces\LoginServiceInterface;
 use Application\Integration\Utility\PathHelper;
 use Infrastructure\HTTP\HttpRequest;
 use Infrastructure\HTTP\Response\HtmlResponse;
-use Infrastructure\Utility\SessionManager;
 
 /**
  * Class LoginController
