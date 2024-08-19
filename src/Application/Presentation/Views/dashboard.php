@@ -12,7 +12,6 @@
             <li data-section="admin">Dashboard</li>
             <li data-section="admin/products">Products</li>
             <li data-section="admin/categories">Product Categories</li>
-
         </ul>
     </aside>
     <main id="content" class="content">
@@ -21,5 +20,8 @@
 <script src="/src/Application/Presentation/Public/js/router.js"></script>
 <script src="/src/Application/Presentation/Public/js/ajax.js"></script>
 <script src="/src/Application/Presentation/Public/js/dashboard.js"></script>
+<script src="/src/Application/Presentation/Public/js/products.js"></script>
+<script src="/src/Application/Presentation/Public/js/categories.js"></script>
+<script src="/src/Application/Presentation/Public/js/main.js"></script>
 </body>
 </html>
