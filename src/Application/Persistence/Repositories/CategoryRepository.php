@@ -84,4 +84,10 @@ class CategoryRepository implements CategoryRepositoryInterface
 
         return $domainCategory;
     }
+
+    public function createCategory(array $data): void
+    {
+        $category = new Category($data);
+        $category->save();
+    }
 }

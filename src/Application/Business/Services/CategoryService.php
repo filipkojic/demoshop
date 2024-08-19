@@ -36,4 +36,9 @@ class CategoryService implements CategoryServiceInterface
     {
         return $this->categoryRepository->getAllCategories();
     }
+
+    public function createCategory(array $data): void
+    {
+        $this->categoryRepository->createCategory($data);
+    }
 }

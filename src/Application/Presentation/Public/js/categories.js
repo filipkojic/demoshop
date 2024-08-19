@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedCategoryDiv.appendChild(header);
 
         const parentCategory = findCategoryById(category.parentId, categories);
-        const parentCategoryName = parentCategory ? parentCategory.title : 'Root category';
+        const parentCategoryName = parentCategory ? parentCategory.title : 'Root';
 
         const titleInput = createElement('input', {type: 'text', value: category.title});
         const parentCategoryInput = createElement('input', {
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
             value: parentCategoryName,
             readonly: true
         });
-        const codeInput = createElement('input', {type: 'text', value: `CODE-${category.id}`});
+        const codeInput = createElement('input', {type: 'text', value: category.code});
         const descriptionTextarea = createElement('textarea', {}, `Description for ${category.title}`);
 
         selectedCategoryDiv.appendChild(createElement('label', {}, 'Title:'));
@@ -179,19 +179,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         saveButton.addEventListener('click', async () => {
-            const newCategory = {
+            const newCategory = JSON.stringify({
                 title: titleInput.value,
                 code: codeInput.value,
                 description: descriptionTextarea.value,
                 parentId: parentCategory ? parentCategory.id : null
-            };
+            });
 
             const response = await ajaxPost('/addCategory', newCategory);
-            if (response.success) {
+            //if (response.success) {
                 await loadCategories();
-            } else {
-                alert('Failed to add category. Please try again.');
-            }
+            //} else {
+                //alert('Failed to add category. Please try again.');
+            //}
         });
     }
 

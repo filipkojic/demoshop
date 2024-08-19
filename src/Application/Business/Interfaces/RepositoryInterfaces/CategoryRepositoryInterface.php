@@ -25,4 +25,6 @@ interface CategoryRepositoryInterface
      * @return DomainCategory[] An array of domain category models.
      */
     public function getAllCategories(): array;
+
+    public function createCategory(array $data): void;
 }

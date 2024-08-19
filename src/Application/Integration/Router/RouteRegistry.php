@@ -52,6 +52,10 @@ class RouteRegistry
             new Route('GET', '/getCategories', CategoryController::class, 'getAllCategories')
                 );
 
+        Router::getInstance()->addRoute(
+            new Route('POST', '/addCategory', CategoryController::class, 'addCategory')
+        );
+
 
         // Middleware test
         Router::getInstance()->addRoute(
