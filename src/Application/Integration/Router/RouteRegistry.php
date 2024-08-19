@@ -49,8 +49,8 @@ class RouteRegistry
 
         // Category controller routes
         Router::getInstance()->addRoute(
-            (new Route('GET', '/getCategories', CategoryController::class, 'getAllCategories'))
-                ->addMiddleware(new AdminMiddleware()));
+            new Route('GET', '/getCategories', CategoryController::class, 'getAllCategories')
+                );
 
 
         // Middleware test
