@@ -2,6 +2,12 @@
  * Router class to handle client-side routing in a single-page application.
  */
 class Router {
+
+    /**
+     * Initializes the router with an object to store routes and a content div for displaying content.
+     *
+     * @param {HTMLElement} contentDiv - The div element where the content will be rendered.
+     */
     constructor(contentDiv) {
         this.routes = {};
         this.contentDiv = contentDiv;
@@ -53,12 +59,18 @@ class Router {
         this.contentDiv.setAttribute('data-current-path', path);
     }
 
+    /**
+     * Navigates to a specific route, loads the content for that route,
+     * and updates the URL without reloading the page. Also updates the active menu item.
+     *
+     * @param {string} path - The URL path to navigate to.
+     */
     navigate(path) {
         if (window.location.pathname !== path) {
             history.replaceState({}, '', path);
         }
         this.loadContent(path);
-        this.updateActiveMenu(path); // Osvježava aktivni meni
+        this.updateActiveMenu(path);
     }
 
     /**
@@ -68,9 +80,14 @@ class Router {
      */
     handleRoute(path) {
         this.loadContent(path);
-        this.updateActiveMenu(path); // Osvježava aktivni meni
+        this.updateActiveMenu(path);
     }
 
+    /**
+     * Updates the active menu item in the sidebar based on the current path.
+     *
+     * @param {string} path - The URL path to match with the menu item.
+     */
     updateActiveMenu(path) {
         const menuItems = document.querySelectorAll('.sideMenu ul li');
         menuItems.forEach(item => {
