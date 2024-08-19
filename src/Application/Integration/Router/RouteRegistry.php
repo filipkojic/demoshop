@@ -36,7 +36,8 @@ class RouteRegistry
         );
 
         Router::getInstance()->addRoute(
-            new Route('GET', '/admin/categories', LoginController::class, 'index')
+            (new Route('GET', '/admin/categories', LoginController::class, 'index'))
+                ->addMiddleware(new AdminMiddleware())
         );
 
 
@@ -48,10 +49,11 @@ class RouteRegistry
 
         // Category controller routes
         Router::getInstance()->addRoute(
-            new Route('GET', '/getCategories', CategoryController::class, 'getAllCategories'));
+            (new Route('GET', '/getCategories', CategoryController::class, 'getAllCategories'))
+                ->addMiddleware(new AdminMiddleware()));
 
 
-        // middleware test
+        // Middleware test
         Router::getInstance()->addRoute(
             (new Route('GET', '/admin/test', LoginController::class, 'test'))
                 ->addMiddleware(new AdminMiddleware())

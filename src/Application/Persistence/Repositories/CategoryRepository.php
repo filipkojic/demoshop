@@ -46,12 +46,15 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     private function mapToDomainModel(Category $category): DomainCategory
     {
+        $productCount = $category->products->count(); // Count the number of products
+
         $domainCategory = new DomainCategory(
             $category->id,
             $category->parent_id,
             $category->code,
             $category->title,
-            $category->description
+            $category->description,
+            $productCount
         );
 
         // Add subcategories recursively

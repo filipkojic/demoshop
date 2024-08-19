@@ -33,7 +33,8 @@ class DomainCategory
         private ?int    $parentId,
         private string  $code,
         private string  $title,
-        private ?string $description = null
+        private ?string $description = null,
+        private int $productCount = 0
     )
     {
     }
@@ -52,6 +53,7 @@ class DomainCategory
             'title' => $this->getTitle(),
             'description' => $this->getDescription(),
             'subcategories' => array_map(fn($subcategory) => $subcategory->toArray(), $this->getSubcategories()),
+            'productCount' => $this->productCount
             //'products' => array_map(fn($product) => $product->toArray(), $this->getProducts()),
         ];
     }
