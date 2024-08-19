@@ -3,7 +3,6 @@
 namespace Application\Presentation\Controllers\Admin;
 
 use Application\Business\Interfaces\ServiceInterfaces\CategoryServiceInterface;
-use Infrastructure\HTTP\Response\HtmlResponse;
 use Infrastructure\HTTP\Response\JsonResponse;
 
 class CategoryController extends AdminController

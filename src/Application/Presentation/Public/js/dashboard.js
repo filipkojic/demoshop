@@ -297,10 +297,12 @@ document.addEventListener('DOMContentLoaded', () => {
         contentDiv.appendChild(categoryContainer);
     }
 
-    //loadDashboard();
+    window.loadDashboard = loadDashboard;
+    window.loadProducts = loadProducts;
+    window.loadCategories = loadCategories;
 
     // Register routes with the router
-    router.registerRoute('/admin/dashboard', loadDashboard);
+    router.registerRoute('/admin', loadDashboard);
     router.registerRoute('/admin/products', loadProducts);
     router.registerRoute('/admin/categories', loadCategories);
 
@@ -308,7 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
     router.init();
 
     // Default to load the dashboard initially
-    router.navigate('/admin/dashboard');
+    router.navigate('/admin');
 
     // Handle side menu navigation clicks
     const menuItems = document.querySelectorAll('.sideMenu ul li');

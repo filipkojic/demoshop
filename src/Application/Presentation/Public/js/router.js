@@ -17,14 +17,33 @@ class Router {
         this.routes[path] = handler;
     }
 
+    loadContent(path) {
+        switch (path) {
+            case '/admin':
+                loadDashboard();
+                break;
+            case '/admin/products':
+                loadProducts();
+                break;
+            case '/admin/categories':
+                loadCategories();
+                break;
+            default:
+                loadDashboard(); // Default ako nema odgovarajuće rute
+                break;
+        }
+    }
+
     /**
      * Navigates to a specific route, executes the handler, and updates the URL.
      *
      * @param {string} path - The URL path to navigate to.
      */
     navigate(path) {
-        window.history.pushState({}, path, window.location.origin + path);
-        this.handleRoute(path);
+        if (window.location.pathname !== path) {
+            history.replaceState({}, '', path);
+            this.loadContent(path); // Funkcija koja učitava sadržaj za odabranu putanju
+        }
     }
 
     /**

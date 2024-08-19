@@ -3,7 +3,6 @@
 namespace Application\Persistence\Repositories;
 
 use Application\Business\DomainModels\DomainCategory;
-use Application\Business\DomainModels\DomainProduct;
 use Application\Persistence\Entities\Category;
 use Application\Business\Interfaces\RepositoryInterfaces\CategoryRepositoryInterface;
 use Illuminate\Database\Capsule\Manager as Capsule;
