@@ -32,7 +32,7 @@ class LoginController extends FrontController
      */
     public function index(HttpRequest $request): HtmlResponse
     {
-        if (SessionManager::getInstance()->get('user_id')) {
+        if ($this->loginService->isUserLoggedIn()) {
             return HtmlResponse::fromView(PathHelper::view('dashboard.php'));
         }
 

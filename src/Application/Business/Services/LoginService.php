@@ -19,6 +19,16 @@ class LoginService implements LoginServiceInterface
     }
 
     /**
+     * Check if the user is logged in by verifying the presence of 'user_id' in the session.
+     *
+     * @return bool True if the user is logged in, false otherwise.
+     */
+    public function isUserLoggedIn(): bool
+    {
+        return SessionManager::getInstance()->get('user_id') !== null;
+    }
+
+    /**
      * Attempt to log in with the given username and password.
      *
      * @param string $username

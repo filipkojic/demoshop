@@ -4,6 +4,14 @@ namespace Application\Business\Interfaces\ServiceInterfaces;
 
 interface LoginServiceInterface
 {
+
+    /**
+     * Check if the user is logged in by verifying the presence of 'user_id' in the session.
+     *
+     * @return bool True if the user is logged in, false otherwise.
+     */
+    public function isUserLoggedIn(): bool;
+
     /**
      * Attempt to log in with the given username and password.
      *
@@ -11,6 +19,6 @@ interface LoginServiceInterface
      * @param string $password
      * @param bool $keepLoggedIn
      * @return bool The indicator of successfully login.
- */
+     */
     public function login(string $username, string $password, bool $keepLoggedIn): bool;
 }
