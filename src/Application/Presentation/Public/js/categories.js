@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             readonly: true
         });
         const codeInput = createElement('input', {type: 'text', value: category.code});
-        const descriptionTextarea = createElement('textarea', {}, `Description for ${category.title}`);
+        const descriptionTextarea = createElement('textarea', {}, category.description);
 
         selectedCategoryDiv.appendChild(createElement('label', {}, 'Title:'));
         selectedCategoryDiv.appendChild(titleInput);
@@ -179,19 +179,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         saveButton.addEventListener('click', async () => {
+            const title = titleInput.value.trim();
+            const code = codeInput.value.trim();
+
+            if (!title || !code) {
+                alert('Fields title and code are required.');
+                return;
+            }
+
             const newCategory = JSON.stringify({
-                title: titleInput.value,
-                code: codeInput.value,
+                title: title,
+                code: code,
                 description: descriptionTextarea.value,
-                parentId: parentCategory ? parentCategory.id : null
+                parent_id: parentCategory ? parentCategory.id : null
             });
 
             const response = await ajaxPost('/addCategory', newCategory);
-            //if (response.success) {
+
+            if (response.success) {
                 await loadCategories();
-            //} else {
-                //alert('Failed to add category. Please try again.');
-            //}
+            }
+
+            alert(response.message);
         });
     }
 

@@ -3,6 +3,7 @@
 namespace Application\Business\Interfaces\ServiceInterfaces;
 
 use Application\Business\DomainModels\DomainCategory;
+use Infrastructure\HTTP\HttpRequest;
 
 interface CategoryServiceInterface
 {
@@ -20,5 +21,12 @@ interface CategoryServiceInterface
      */
     public function getAllCategories(): array;
 
-    public function createCategory(array $data): void;
+    /**
+     * Get all categories as domain models
+     *
+     * @param array $data Data in JSON from HTTP request object.
+     *
+     * @return bool Indicator if creating category was successfull.
+     */
+    public function createCategory(array $data): bool;
 }

@@ -13,6 +13,11 @@ use Application\Business\Interfaces\ServiceInterfaces\CategoryServiceInterface;
  */
 class CategoryService implements CategoryServiceInterface
 {
+    /**
+     * @var string
+     */
+    protected string $lastError;
+
     public function __construct(protected CategoryRepositoryInterface $categoryRepository)
     {
     }
@@ -37,8 +42,36 @@ class CategoryService implements CategoryServiceInterface
         return $this->categoryRepository->getAllCategories();
     }
 
-    public function createCategory(array $data): void
+    /**
+     * Get all categories as domain models
+     *
+     * @param array $data Data in JSON from HTTP request object.
+     *
+     * @return bool Indicator if creating category was successfull.
+     */
+    public function createCategory(array $data): bool
     {
-        $this->categoryRepository->createCategory($data);
+        if (empty($data['title']) || empty($data['code'])) {
+            $this->lastError = 'Title and code are required.';
+            return false;
+        }
+
+        if (!$this->categoryRepository->isUniqueCode($data['code'])) {
+            $this->lastError = 'Category code must be unique.';
+            return false;
+        }
+
+        $category = $this->categoryRepository->createCategory($data);
+        return $category !== null;
+    }
+
+    /**
+     * Get error message for JSON response
+     *
+     * @return string Indicator if creating category was successfull.
+     */
+    public function getLastError(): string
+    {
+        return $this->lastError ?? '';
     }
 }

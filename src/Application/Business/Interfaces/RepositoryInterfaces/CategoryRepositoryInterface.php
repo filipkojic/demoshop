@@ -26,5 +26,21 @@ interface CategoryRepositoryInterface
      */
     public function getAllCategories(): array;
 
-    public function createCategory(array $data): void;
+    /**
+     * Create new category
+     *
+     * @param array $data Data in JSON from HTTP request object.
+     *
+     * @return bool Indicator if creating category was successfull.
+     */
+    public function createCategory(array $data): bool;
+
+    /**
+     * Get total number of categories
+     *
+     * @param string $code Category code that needs to be unique.
+     *
+     * @return bool Indicator if the code is unique.
+     */
+    public function isUniqueCode(string $code): bool;
 }

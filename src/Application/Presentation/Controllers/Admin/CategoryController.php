@@ -19,6 +19,8 @@ class CategoryController extends AdminController
     /**
      * Get all categories
      *
+     * @param HttpRequest $request The HTTP request object containing the category data in JSON format.
+     *
      * @return JsonResponse
      */
     public function getAllCategories(HttpRequest $request): JsonResponse
@@ -27,16 +29,21 @@ class CategoryController extends AdminController
         return new JsonResponse(200, [], array_map(fn($category) => $category->toArray(), $categories));
     }
 
+    /**
+     * Handles the request to add a new category.
+     *
+     * @param HttpRequest $request The HTTP request object containing the category data in JSON format.
+     *
+     * @return JsonResponse
+     */
     public function addCategory(HttpRequest $request): JsonResponse
     {
-        $requestData = $request->getJsonBody();
-        $this->categoryService->createCategory([
-            'parent_id' => $requestData['parentId'] ?? null,
-            'code' => $requestData['code'],
-            'title' => $requestData['title'],
-            'description' => $requestData['description'],
-        ]);
+        $success = $this->categoryService->createCategory($request->getJsonBody());
 
-        return new JsonResponse(200, [], []);
+        if (!$success) {
+            return new JsonResponse(400, [], ['success' => false, 'message' => $this->categoryService->getLastError()]);
+        }
+
+        return new JsonResponse(200, [], ['success' => true, 'message' => 'Category added successfully.']);
     }
 }
