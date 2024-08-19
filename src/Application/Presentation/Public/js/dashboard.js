@@ -300,6 +300,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.loadDashboard = loadDashboard;
     window.loadProducts = loadProducts;
     window.loadCategories = loadCategories;
+    window.removeCssFile = removeCssFile;
+    window.loadCssFile = loadCssFile;
 
     // Register routes with the router
     router.registerRoute('/admin', loadDashboard);
@@ -308,9 +310,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize the router
     router.init();
-
-    // Default to load the dashboard initially
-    router.navigate('/admin');
 
     // Handle side menu navigation clicks
     const menuItems = document.querySelectorAll('.sideMenu ul li');

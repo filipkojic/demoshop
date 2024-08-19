@@ -9,7 +9,7 @@
 <div class="container">
     <aside class="sideMenu">
         <ul>
-            <li data-section="admin" class="active">Dashboard</li>
+            <li data-section="admin">Dashboard</li>
             <li data-section="admin/products">Products</li>
             <li data-section="admin/categories">Product Categories</li>
 

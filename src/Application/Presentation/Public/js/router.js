@@ -17,33 +17,48 @@ class Router {
         this.routes[path] = handler;
     }
 
-    loadContent(path) {
-        switch (path) {
-            case '/admin':
-                loadDashboard();
-                break;
-            case '/admin/products':
-                loadProducts();
-                break;
-            case '/admin/categories':
-                loadCategories();
-                break;
-            default:
-                loadDashboard(); // Default ako nema odgovarajuće rute
-                break;
-        }
-    }
-
     /**
      * Navigates to a specific route, executes the handler, and updates the URL.
      *
      * @param {string} path - The URL path to navigate to.
      */
+    loadContent(path) {
+        if (this.contentDiv.getAttribute('data-current-path') === path) {
+            console.log(`Content for ${path} is already loaded.`);
+            return;
+        }
+
+        switch (path) {
+            case '/admin':
+                removeCssFile('/src/Application/Presentation/Public/css/categories.css');
+                loadCssFile('/src/Application/Presentation/Public/css/dashboard.css');
+                loadDashboard();
+                break;
+            case '/admin/products':
+                loadCssFile('/src/Application/Presentation/Public/css/dashboard.css');
+                loadProducts();
+                break;
+            case '/admin/categories':
+                removeCssFile('/src/Application/Presentation/Public/css/dashboard.css');
+                loadCssFile('/src/Application/Presentation/Public/css/categories.css');
+                loadCategories();
+                break;
+            default:
+                removeCssFile('/src/Application/Presentation/Public/css/categories.css');
+                loadCssFile('/src/Application/Presentation/Public/css/dashboard.css');
+                loadDashboard();
+                break;
+        }
+
+        this.contentDiv.setAttribute('data-current-path', path);
+    }
+
     navigate(path) {
         if (window.location.pathname !== path) {
             history.replaceState({}, '', path);
-            this.loadContent(path); // Funkcija koja učitava sadržaj za odabranu putanju
         }
+        this.loadContent(path);
+        this.updateActiveMenu(path); // Osvježava aktivni meni
     }
 
     /**
@@ -52,12 +67,19 @@ class Router {
      * @param {string} path - The URL path to handle.
      */
     handleRoute(path) {
-        const handler = this.routes[path];
-        if (handler) {
-            handler(this.contentDiv);
-        } else {
-            console.error(`No handler found for route: ${path}`);
-        }
+        this.loadContent(path);
+        this.updateActiveMenu(path); // Osvježava aktivni meni
+    }
+
+    updateActiveMenu(path) {
+        const menuItems = document.querySelectorAll('.sideMenu ul li');
+        menuItems.forEach(item => {
+            item.classList.remove('active');
+            const section = item.getAttribute('data-section');
+            if (`/${section}` === path) {
+                item.classList.add('active');
+            }
+        });
     }
 
     /**
