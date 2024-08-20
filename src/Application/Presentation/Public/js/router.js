@@ -34,26 +34,11 @@ class Router {
             return;
         }
 
-        switch (path) {
-            case '/admin':
-                DomHelper.removeCssFile('/src/Application/Presentation/Public/css/categories.css');
-                DomHelper.loadCssFile('/src/Application/Presentation/Public/css/dashboard.css');
-                loadDashboard();
-                break;
-            case '/admin/products':
-                DomHelper.loadCssFile('/src/Application/Presentation/Public/css/dashboard.css');
-                loadProducts();
-                break;
-            case '/admin/categories':
-                DomHelper.removeCssFile('/src/Application/Presentation/Public/css/dashboard.css');
-                DomHelper.loadCssFile('/src/Application/Presentation/Public/css/categories.css');
-                loadCategories();
-                break;
-            default:
-                DomHelper.removeCssFile('/src/Application/Presentation/Public/css/categories.css');
-                DomHelper.loadCssFile('/src/Application/Presentation/Public/css/dashboard.css');
-                loadDashboard();
-                break;
+        const handler = this.routes[path];
+        if (handler) {
+            handler();
+        } else {
+            console.error(`No handler found for ${path}`);
         }
 
         this.contentDiv.setAttribute('data-current-path', path);
