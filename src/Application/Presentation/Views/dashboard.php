@@ -19,7 +19,7 @@
 </div>
 <script src="/src/Application/Presentation/Public/js/services/AjaxService.js"></script>
 <script src="/src/Application/Presentation/Public/js/utility/DomHelper.js"></script>
-<script src="/src/Application/Presentation/Public/js/Router.js"></script>
+<script src="/src/Application/Presentation/Public/js/utility/Router.js"></script>
 <script src="/src/Application/Presentation/Public/js/controllers/DashboardController.js"></script>
 <script src="/src/Application/Presentation/Public/js/controllers/ProductsController.js"></script>
 <script src="/src/Application/Presentation/Public/js/controllers/CategoriesController.js"></script>

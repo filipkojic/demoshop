@@ -1,4 +1,13 @@
+/**
+ * CategoriesController class to manage the content of the "Categories" page.
+ * Implements the Singleton pattern to ensure only one instance is used across the application.
+ */
 class CategoriesController {
+    /**
+     * Creates an instance of CategoriesController or returns the existing instance.
+     * @param {string} contentDivId - The ID of the div where the content will be rendered.
+     * @returns {CategoriesController} The single instance of ProductsController.
+     */
     constructor(contentDivId) {
         if (CategoriesController.instance) {
             return CategoriesController.instance;

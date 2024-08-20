@@ -1,4 +1,11 @@
+/**
+ * LoginController class to manage the content of the "Login" page.
+ */
 class LoginController {
+    /**
+     * Creates an instance of LoginController.
+     * @param {string} formId - The ID of the login form.
+     */
     constructor(formId) {
         this.form = document.getElementById(formId);
         this.usernameInput = this.form.querySelector('#username');

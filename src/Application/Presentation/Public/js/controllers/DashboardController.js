@@ -3,6 +3,11 @@
  * Implements the Singleton pattern to ensure only one instance is used across the application.
  */
 class DashboardController {
+    /**
+     * Creates an instance of DashboardController or returns the existing instance.
+     * @param {string} contentDivId - The ID of the div where the content will be rendered.
+     * @returns {DashboardController} The single instance of ProductsController.
+     */
     constructor(contentDivId) {
         if (DashboardController.instance) {
             return DashboardController.instance;
