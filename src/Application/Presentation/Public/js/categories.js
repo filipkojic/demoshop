@@ -112,18 +112,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 item.classList.remove('selected');
             });
             categoryDiv.classList.add('selected');
-            // alert(`Selected Category ID: ${category.id}`);
-            // selectedCategoryId = category.id;
-            // selectedCategoryName = category.title;
             updateSelectedCategory(category, categories, selectedCategoryDiv);
         });
 
         return categoryDiv;
     }
-
-
-    // let selectedCategoryId = null;
-    // let selectedCategoryName = null;
 
     /**
      * Function to create a form for adding or editing a category.
@@ -135,13 +128,6 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     function createCategoryForm(type, parentCategory, selectedCategoryDiv, categories) {
         selectedCategoryDiv.innerHTML = '';
-
-        // if (type === 'subcategory') {
-        //     parentCategory = {
-        //         id: selectedCategoryId,
-        //         title: selectedCategoryName
-        //     };
-        // }
 
         const headerText = type === 'root' ? 'Create root category' : 'Create subcategory';
         const header = createElement('div', {class: 'selected-category-header'}, headerText);
@@ -184,6 +170,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!title || !code) {
                 alert('Fields title and code are required.');
+                return;
+            }
+
+            const isCodeUnique = !categories.some(category => category.code === code);
+            if (!isCodeUnique) {
+                alert('Code must be unique.');
                 return;
             }
 

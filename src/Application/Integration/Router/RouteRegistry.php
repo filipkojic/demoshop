@@ -49,11 +49,12 @@ class RouteRegistry
 
         // Category controller routes
         Router::getInstance()->addRoute(
-            new Route('GET', '/getCategories', CategoryController::class, 'getAllCategories')
-                );
+            (new Route('GET', '/getCategories', CategoryController::class, 'getAllCategories')
+            )->addMiddleware(new AdminMiddleware()));
 
         Router::getInstance()->addRoute(
-            new Route('POST', '/addCategory', CategoryController::class, 'addCategory')
+            (new Route('POST', '/addCategory', CategoryController::class, 'addCategory'))
+                ->addMiddleware(new AdminMiddleware())
         );
 
 
