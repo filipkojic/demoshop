@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const confirmation = confirm('Are you sure you want to delete this category? This action cannot be undone.');
 
             if (confirmation) {
-                const response = await ajaxDelete('/deleteCategory', JSON.stringify({id: category.id}));
+                const response = await AjaxService.delete('/deleteCategory', JSON.stringify({id: category.id}));
 
                 if (response.success) {
                     alert(response.message);
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 parent_id: parentCategory ? parentCategory.id : null
             });
 
-            const response = await ajaxPost('/addCategory', newCategory);
+            const response = await AjaxService.post('/addCategory', newCategory);
 
             if (response.success) {
                 alert(response.message);
@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const categoryContainer = createElement('div', {class: 'category-container'});
         const categoryListDiv = createElement('div', {class: 'category-list'});
 
-        const categories = await ajaxGet('/getCategories');
+        const categories = await AjaxService.get('/getCategories');
 
         const selectedCategoryDiv = createElement('div', {class: 'selected-category'});
 

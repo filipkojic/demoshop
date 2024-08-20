@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadCssFile('/src/Application/Presentation/Public/css/dashboard.css');
         contentDiv.innerHTML = '';
 
-        const stats = await ajaxGet('/getStatistics');
+        const stats = await AjaxService.get('/getStatistics');
 
         const dashboardGrid = createElement('div', {class: 'dashboardGrid'});
 

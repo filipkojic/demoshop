@@ -17,8 +17,8 @@
     <main id="content" class="content">
     </main>
 </div>
+<script src="/src/Application/Presentation/Public/js/services/AjaxService.js"></script>
 <script src="/src/Application/Presentation/Public/js/router.js"></script>
-<script src="/src/Application/Presentation/Public/js/ajax.js"></script>
 <script src="/src/Application/Presentation/Public/js/dashboard.js"></script>
 <script src="/src/Application/Presentation/Public/js/products.js"></script>
 <script src="/src/Application/Presentation/Public/js/categories.js"></script>
