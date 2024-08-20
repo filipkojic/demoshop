@@ -99,6 +99,5 @@ class Bootstrap
         ServiceRegistry::getInstance()->register(CategoryController::class, new CategoryController(
             ServiceRegistry::getInstance()->get(CategoryServiceInterface::class)
         ));
-
     }
 }

@@ -14,10 +14,13 @@ use Application\Business\Interfaces\ServiceInterfaces\CategoryServiceInterface;
 class CategoryService implements CategoryServiceInterface
 {
     /**
-     * @var string
+     * @var string Error message.
      */
     protected string $lastError;
 
+    /**
+     * @param CategoryRepositoryInterface $categoryRepository Repository for category manipulation.
+     */
     public function __construct(protected CategoryRepositoryInterface $categoryRepository)
     {
     }

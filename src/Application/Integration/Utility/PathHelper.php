@@ -30,6 +30,4 @@ class PathHelper
     {
         return __DIR__ . '/../../../../';
     }
-
 }
-

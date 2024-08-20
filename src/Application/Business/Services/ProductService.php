@@ -13,6 +13,9 @@ use Application\Business\Interfaces\ServiceInterfaces\ProductServiceInterface;
  */
 class ProductService implements ProductServiceInterface
 {
+    /**
+     * @param ProductRepositoryInterface $productRepository Repository for product manipulation.
+     */
     public function __construct(protected ProductRepositoryInterface $productRepository)
     {
     }

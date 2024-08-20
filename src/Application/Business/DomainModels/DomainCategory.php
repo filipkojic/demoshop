@@ -34,7 +34,7 @@ class DomainCategory
         private string  $code,
         private string  $title,
         private ?string $description = null,
-        private int $productCount = 0
+        private int     $productCount = 0
     )
     {
     }

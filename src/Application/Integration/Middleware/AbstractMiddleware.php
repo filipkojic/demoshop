@@ -2,6 +2,7 @@
 
 namespace Application\Integration\Middleware;
 
+use Application\Integration\Middleware\Interfaces\MiddlewareInterface;
 use Infrastructure\HTTP\HttpRequest;
 
 /**

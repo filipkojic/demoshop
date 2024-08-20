@@ -13,6 +13,9 @@ use Infrastructure\Utility\SessionManager;
  */
 class LoginService implements LoginServiceInterface
 {
+    /**
+     * @param AdminRepositoryInterface $adminRepository Repository for admin manipulation.
+     */
     public function __construct(protected AdminRepositoryInterface $adminRepository)
     {
     }

@@ -2,6 +2,11 @@
 
 namespace Application\Business\Interfaces\ServiceInterfaces;
 
+/**
+ * Interface StatisticsServiceInterface
+ *
+ * This interface defines the contract for statistics service.
+ */
 interface StatisticsServiceInterface
 {
     /**

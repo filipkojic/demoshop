@@ -2,7 +2,7 @@
 
 namespace Application\Integration\Router;
 
-use Application\Integration\Middleware\MiddlewareInterface;
+use Application\Integration\Middleware\Interfaces\MiddlewareInterface;
 
 /**
  * Class Route
@@ -81,6 +81,7 @@ class Route
     public function addMiddleware(MiddlewareInterface $middleware): self
     {
         $this->middlewares[] = $middleware;
+
         return $this;
     }
 

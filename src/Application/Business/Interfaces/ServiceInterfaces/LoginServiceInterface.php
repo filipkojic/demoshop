@@ -2,6 +2,11 @@
 
 namespace Application\Business\Interfaces\ServiceInterfaces;
 
+/**
+ * Interface LoginServiceInterface
+ *
+ * This interface defines the contract for login service.
+ */
 interface LoginServiceInterface
 {
 

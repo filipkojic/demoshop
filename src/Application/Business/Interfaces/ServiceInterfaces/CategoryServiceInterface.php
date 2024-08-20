@@ -3,8 +3,12 @@
 namespace Application\Business\Interfaces\ServiceInterfaces;
 
 use Application\Business\DomainModels\DomainCategory;
-use Infrastructure\HTTP\HttpRequest;
 
+/**
+ * Interface CategoryServiceInterface
+ *
+ * This interface defines the contract for category service.
+ */
 interface CategoryServiceInterface
 {
     /**

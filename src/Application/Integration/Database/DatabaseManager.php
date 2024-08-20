@@ -6,8 +6,17 @@ use Application\Integration\Utility\PathHelper;
 use Dotenv\Dotenv;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
+/**
+ * Class DatabaseManager
+ *
+ * This class initializes connection with database given via .env parameters.
+ */
 class DatabaseManager
 {
+
+    /**
+     * Initialize connection with database
+     */
     public static function initialize(): void
     {
         // Load environment variables

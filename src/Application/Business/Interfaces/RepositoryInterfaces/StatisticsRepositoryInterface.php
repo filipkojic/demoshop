@@ -16,4 +16,3 @@ interface StatisticsRepositoryInterface
      */
     public function getHomeViewCount(): int;
 }
-

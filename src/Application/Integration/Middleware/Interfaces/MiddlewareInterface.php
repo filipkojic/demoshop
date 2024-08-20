@@ -2,7 +2,7 @@
 
 namespace Infrastructure\Middleware;
 
-namespace Application\Integration\Middleware;
+namespace Application\Integration\Middleware\Interfaces;
 
 use Infrastructure\HTTP\HttpRequest;
 

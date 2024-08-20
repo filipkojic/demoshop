@@ -131,4 +131,3 @@ class HttpRequest
         return json_decode($jsonData, true);
     }
 }
-

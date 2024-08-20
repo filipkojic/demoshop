@@ -4,6 +4,11 @@ namespace Application\Business\Interfaces\ServiceInterfaces;
 
 use Application\Business\DomainModels\DomainProduct;
 
+/**
+ * Interface ProductServiceInterface
+ *
+ * This interface defines the contract for product service.
+ */
 interface ProductServiceInterface
 {
     /**

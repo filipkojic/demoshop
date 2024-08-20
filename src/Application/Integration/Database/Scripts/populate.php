@@ -103,7 +103,6 @@ try {
     ];
 
 
-
     /**
      * Recursive function to insert categories and subcategories
      *

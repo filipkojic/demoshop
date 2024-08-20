@@ -12,6 +12,9 @@ use Application\Business\Interfaces\ServiceInterfaces\StatisticsServiceInterface
  */
 class StatisticsService implements StatisticsServiceInterface
 {
+    /**
+     * @param StatisticsRepositoryInterface $statisticsRepository Repository for statistics manipulation.
+     */
     public function __construct(protected StatisticsRepositoryInterface $statisticsRepository)
     {
     }
