@@ -4,11 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Register routes with the router
     router.registerRoute('/admin', () => {
-        //const dashboardController = DashboardController.getInstance();
+        const dashboardController = DashboardController.getInstance();
         DomHelper.removeCssFile('/src/Application/Presentation/Public/css/categories.css');
         DomHelper.loadCssFile('/src/Application/Presentation/Public/css/dashboard.css');
-        //dashboardController.loadDashboard();
-        loadDashboard();
+        dashboardController.loadDashboard();
     });
 
     router.registerRoute('/admin/products', () => {
