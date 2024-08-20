@@ -1,20 +1,27 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const contentDiv = document.getElementById('content');
-    window.loadCategories = loadCategories;
+class CategoriesController {
+    constructor(contentDivId) {
+        if (CategoriesController.instance) {
+            return CategoriesController.instance;
+        }
+
+        this.contentDiv = document.getElementById(contentDivId);
+        CategoriesController.instance = this;
+
+        return this;
+    }
 
     /**
      * Recursively searches for a category by its ID within a nested categories structure.
-     *
      * @param {number} id - The ID of the category to find.
      * @param {Array} categories - The array of categories to search through.
      * @returns {object|null} - The found category object or null if not found.
      */
-    function findCategoryById(id, categories) {
+    findCategoryById(id, categories) {
         for (const category of categories) {
             if (category.id === id) {
                 return category;
             } else if (category.subcategories.length) {
-                const found = findCategoryById(id, category.subcategories);
+                const found = this.findCategoryById(id, category.subcategories);
                 if (found) return found;
             }
         }
@@ -23,28 +30,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * Updates the selected category's details in the right-hand form, displaying the category's information.
-     *
      * @param {object} category - The category object containing details to display.
      * @param {Array} categories - The array of all categories for searching parent categories.
      * @param {HTMLElement} selectedCategoryDiv - The DOM element where the category details will be displayed.
      */
-    function updateSelectedCategory(category, categories, selectedCategoryDiv) {
+    updateSelectedCategory(category, categories, selectedCategoryDiv) {
         selectedCategoryDiv.innerHTML = '';
 
-        const header = DomHelper.createElement('div', {class: 'selected-category-header'}, 'Selected category');
+        const header = DomHelper.createElement('div', { class: 'selected-category-header' }, 'Selected category');
         selectedCategoryDiv.appendChild(header);
 
-        const parentCategory = findCategoryById(category.parentId, categories);
+        const parentCategory = this.findCategoryById(category.parentId, categories);
         const parentCategoryName = parentCategory ? parentCategory.title : 'Root';
 
-        const titleInput = DomHelper.createElement('input', {type: 'text', value: category.title});
-        const parentCategoryInput =
-            DomHelper.createElement('input', {
+        const titleInput = DomHelper.createElement('input', { type: 'text', value: category.title });
+        const parentCategoryInput = DomHelper.createElement('input', {
             type: 'text',
             value: parentCategoryName,
             readonly: true
         });
-        const codeInput = DomHelper.createElement('input', {type: 'text', value: category.code});
+        const codeInput = DomHelper.createElement('input', { type: 'text', value: category.code });
         const descriptionTextarea = DomHelper.createElement('textarea', {}, category.description);
 
         selectedCategoryDiv.appendChild(DomHelper.createElement('label', {}, 'Title:'));
@@ -59,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedCategoryDiv.appendChild(DomHelper.createElement('label', {}, 'Description:'));
         selectedCategoryDiv.appendChild(descriptionTextarea);
 
-        const deleteButton = DomHelper.createElement('button', {class: 'delete'}, 'Delete');
+        const deleteButton = DomHelper.createElement('button', { class: 'delete' }, 'Delete');
         const editButton = DomHelper.createElement('button', {}, 'Edit');
 
         selectedCategoryDiv.appendChild(deleteButton);
@@ -69,11 +74,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const confirmation = confirm('Are you sure you want to delete this category? This action cannot be undone.');
 
             if (confirmation) {
-                const response = await AjaxService.delete('/deleteCategory', JSON.stringify({id: category.id}));
+                const response = await AjaxService.delete('/deleteCategory', JSON.stringify({ id: category.id }));
 
                 if (response.success) {
                     alert(response.message);
-                    await loadCategories();
+                    await this.loadCategories();
                 } else {
                     alert(response.message);
                 }
@@ -83,13 +88,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * Creates a DOM element representing a category and its subcategories, with the ability to toggle visibility.
-     *
      * @param {object} category - The category object containing details to create the element.
      * @param {Array} categories - The array of all categories for searching parent categories.
      * @param {HTMLElement} selectedCategoryDiv - The DOM element where the category details will be displayed.
      * @returns {HTMLElement} - The created DOM element representing the category.
      */
-    function createCategoryElement(category, categories, selectedCategoryDiv) {
+    createCategoryElement(category, categories, selectedCategoryDiv) {
         const categoryDiv = DomHelper.createElement('div', {
             class: 'category-item',
             'data-id': category.id
@@ -109,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             category.subcategories.forEach(subcategory => {
-                const subcategoryItem = createCategoryElement(subcategory, categories, selectedCategoryDiv);
+                const subcategoryItem = this.createCategoryElement(subcategory, categories, selectedCategoryDiv);
                 subcategoryDiv.appendChild(subcategoryItem);
             });
 
@@ -128,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 item.classList.remove('selected');
             });
             categoryDiv.classList.add('selected');
-            updateSelectedCategory(category, categories, selectedCategoryDiv);
+            this.updateSelectedCategory(category, categories, selectedCategoryDiv);
         });
 
         return categoryDiv;
@@ -136,26 +140,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * Function to create a form for adding or editing a category.
-     *
      * @param {string} type - The type of category being added ('root' or 'subcategory').
      * @param {object|null} parentCategory - The parent category if adding a subcategory, otherwise null.
      * @param {HTMLElement} selectedCategoryDiv - The DOM element where the form will be displayed.
      * @param {Array} categories - The array of all categories.
      */
-    function createCategoryForm(type, parentCategory, selectedCategoryDiv, categories) {
+    createCategoryForm(type, parentCategory, selectedCategoryDiv, categories) {
         selectedCategoryDiv.innerHTML = '';
 
         const headerText = type === 'root' ? 'Create root category' : 'Create subcategory';
-        const header = DomHelper.createElement('div', {class: 'selected-category-header'}, headerText);
+        const header = DomHelper.createElement('div', { class: 'selected-category-header' }, headerText);
         selectedCategoryDiv.appendChild(header);
 
-        const titleInput = DomHelper.createElement('input', {type: 'text', placeholder: 'Enter category title'});
+        const titleInput = DomHelper.createElement('input', { type: 'text', placeholder: 'Enter category title' });
         const parentCategoryInput = DomHelper.createElement('input', {
             type: 'text',
             value: parentCategory ? parentCategory.title : 'Root',
             readonly: true
         });
-        const codeInput = DomHelper.createElement('input', {type: 'text', placeholder: 'Enter category code'});
+        const codeInput = DomHelper.createElement('input', { type: 'text', placeholder: 'Enter category code' });
         const descriptionTextarea = DomHelper.createElement('textarea', {}, 'Enter description');
 
         selectedCategoryDiv.appendChild(DomHelper.createElement('label', {}, 'Title:'));
@@ -206,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.success) {
                 alert(response.message);
-                await loadCategories();
+                await this.loadCategories();
             } else {
                 alert(response.message);
             }
@@ -214,30 +217,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Function to load content for the "Product Categories" page
+     * Function to load content for the "Product Categories" page.
      */
-    async function loadCategories() {
-        contentDiv.innerHTML = '';
+    async loadCategories() {
+        this.contentDiv.innerHTML = '';
 
         DomHelper.removeCssFile('/src/Application/Presentation/Public/css/dashboard.css');
-        DomHelper.
-        loadCssFile('/src/Application/Presentation/Public/css/categories.css');
+        DomHelper.loadCssFile('/src/Application/Presentation/Public/css/categories.css');
 
-        const categoryContainer = DomHelper.createElement('div', {class: 'category-container'});
-        const categoryListDiv = DomHelper.createElement('div', {class: 'category-list'});
+        const categoryContainer = DomHelper.createElement('div', { class: 'category-container' });
+        const categoryListDiv = DomHelper.createElement('div', { class: 'category-list' });
 
         const categories = await AjaxService.get('/getCategories');
 
-        const selectedCategoryDiv = DomHelper.createElement('div', {class: 'selected-category'});
+        const selectedCategoryDiv = DomHelper.createElement('div', { class: 'selected-category' });
 
         categories.forEach(category => {
-            const categoryElement = createCategoryElement(category, categories, selectedCategoryDiv);
+            const categoryElement = this.createCategoryElement(category, categories, selectedCategoryDiv);
             categoryListDiv.appendChild(categoryElement);
         });
 
         const addRootButton = DomHelper.createElement('button', {}, 'Add root category');
         const addSubButton = DomHelper.createElement('button', {}, 'Add subcategory');
-        const addCategoryDiv = DomHelper.createElement('div', {class: 'add-category'});
+        const addCategoryDiv = DomHelper.createElement('div', { class: 'add-category' });
         addCategoryDiv.appendChild(addRootButton);
         addCategoryDiv.appendChild(addSubButton);
         categoryListDiv.appendChild(addCategoryDiv);
@@ -246,26 +248,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const selectedCategory = categories.flatMap(cat => cat.subcategories).find(cat => cat.selected);
         if (selectedCategory) {
-            updateSelectedCategory(selectedCategory, categories, selectedCategoryDiv);
+            this.updateSelectedCategory(selectedCategory, categories, selectedCategoryDiv);
         }
 
         categoryContainer.appendChild(selectedCategoryDiv);
 
-        contentDiv.appendChild(categoryContainer);
+        this.contentDiv.appendChild(categoryContainer);
 
         addRootButton.addEventListener('click', () => {
-            createCategoryForm('root', null, selectedCategoryDiv, categories);
+            this.createCategoryForm('root', null, selectedCategoryDiv, categories);
         });
 
         addSubButton.addEventListener('click', () => {
             const selectedCategoryElement = document.querySelector('.category-item.selected');
             if (selectedCategoryElement) {
                 const selectedCategoryId = selectedCategoryElement.dataset.id;
-                const parentCategory = findCategoryById(parseInt(selectedCategoryId), categories);
-                createCategoryForm('subcategory', parentCategory, selectedCategoryDiv, categories);
+                const parentCategory = this.findCategoryById(parseInt(selectedCategoryId), categories);
+                this.createCategoryForm('subcategory', parentCategory, selectedCategoryDiv, categories);
             } else {
                 alert('Please select a category to add a subcategory.');
             }
         });
     }
-});
+
+    /**
+     * Retrieves the single instance of CategoriesController.
+     * If the instance does not exist, it creates it using the provided contentDivId.
+     * @returns {CategoriesController} The single instance of CategoriesController.
+     */
+    static getInstance() {
+        if (!CategoriesController.instance) {
+            CategoriesController.instance = new CategoriesController('content');
+        }
+        return CategoriesController.instance;
+    }
+}

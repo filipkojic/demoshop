@@ -17,11 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     router.registerRoute('/admin/categories', () => {
-        //const categoriesController = CategoriesController.getInstance();
+        const categoriesController = CategoriesController.getInstance();
         DomHelper.removeCssFile('/src/Application/Presentation/Public/css/dashboard.css');
         DomHelper.loadCssFile('/src/Application/Presentation/Public/css/categories.css');
-        //categoriesController.loadCategories();
-        loadCategories();
+        categoriesController.loadCategories();
     });
 
     // Initialize the router
