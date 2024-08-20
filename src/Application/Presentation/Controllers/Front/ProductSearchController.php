@@ -2,12 +2,11 @@
 
 namespace Application\Presentation\Controllers\Front;
 
-use Infrastructure\HTTP\Response\HtmlResponse;
-
+/**
+ * Class ProductSearchController
+ *
+ * Handles user requests for searching products.
+ */
 class ProductSearchController extends FrontController
 {
-    public function index(): HtmlResponse
-    {
-        // Code for rendering search results
-    }
 }

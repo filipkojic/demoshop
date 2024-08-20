@@ -2,17 +2,11 @@
 
 namespace Application\Presentation\Controllers\Front;
 
-use Infrastructure\HTTP\Response\HtmlResponse;
-
+/**
+ * Class ProductController
+ *
+ * Handles user requests for manipulating products.
+ */
 class ProductController extends FrontController
 {
-    public function list(): HtmlResponse
-    {
-        // Code for rendering category products
-    }
-
-    public function index(int $id): HtmlResponse
-    {
-        // Code for rendering product details
-    }
 }

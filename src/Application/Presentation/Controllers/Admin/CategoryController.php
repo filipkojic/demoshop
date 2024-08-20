@@ -4,12 +4,21 @@ namespace Application\Presentation\Controllers\Admin;
 
 use Application\Business\Interfaces\ServiceInterfaces\CategoryServiceInterface;
 use Infrastructure\HTTP\HttpRequest;
-use Infrastructure\HTTP\Response\HtmlResponse;
 use Infrastructure\HTTP\Response\JsonResponse;
 
+/**
+ * Class CategoryController
+ *
+ * Handles admin requests for manipulating categories.
+ */
 class CategoryController extends AdminController
 {
 
+    /**
+     * CategoryController constructor.
+     *
+     * @param CategoryServiceInterface $categoryService The service responsible for handling categories logic.
+     */
     public function __construct(
         protected CategoryServiceInterface $categoryService,
     )
@@ -26,6 +35,7 @@ class CategoryController extends AdminController
     public function getAllCategories(HttpRequest $request): JsonResponse
     {
         $categories = $this->categoryService->getAllCategories();
+
         return new JsonResponse(200, [], array_map(fn($category) => $category->toArray(), $categories));
     }
 
@@ -64,5 +74,4 @@ class CategoryController extends AdminController
 
         return new JsonResponse(200, [], ['success' => true, 'message' => 'Category deleted successfully.']);
     }
-
 }

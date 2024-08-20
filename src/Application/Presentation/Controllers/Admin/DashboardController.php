@@ -11,6 +11,11 @@ use Infrastructure\HTTP\Response\HtmlResponse;
 use Infrastructure\HTTP\Response\JsonResponse;
 use Infrastructure\Utility\SessionManager;
 
+/**
+ * Class DashboardController
+ *
+ * Handles admin request for displaying dashboard page.
+ */
 class DashboardController extends AdminController
 {
     /**
