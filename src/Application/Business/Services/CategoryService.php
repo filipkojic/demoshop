@@ -46,13 +46,12 @@ class CategoryService implements CategoryServiceInterface
     }
 
     /**
-     * Get all categories as domain models
+     * Validate the data for creating a category.
      *
-     * @param array $data Data in JSON from HTTP request object.
-     *
-     * @return bool Indicator if creating category was successfull.
+     * @param array $data The data to validate.
+     * @return bool True if the data is valid, false otherwise.
      */
-    public function createCategory(array $data): bool
+    private function validateCategoryData(array $data): bool
     {
         if (empty($data['title']) || empty($data['code'])) {
             $this->lastError = 'Title and code are required.';
@@ -61,6 +60,22 @@ class CategoryService implements CategoryServiceInterface
 
         if (!$this->categoryRepository->isUniqueCode($data['code'])) {
             $this->lastError = 'Category code must be unique.';
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Get all categories as domain models
+     *
+     * @param array $data Data in JSON from HTTP request object.
+     *
+     * @return bool Indicator if creating category was successfull.
+     */
+    public function createCategory(array $data): bool
+    {
+        if (!$this->validateCategoryData($data)) {
             return false;
         }
 
@@ -87,11 +102,7 @@ class CategoryService implements CategoryServiceInterface
     {
         $category = $this->categoryRepository->findCategoryById($data['id']);
 
-        if (!$category) {
-            return false;
-        }
-
-        if ($category->getProductCount() > 0) {
+        if (!$category || $category->getProductCount() > 0) {
             return false;
         }
 

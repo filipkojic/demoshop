@@ -63,7 +63,6 @@ class LoginController extends FrontController
         ]);
     }
 
-
     /**
      * Test for admin middleware
      *

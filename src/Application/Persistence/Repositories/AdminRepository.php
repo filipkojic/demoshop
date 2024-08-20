@@ -23,15 +23,15 @@ class AdminRepository implements AdminRepositoryInterface
     {
         $admin = Admin::where('username', $username)->first();
 
-        if ($admin) {
-            return new DomainAdmin(
-                id: $admin->id,
-                username: $admin->username,
-                password: $admin->password,
-                token: $admin->token
-            );
+        if (!$admin) {
+            return null;
         }
 
-        return null;
+        return new DomainAdmin(
+            id: $admin->id,
+            username: $admin->username,
+            password: $admin->password,
+            token: $admin->token
+        );
     }
 }

@@ -13,6 +13,8 @@ use Infrastructure\Utility\SessionManager;
  */
 class LoginService implements LoginServiceInterface
 {
+    private const COOKIE_LIFETIME = 24 * 60 * 60;
+
     /**
      * @param AdminRepositoryInterface $adminRepository Repository for admin manipulation.
      */
@@ -48,7 +50,7 @@ class LoginService implements LoginServiceInterface
 
         SessionManager::getInstance()->set('user_id', $admin->getId());
 
-        $cookieLifetime = $keepLoggedIn ? time() + (24 * 60 * 60) : 0; // 1 dan
+        $cookieLifetime = $keepLoggedIn ? time() + self::COOKIE_LIFETIME : 0;
         SessionManager::getInstance()->setCookie(session_name(), session_id(), $cookieLifetime);
 
         return true;
