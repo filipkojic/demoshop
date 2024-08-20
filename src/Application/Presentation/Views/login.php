@@ -32,7 +32,7 @@
             <button type="submit">Log in</button>
         </div>
     </form>
-    <script src="/src/Application/Presentation/Public/js/login.js"></script>
+    <script src="/src/Application/Presentation/Public/js/controllers/LoginController.js"></script>
 </div>
 </body>
 </html>
