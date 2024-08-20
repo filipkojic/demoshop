@@ -36,22 +36,22 @@ class Router {
 
         switch (path) {
             case '/admin':
-                removeCssFile('/src/Application/Presentation/Public/css/categories.css');
-                loadCssFile('/src/Application/Presentation/Public/css/dashboard.css');
+                DomHelper.removeCssFile('/src/Application/Presentation/Public/css/categories.css');
+                DomHelper.loadCssFile('/src/Application/Presentation/Public/css/dashboard.css');
                 loadDashboard();
                 break;
             case '/admin/products':
-                loadCssFile('/src/Application/Presentation/Public/css/dashboard.css');
+                DomHelper.loadCssFile('/src/Application/Presentation/Public/css/dashboard.css');
                 loadProducts();
                 break;
             case '/admin/categories':
-                removeCssFile('/src/Application/Presentation/Public/css/dashboard.css');
-                loadCssFile('/src/Application/Presentation/Public/css/categories.css');
+                DomHelper.removeCssFile('/src/Application/Presentation/Public/css/dashboard.css');
+                DomHelper.loadCssFile('/src/Application/Presentation/Public/css/categories.css');
                 loadCategories();
                 break;
             default:
-                removeCssFile('/src/Application/Presentation/Public/css/categories.css');
-                loadCssFile('/src/Application/Presentation/Public/css/dashboard.css');
+                DomHelper.removeCssFile('/src/Application/Presentation/Public/css/categories.css');
+                DomHelper.loadCssFile('/src/Application/Presentation/Public/css/dashboard.css');
                 loadDashboard();
                 break;
         }

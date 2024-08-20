@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     function loadProducts() {
         contentDiv.innerHTML = '';
-        const productsHeading = createElement('h2', {}, 'Products Section');
-        const noDataMessage = createElement('p', {}, 'No data available.');
+        const productsHeading = DomHelper.createElement('h2', {}, 'Products Section');
+        const noDataMessage = DomHelper.createElement('p', {}, 'No data available.');
         contentDiv.appendChild(productsHeading);
         contentDiv.appendChild(noDataMessage);
     }
