@@ -2,10 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const contentDiv = document.getElementById('content');
     const router = new Router(contentDiv);
 
-    window.removeCssFile = DomHelper.removeCssFile;
-    window.loadCssFile = DomHelper.loadCssFile;
-    window.createElement = DomHelper.createElement;
-
 // Register routes with the router
     router.registerRoute('/admin', loadDashboard);
     router.registerRoute('/admin/products', loadProducts);

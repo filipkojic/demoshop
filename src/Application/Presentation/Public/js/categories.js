@@ -31,35 +31,36 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateSelectedCategory(category, categories, selectedCategoryDiv) {
         selectedCategoryDiv.innerHTML = '';
 
-        const header = createElement('div', {class: 'selected-category-header'}, 'Selected category');
+        const header = DomHelper.createElement('div', {class: 'selected-category-header'}, 'Selected category');
         selectedCategoryDiv.appendChild(header);
 
         const parentCategory = findCategoryById(category.parentId, categories);
         const parentCategoryName = parentCategory ? parentCategory.title : 'Root';
 
-        const titleInput = createElement('input', {type: 'text', value: category.title});
-        const parentCategoryInput = createElement('input', {
+        const titleInput = DomHelper.createElement('input', {type: 'text', value: category.title});
+        const parentCategoryInput =
+            DomHelper.createElement('input', {
             type: 'text',
             value: parentCategoryName,
             readonly: true
         });
-        const codeInput = createElement('input', {type: 'text', value: category.code});
-        const descriptionTextarea = createElement('textarea', {}, category.description);
+        const codeInput = DomHelper.createElement('input', {type: 'text', value: category.code});
+        const descriptionTextarea = DomHelper.createElement('textarea', {}, category.description);
 
-        selectedCategoryDiv.appendChild(createElement('label', {}, 'Title:'));
+        selectedCategoryDiv.appendChild(DomHelper.createElement('label', {}, 'Title:'));
         selectedCategoryDiv.appendChild(titleInput);
 
-        selectedCategoryDiv.appendChild(createElement('label', {}, 'Parent category:'));
+        selectedCategoryDiv.appendChild(DomHelper.createElement('label', {}, 'Parent category:'));
         selectedCategoryDiv.appendChild(parentCategoryInput);
 
-        selectedCategoryDiv.appendChild(createElement('label', {}, 'Code:'));
+        selectedCategoryDiv.appendChild(DomHelper.createElement('label', {}, 'Code:'));
         selectedCategoryDiv.appendChild(codeInput);
 
-        selectedCategoryDiv.appendChild(createElement('label', {}, 'Description:'));
+        selectedCategoryDiv.appendChild(DomHelper.createElement('label', {}, 'Description:'));
         selectedCategoryDiv.appendChild(descriptionTextarea);
 
-        const deleteButton = createElement('button', {class: 'delete'}, 'Delete');
-        const editButton = createElement('button', {}, 'Edit');
+        const deleteButton = DomHelper.createElement('button', {class: 'delete'}, 'Delete');
+        const editButton = DomHelper.createElement('button', {}, 'Edit');
 
         selectedCategoryDiv.appendChild(deleteButton);
         selectedCategoryDiv.appendChild(editButton);
@@ -89,21 +90,21 @@ document.addEventListener('DOMContentLoaded', () => {
      * @returns {HTMLElement} - The created DOM element representing the category.
      */
     function createCategoryElement(category, categories, selectedCategoryDiv) {
-        const categoryDiv = createElement('div', {
+        const categoryDiv = DomHelper.createElement('div', {
             class: 'category-item',
             'data-id': category.id
         });
 
-        const toggleBtn = createElement('span', {
+        const toggleBtn = DomHelper.createElement('span', {
             class: 'toggle-btn'
         }, category.subcategories.length ? '+' : '');
 
-        const categoryTitle = createElement('span', {}, category.title);
+        const categoryTitle = DomHelper.createElement('span', {}, category.title);
         categoryDiv.appendChild(toggleBtn);
         categoryDiv.appendChild(categoryTitle);
 
         if (category.subcategories.length) {
-            const subcategoryDiv = createElement('div', {
+            const subcategoryDiv = DomHelper.createElement('div', {
                 class: 'subcategory-list hidden'
             });
 
@@ -145,32 +146,32 @@ document.addEventListener('DOMContentLoaded', () => {
         selectedCategoryDiv.innerHTML = '';
 
         const headerText = type === 'root' ? 'Create root category' : 'Create subcategory';
-        const header = createElement('div', {class: 'selected-category-header'}, headerText);
+        const header = DomHelper.createElement('div', {class: 'selected-category-header'}, headerText);
         selectedCategoryDiv.appendChild(header);
 
-        const titleInput = createElement('input', {type: 'text', placeholder: 'Enter category title'});
-        const parentCategoryInput = createElement('input', {
+        const titleInput = DomHelper.createElement('input', {type: 'text', placeholder: 'Enter category title'});
+        const parentCategoryInput = DomHelper.createElement('input', {
             type: 'text',
             value: parentCategory ? parentCategory.title : 'Root',
             readonly: true
         });
-        const codeInput = createElement('input', {type: 'text', placeholder: 'Enter category code'});
-        const descriptionTextarea = createElement('textarea', {}, 'Enter description');
+        const codeInput = DomHelper.createElement('input', {type: 'text', placeholder: 'Enter category code'});
+        const descriptionTextarea = DomHelper.createElement('textarea', {}, 'Enter description');
 
-        selectedCategoryDiv.appendChild(createElement('label', {}, 'Title:'));
+        selectedCategoryDiv.appendChild(DomHelper.createElement('label', {}, 'Title:'));
         selectedCategoryDiv.appendChild(titleInput);
 
-        selectedCategoryDiv.appendChild(createElement('label', {}, 'Parent category:'));
+        selectedCategoryDiv.appendChild(DomHelper.createElement('label', {}, 'Parent category:'));
         selectedCategoryDiv.appendChild(parentCategoryInput);
 
-        selectedCategoryDiv.appendChild(createElement('label', {}, 'Code:'));
+        selectedCategoryDiv.appendChild(DomHelper.createElement('label', {}, 'Code:'));
         selectedCategoryDiv.appendChild(codeInput);
 
-        selectedCategoryDiv.appendChild(createElement('label', {}, 'Description:'));
+        selectedCategoryDiv.appendChild(DomHelper.createElement('label', {}, 'Description:'));
         selectedCategoryDiv.appendChild(descriptionTextarea);
 
-        const cancelButton = createElement('button', {}, 'Cancel');
-        const saveButton = createElement('button', {}, 'OK');
+        const cancelButton = DomHelper.createElement('button', {}, 'Cancel');
+        const saveButton = DomHelper.createElement('button', {}, 'OK');
 
         selectedCategoryDiv.appendChild(cancelButton);
         selectedCategoryDiv.appendChild(saveButton);
@@ -218,24 +219,25 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadCategories() {
         contentDiv.innerHTML = '';
 
-        removeCssFile('/src/Application/Presentation/Public/css/dashboard.css');
+        DomHelper.removeCssFile('/src/Application/Presentation/Public/css/dashboard.css');
+        DomHelper.
         loadCssFile('/src/Application/Presentation/Public/css/categories.css');
 
-        const categoryContainer = createElement('div', {class: 'category-container'});
-        const categoryListDiv = createElement('div', {class: 'category-list'});
+        const categoryContainer = DomHelper.createElement('div', {class: 'category-container'});
+        const categoryListDiv = DomHelper.createElement('div', {class: 'category-list'});
 
         const categories = await AjaxService.get('/getCategories');
 
-        const selectedCategoryDiv = createElement('div', {class: 'selected-category'});
+        const selectedCategoryDiv = DomHelper.createElement('div', {class: 'selected-category'});
 
         categories.forEach(category => {
             const categoryElement = createCategoryElement(category, categories, selectedCategoryDiv);
             categoryListDiv.appendChild(categoryElement);
         });
 
-        const addRootButton = createElement('button', {}, 'Add root category');
-        const addSubButton = createElement('button', {}, 'Add subcategory');
-        const addCategoryDiv = createElement('div', {class: 'add-category'});
+        const addRootButton = DomHelper.createElement('button', {}, 'Add root category');
+        const addSubButton = DomHelper.createElement('button', {}, 'Add subcategory');
+        const addCategoryDiv = DomHelper.createElement('div', {class: 'add-category'});
         addCategoryDiv.appendChild(addRootButton);
         addCategoryDiv.appendChild(addSubButton);
         categoryListDiv.appendChild(addCategoryDiv);
