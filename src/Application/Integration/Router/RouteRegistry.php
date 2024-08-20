@@ -44,17 +44,19 @@ class RouteRegistry
         // Dashboard controller routes
         Router::getInstance()->addRoute(
             (new Route('GET', '/getStatistics', DashboardController::class, 'getStatistics'))
-                ->addMiddleware(new AdminMiddleware())
         );
 
         // Category controller routes
         Router::getInstance()->addRoute(
             (new Route('GET', '/getCategories', CategoryController::class, 'getAllCategories')
-            )->addMiddleware(new AdminMiddleware()));
+            ));
 
         Router::getInstance()->addRoute(
-            (new Route('POST', '/addCategory', CategoryController::class, 'addCategory'))
-                ->addMiddleware(new AdminMiddleware())
+            new Route('POST', '/addCategory', CategoryController::class, 'addCategory')
+        );
+
+        Router::getInstance()->addRoute(
+            new Route('DELETE', '/deleteCategory', CategoryController::class, 'deleteCategory')
         );
 
 

@@ -109,4 +109,53 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         return Category::where('code', $code)->doesntExist();
     }
+
+    /**
+     * Find category by id
+     *
+     * @param int $id Category id.
+     *
+     * @return DomainCategory|null Category with the given id.
+     */
+    public function findCategoryById(int $id): ?DomainCategory
+    {
+        $category = Category::withCount('products')->find($id);
+
+        if (!$category) {
+            return null;
+        }
+
+        return new DomainCategory(
+            $category->id,
+            $category->parent_id,
+            $category->code,
+            $category->title,
+            $category->description,
+            $category->products_count
+        );
+    }
+
+
+    /**
+     * Delete a category by its ID.
+     *
+     * @param int $categoryId The ID of the category to delete.
+     * @return bool Returns true if the deletion was successful, false otherwise.
+     */
+    public function deleteCategory(int $categoryId): bool
+    {
+        return Category::destroy($categoryId) > 0;
+    }
+
+    /**
+     * Reassign parent ID for subcategories of a deleted category.
+     *
+     * @param int $categoryId The ID of the category to delete.
+     * @param int|null $newParentId The new parent ID for the subcategories.
+     * @return void
+     */
+    public function reassignSubcategories(int $categoryId, ?int $newParentId): void
+    {
+        Category::where('parent_id', $categoryId)->update(['parent_id' => $newParentId]);
+    }
 }

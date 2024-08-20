@@ -46,4 +46,23 @@ class CategoryController extends AdminController
 
         return new JsonResponse(200, [], ['success' => true, 'message' => 'Category added successfully.']);
     }
+
+    /**
+     * Handles the request to delete a category.
+     *
+     * @param HttpRequest $request The HTTP request object containing the category data in JSON format.
+     *
+     * @return JsonResponse
+     */
+    public function deleteCategory(HttpRequest $request): JsonResponse
+    {
+        $success = $this->categoryService->deleteCategory($request->getJsonBody());
+
+        if (!$success) {
+            return new JsonResponse(400, [], ['success' => false, 'message' => 'Category cannot be deleted because it has products.']);
+        }
+
+        return new JsonResponse(200, [], ['success' => true, 'message' => 'Category deleted successfully.']);
+    }
+
 }

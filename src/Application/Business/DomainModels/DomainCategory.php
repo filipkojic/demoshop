@@ -148,4 +148,14 @@ class DomainCategory
     {
         $this->products[] = $product;
     }
+
+    /**
+     * Return number of products for category.
+     *
+     * @return int The number of products.
+     */
+    public function getProductCount(): int
+    {
+        return $this->productCount;
+    }
 }

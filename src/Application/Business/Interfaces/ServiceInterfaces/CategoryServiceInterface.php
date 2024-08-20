@@ -29,4 +29,12 @@ interface CategoryServiceInterface
      * @return bool Indicator if creating category was successfull.
      */
     public function createCategory(array $data): bool;
+
+    /**
+     * Delete a category by its ID.
+     *
+     * @param array $data Data in JSON from HTTP request object.
+     * @return bool Returns true if the deletion was successful, false otherwise.
+     */
+    public function deleteCategory(array $data): bool;
 }

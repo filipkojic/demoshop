@@ -61,8 +61,7 @@ class CategoryService implements CategoryServiceInterface
             return false;
         }
 
-        $category = $this->categoryRepository->createCategory($data);
-        return $category !== null;
+        return $this->categoryRepository->createCategory($data);
     }
 
     /**
@@ -73,5 +72,28 @@ class CategoryService implements CategoryServiceInterface
     public function getLastError(): string
     {
         return $this->lastError ?? '';
+    }
+
+    /**
+     * Delete a category by its ID.
+     *
+     * @param array $data Data in JSON from HTTP request object.
+     * @return bool Returns true if the deletion was successful, false otherwise.
+     */
+    public function deleteCategory(array $data): bool
+    {
+        $category = $this->categoryRepository->findCategoryById($data['id']);
+
+        if (!$category) {
+            return false;
+        }
+
+        if ($category->getProductCount() > 0) {
+            return false;
+        }
+
+        $this->categoryRepository->reassignSubcategories($data['id'], $category->getParentId());
+
+        return $this->categoryRepository->deleteCategory($data['id']);
     }
 }

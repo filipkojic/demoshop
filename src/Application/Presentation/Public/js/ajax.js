@@ -28,17 +28,23 @@ async function ajaxPost(url, data) {
 }
 
 /**
- * Send an AJAX DELETE request to the specified URL.
+ * Send an AJAX DELETE request to the specified URL with optional data.
  *
  * @param {string} url - The URL to send the request to.
+ * @param {string} data - The data to send with the request.
  * @returns {Promise<object>} - A promise that resolves to the response JSON.
  */
-async function ajaxDelete(url) {
+async function ajaxDelete(url, data) {
     const response = await fetch(url, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: data
     });
     return response.json();
 }
+
 
 /**
  * Send an AJAX PUT request to the specified URL with the given data.

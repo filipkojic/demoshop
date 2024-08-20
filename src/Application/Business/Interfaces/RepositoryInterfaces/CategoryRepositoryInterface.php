@@ -43,4 +43,21 @@ interface CategoryRepositoryInterface
      * @return bool Indicator if the code is unique.
      */
     public function isUniqueCode(string $code): bool;
+
+    /**
+     * Delete a category by its ID.
+     *
+     * @param int $categoryId The ID of the category to delete.
+     * @return bool Returns true if the deletion was successful, false otherwise.
+     */
+    public function deleteCategory(int $categoryId): bool;
+
+    /**
+     * Reassign parent ID for subcategories of a deleted category.
+     *
+     * @param int $categoryId The ID of the category to delete.
+     * @param int|null $newParentId The new parent ID for the subcategories.
+     * @return void
+     */
+    public function reassignSubcategories(int $categoryId, ?int $newParentId): void;
 }

@@ -63,6 +63,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         selectedCategoryDiv.appendChild(deleteButton);
         selectedCategoryDiv.appendChild(editButton);
+
+        deleteButton.addEventListener('click', async () => {
+            const confirmation = confirm('Are you sure you want to delete this category? This action cannot be undone.');
+
+            if (confirmation) {
+                const response = await ajaxDelete('/deleteCategory', JSON.stringify({id: category.id}));
+
+                if (response.success) {
+                    alert(response.message);
+                    await loadCategories();
+                } else {
+                    alert(response.message);
+                }
+            }
+        });
     }
 
     /**
@@ -189,10 +204,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await ajaxPost('/addCategory', newCategory);
 
             if (response.success) {
+                alert(response.message);
                 await loadCategories();
+            } else {
+                alert(response.message);
             }
-
-            alert(response.message);
         });
     }
 
