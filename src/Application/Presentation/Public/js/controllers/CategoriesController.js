@@ -80,6 +80,7 @@ class CategoriesController {
         selectedCategoryDiv.appendChild(editButton);
 
         deleteButton.addEventListener('click', () => this.handleDeleteCategory(category));
+
     }
 
     /**
