@@ -38,16 +38,14 @@ class AjaxService {
      * @param {string} [data] - The optional JSON string data to send with the request.
      * @returns {Promise<object>} - A promise that resolves to the response JSON.
      */
-    static async delete(url, data = null) {
+    static async delete(url, data) {
         const config = {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
-            }
+            },
+            body: data
         };
-        if (data) {
-            config.body = data;
-        }
         const response = await fetch(url, config);
         return response.json();
     }
