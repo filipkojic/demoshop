@@ -79,26 +79,7 @@ class CategoriesController {
         selectedCategoryDiv.appendChild(deleteButton);
         selectedCategoryDiv.appendChild(editButton);
 
-        deleteButton.addEventListener('click', async () => {
-            const confirmation = confirm('Are you sure you want to delete this category? This action cannot be undone.');
-
-            if (confirmation) {
-                try {
-                    const response = await AjaxService.delete('/deleteCategory', JSON.stringify({ id: category.id }));
-
-                    if (response.success) {
-                        alert(response.message);
-                        await this.loadCategories();
-                    } else {
-                        alert(response.message);
-                    }
-                } catch (error) {
-                    console.error('Error deleting category:', error);
-                    alert('An error occurred while deleting the category. Please try again later.');
-                }
-            }
-
-        });
+        deleteButton.addEventListener('click', () => this.handleDeleteCategory(category));
     }
 
     /**
@@ -316,4 +297,32 @@ class CategoriesController {
         }
         return CategoriesController.instance;
     }
+
+
+    // Handler methods
+
+    /**
+     * Handles the delete category action.
+     * @param {object} category - The category object that is being deleted.
+     */
+    async handleDeleteCategory(category) {
+        const confirmation = confirm('Are you sure you want to delete this category? This action cannot be undone.');
+
+        if (confirmation) {
+            try {
+                const response = await AjaxService.delete('/deleteCategory', JSON.stringify({ id: category.id }));
+
+                if (response.success) {
+                    alert(response.message);
+                    await this.loadCategories();
+                } else {
+                    alert(response.message);
+                }
+            } catch (error) {
+                console.error('Error deleting category:', error);
+                alert('An error occurred while deleting the category. Please try again later.');
+            }
+        }
+    }
+
 }
