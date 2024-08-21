@@ -158,4 +158,28 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         Category::where('parent_id', $categoryId)->update(['parent_id' => $newParentId]);
     }
+
+    /**
+     * Reassign parent ID for category.
+     *
+     * @param int $categoryId The ID of the category to be reassigned the parent.
+     * @param int|null $newParentId The new parent ID for the category.
+     * @return void
+     */
+    public function reassignParent(int $categoryId, ?int $newParentId): void
+    {
+        Category::where('id', $categoryId)->update(['parent_id' => $newParentId]);
+    }
+
+    /**
+     * Update a category in the database.
+     *
+     * @param int $id The ID of the category to update.
+     * @param array $data The data to update the category with.
+     * @return bool Returns true if the update was successful, false otherwise.
+     */
+    public function updateCategory(int $id, array $data): bool
+    {
+        return Category::where('id', $id)->update($data) > 0;
+    }
 }

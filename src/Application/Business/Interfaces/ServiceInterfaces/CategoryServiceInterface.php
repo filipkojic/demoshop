@@ -41,4 +41,13 @@ interface CategoryServiceInterface
      * @return bool Returns true if the deletion was successful, false otherwise.
      */
     public function deleteCategory(array $data): bool;
+
+    /**
+     * Update an existing category.
+     *
+     * @param int $id The ID of the category to update.
+     * @param array $data Data for updating the category.
+     * @return bool Returns true if the update was successful, false otherwise.
+     */
+    public function updateCategory(int $id, array $data): bool;
 }

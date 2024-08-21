@@ -74,4 +74,28 @@ class CategoryController extends AdminController
 
         return new JsonResponse(200, [], ['success' => true, 'message' => 'Category deleted successfully.']);
     }
+
+    /**
+     * Update a category by its ID.
+     *
+     * @param HttpRequest $request The HTTP request object.
+     * @return JsonResponse The JSON response indicating success or failure.
+     */
+    public function updateCategory(HttpRequest $request): JsonResponse
+    {
+        $data = $request->getJsonBody();
+        $id = $data['id'] ?? null;
+
+        if (!$id) {
+            return new JsonResponse(400, [], ['success' => false, 'message' => 'Category ID is required.']);
+        }
+
+        $success = $this->categoryService->updateCategory($id, $data);
+
+        if (!$success) {
+            return new JsonResponse(400, [], ['success' => false, 'message' => $this->categoryService->getLastError()]);
+        }
+
+        return new JsonResponse(200, [], ['success' => true, 'message' => 'Category updated successfully.']);
+    }
 }

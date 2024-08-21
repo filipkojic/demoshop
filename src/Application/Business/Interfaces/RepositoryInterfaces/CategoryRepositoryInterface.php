@@ -60,4 +60,13 @@ interface CategoryRepositoryInterface
      * @return void
      */
     public function reassignSubcategories(int $categoryId, ?int $newParentId): void;
+
+    /**
+     * Update a category in the database.
+     *
+     * @param int $id The ID of the category to update.
+     * @param array $data The data to update the category with.
+     * @return bool Returns true if the update was successful, false otherwise.
+     */
+    public function updateCategory(int $id, array $data): bool;
 }

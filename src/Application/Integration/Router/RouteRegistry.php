@@ -59,6 +59,10 @@ class RouteRegistry
             new Route('DELETE', '/deleteCategory', CategoryController::class, 'deleteCategory')
         );
 
+        Router::getInstance()->addRoute(
+            new Route('PUT', '/updateCategory', CategoryController::class, 'updateCategory')
+        );
+
 
         // Middleware test
         Router::getInstance()->addRoute(
