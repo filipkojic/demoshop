@@ -180,6 +180,24 @@ class CategoryRepository implements CategoryRepositoryInterface
      */
     public function updateCategory(int $id, array $data): bool
     {
-        return Category::where('id', $id)->update($data) > 0;
+        $category = Category::find($id);
+
+        if (!$category) {
+            return false;
+        }
+
+        $hasChanges = false;
+        foreach ($data as $key => $value) {
+            if ($category->$key !== $value) {
+                $hasChanges = true;
+                $category->$key = $value;
+            }
+        }
+
+        if (!$hasChanges) {
+            return true;
+        }
+
+        return $category->save();
     }
 }
