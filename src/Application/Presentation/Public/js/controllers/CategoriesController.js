@@ -49,7 +49,7 @@ class CategoriesController {
         const parentCategorySelect = DomHelper.createElement('select', {});
 
         // Add "Root" option
-        const rootOption = DomHelper.createElement('option', { value: "null" }, 'Root');
+        const rootOption = DomHelper.createElement('option', { value: '' }, 'Root');
         parentCategorySelect.appendChild(rootOption);
 
         // Add options for all categories except the current one
