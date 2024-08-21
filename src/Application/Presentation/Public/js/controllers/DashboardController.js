@@ -123,7 +123,14 @@ class DashboardController {
         DomHelper.loadCssFile('/src/Application/Presentation/Public/css/dashboard.css');
         this.contentDiv.innerHTML = '';
 
-        const stats = await AjaxService.get('/getStatistics');
+        let stats;
+        try {
+            stats = await AjaxService.get('/getStatistics');
+        } catch (error) {
+            console.error('Error loading statistics:', error);
+            alert('An error occurred while loading the statistics. Please try again later.');
+            return;
+        }
 
         const dashboardGrid = DomHelper.createElement('div', { class: 'dashboardGrid' });
 
