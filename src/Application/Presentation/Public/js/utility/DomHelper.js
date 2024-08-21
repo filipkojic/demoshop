@@ -1,3 +1,6 @@
+/**
+ * Class for DOM manipulation.
+ */
 class DomHelper {
     /**
      * Function to create an HTML element

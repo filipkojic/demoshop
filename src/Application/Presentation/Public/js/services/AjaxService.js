@@ -1,3 +1,6 @@
+/**
+ * Class for sending AJAX requests.
+ */
 class AjaxService {
     /**
      * Send an AJAX GET request to the specified URL.
