@@ -80,7 +80,6 @@ class CategoriesController {
         selectedCategoryDiv.appendChild(editButton);
 
         deleteButton.addEventListener('click', () => this.handleDeleteCategory(category));
-
     }
 
     /**
@@ -180,49 +179,7 @@ class CategoriesController {
             selectedCategoryDiv.innerHTML = ''; // Clear the form
         });
 
-        saveButton.addEventListener('click', async () => {
-            const title = titleInput.value.trim();
-            const code = codeInput.value.trim();
-
-            if (!title || !code) {
-                alert('Fields title and code are required.');
-                return;
-            }
-
-            const isCodeUnique = !categories.some(category => category.code === code);
-            if (!isCodeUnique) {
-                alert('Code must be unique.');
-                return;
-            }
-
-            const newCategory = JSON.stringify({
-                title: title,
-                code: code,
-                description: descriptionTextarea.value,
-                parent_id: parentCategory ? parentCategory.id : null
-            });
-
-            try {
-                const response = await AjaxService.post('/addCategory', newCategory);
-
-                if (response.success) {
-                    alert(response.message);
-                    await this.loadCategories();
-                } else {
-                    alert(response.message);
-                }
-            } catch (error) {
-                console.error('Error adding category:', error);
-                alert('An error occurred while adding the category. Please try again later.');
-            }
-
-            if (response.success) {
-                alert(response.message);
-                await this.loadCategories();
-            } else {
-                alert(response.message);
-            }
-        });
+        saveButton.addEventListener('click', () => this.handleSaveCategory(selectedCategoryDiv, categories, titleInput, codeInput, descriptionTextarea, parentCategory));
     }
 
     /**
@@ -323,6 +280,52 @@ class CategoriesController {
                 console.error('Error deleting category:', error);
                 alert('An error occurred while deleting the category. Please try again later.');
             }
+        }
+    }
+
+    /**
+     * Handles the save category action.
+     * @param {HTMLElement} selectedCategoryDiv - The DOM element where the form is displayed.
+     * @param {Array} categories - The array of all categories.
+     * @param {HTMLInputElement} titleInput - The input element for the category title.
+     * @param {HTMLInputElement} codeInput - The input element for the category code.
+     * @param {HTMLTextAreaElement} descriptionTextarea - The textarea element for the category description.
+     * @param {object|null} parentCategory - The parent category object if this is a subcategory, otherwise null.
+     */
+    async handleSaveCategory(selectedCategoryDiv, categories, titleInput, codeInput, descriptionTextarea, parentCategory) {
+        const title = titleInput.value.trim();
+        const code = codeInput.value.trim();
+
+        if (!title || !code) {
+            alert('Fields title and code are required.');
+            return;
+        }
+
+        const isCodeUnique = !categories.some(category => category.code === code);
+        if (!isCodeUnique) {
+            alert('Code must be unique.');
+            return;
+        }
+
+        const newCategory = JSON.stringify({
+            title: title,
+            code: code,
+            description: descriptionTextarea.value,
+            parent_id: parentCategory ? parentCategory.id : null
+        });
+
+        try {
+            const response = await AjaxService.post('/addCategory', newCategory);
+
+            if (response.success) {
+                alert(response.message);
+                await this.loadCategories();
+            } else {
+                alert(response.message);
+            }
+        } catch (error) {
+            console.error('Error adding category:', error);
+            alert('An error occurred while adding the category. Please try again later.');
         }
     }
 
