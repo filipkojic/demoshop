@@ -83,15 +83,21 @@ class CategoriesController {
             const confirmation = confirm('Are you sure you want to delete this category? This action cannot be undone.');
 
             if (confirmation) {
-                const response = await AjaxService.delete('/deleteCategory', JSON.stringify({ id: category.id }));
+                try {
+                    const response = await AjaxService.delete('/deleteCategory', JSON.stringify({ id: category.id }));
 
-                if (response.success) {
-                    alert(response.message);
-                    await this.loadCategories();
-                } else {
-                    alert(response.message);
+                    if (response.success) {
+                        alert(response.message);
+                        await this.loadCategories();
+                    } else {
+                        alert(response.message);
+                    }
+                } catch (error) {
+                    console.error('Error deleting category:', error);
+                    alert('An error occurred while deleting the category. Please try again later.');
                 }
             }
+
         });
     }
 
@@ -214,7 +220,19 @@ class CategoriesController {
                 parent_id: parentCategory ? parentCategory.id : null
             });
 
-            const response = await AjaxService.post('/addCategory', newCategory);
+            try {
+                const response = await AjaxService.post('/addCategory', newCategory);
+
+                if (response.success) {
+                    alert(response.message);
+                    await this.loadCategories();
+                } else {
+                    alert(response.message);
+                }
+            } catch (error) {
+                console.error('Error adding category:', error);
+                alert('An error occurred while adding the category. Please try again later.');
+            }
 
             if (response.success) {
                 alert(response.message);
@@ -237,7 +255,14 @@ class CategoriesController {
         const categoryContainer = DomHelper.createElement('div', { class: 'category-container' });
         const categoryListDiv = DomHelper.createElement('div', { class: 'category-list' });
 
-        const categories = await AjaxService.get('/getCategories');
+        let categories;
+        try {
+            categories = await AjaxService.get('/getCategories');
+        } catch (error) {
+            console.error('Error loading categories:', error);
+            alert('An error occurred while loading the categories. Please try again later.');
+            return;
+        }
 
         const selectedCategoryDiv = DomHelper.createElement('div', { class: 'selected-category' });
 
