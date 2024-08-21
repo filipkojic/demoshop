@@ -139,6 +139,11 @@ class CategoryService implements CategoryServiceInterface
 
         $newParentId = $data['parent_id'] ?? null;
 
+        if ($id == $newParentId) {
+            $this->lastError = 'Category can not be parent to itself.';
+            return false;
+        }
+
         if ($newParentId !== $category->getParentId()) {
             // check if new parent is descendent of current category
             if ($this->isDescendant($newParentId, $id)) {
