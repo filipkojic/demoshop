@@ -37,6 +37,74 @@ class CategoriesController {
         return null;
     }
 
+    createEditForm(category, categories, selectedCategoryDiv) {
+        selectedCategoryDiv.innerHTML = ''; // Clear current content
+
+        const header = DomHelper.createElement('div', { class: 'selected-category-header' }, 'Edit category');
+        selectedCategoryDiv.appendChild(header);
+
+        const titleInput = DomHelper.createElement('input', { type: 'text', value: category.title });
+
+        // Create a select dropdown for parent category
+        const parentCategorySelect = DomHelper.createElement('select', {});
+
+        // Add "Root" option
+        const rootOption = DomHelper.createElement('option', { value: "null" }, 'Root');
+        parentCategorySelect.appendChild(rootOption);
+
+        // Add options for all categories except the current one
+        this.addCategoryOptions(categories, parentCategorySelect, category.id, category.parentId);
+
+        const codeInput = DomHelper.createElement('input', { type: 'text', value: category.code });
+        const descriptionTextarea = DomHelper.createElement('textarea', {}, category.description);
+
+        selectedCategoryDiv.appendChild(DomHelper.createElement('label', {}, 'Title:'));
+        selectedCategoryDiv.appendChild(titleInput);
+
+        selectedCategoryDiv.appendChild(DomHelper.createElement('label', {}, 'Parent category:'));
+        selectedCategoryDiv.appendChild(parentCategorySelect);
+
+        selectedCategoryDiv.appendChild(DomHelper.createElement('label', {}, 'Code:'));
+        selectedCategoryDiv.appendChild(codeInput);
+
+        selectedCategoryDiv.appendChild(DomHelper.createElement('label', {}, 'Description:'));
+        selectedCategoryDiv.appendChild(descriptionTextarea);
+
+        const cancelButton = DomHelper.createElement('button', {}, 'Cancel');
+        const saveButton = DomHelper.createElement('button', {}, 'Save');
+
+        selectedCategoryDiv.appendChild(cancelButton);
+        selectedCategoryDiv.appendChild(saveButton);
+
+        // Cancel button clears the form and restores the original display
+        cancelButton.addEventListener('click', () => {
+            this.updateSelectedCategory(category, categories, selectedCategoryDiv);
+        });
+
+        // Save button will handle the category update
+        saveButton.addEventListener('click', () => {
+            this.handleEditCategory(category, titleInput, parentCategorySelect, codeInput, descriptionTextarea);
+        });
+
+    }
+
+    addCategoryOptions(categories, parentCategorySelect, currentCategoryId, parentCategoryId) {
+        categories.forEach(cat => {
+                const option = DomHelper.createElement('option', { value: cat.id }, cat.title);
+
+                // Check if this category is the parent of the current category
+                if (cat.id === parentCategoryId) {
+                    option.selected = true;
+                }
+
+                parentCategorySelect.appendChild(option);
+
+                if (cat.subcategories && cat.subcategories.length > 0) {
+                    this.addCategoryOptions(cat.subcategories, parentCategorySelect, currentCategoryId, parentCategoryId);
+                }
+        });
+    }
+
     /**
      * Updates the selected category's details in the right-hand form, displaying the category's information.
      * @param {object} category - The category object containing details to display.
@@ -80,6 +148,10 @@ class CategoriesController {
         selectedCategoryDiv.appendChild(editButton);
 
         deleteButton.addEventListener('click', () => this.handleDeleteCategory(category));
+
+        editButton.addEventListener('click', () => {
+            this.createEditForm(category, categories, selectedCategoryDiv);
+        });
     }
 
     /**
@@ -326,6 +398,38 @@ class CategoriesController {
         } catch (error) {
             console.error('Error adding category:', error);
             alert('An error occurred while adding the category. Please try again later.');
+        }
+    }
+
+    /**
+     * Handles the save category action.
+     * @param {object} category - The original category object.
+     * @param {HTMLElement} titleInput - The input element for the category title.
+     * @param {HTMLElement} parentCategorySelect - The select element for the parent category.
+     * @param {HTMLElement} codeInput - The input element for the category code.
+     * @param {HTMLElement} descriptionTextarea - The textarea element for the category description.
+     */
+    async handleEditCategory(category, titleInput, parentCategorySelect, codeInput, descriptionTextarea) {
+        const updatedCategory = {
+            id: category.id,
+            title: titleInput.value.trim(),
+            parent_id: parentCategorySelect.value || null,
+            code: codeInput.value.trim(),
+            description: descriptionTextarea.value.trim()
+        };
+
+        try {
+            const response = await AjaxService.put('/updateCategory', JSON.stringify(updatedCategory));
+
+            if (response.success) {
+                alert(response.message);
+                await this.loadCategories();
+            } else {
+                alert(response.message);
+            }
+        } catch (error) {
+            console.error('Error updating category:', error);
+            alert('An error occurred while updating the category. Please try again later.');
         }
     }
 
