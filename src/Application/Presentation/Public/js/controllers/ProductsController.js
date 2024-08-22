@@ -130,7 +130,7 @@ class ProductsController {
     async loadProducts() {
         try {
             const products = await AjaxService.get('/getAllProducts');
-            this.contentDiv.innerHTML = '';
+            this.contentDiv.innerHTML = ''; //
 
             const buttonPanel = this.createButtonPanel();
 
