@@ -52,10 +52,30 @@ class AdminProductController extends AdminController
 
         $success = $this->productService->toggleProductsEnabled($productIds, $isEnabled);
 
-        if ($success) {
-            return new JsonResponse(200, [], ['success' => true, 'message' => 'Products updated successfully.']);
-        } else {
+        if (!$success) {
             return new JsonResponse(400, [], ['success' => false, 'message' => 'Failed to update products.']);
         }
+
+        return new JsonResponse(200, [], ['success' => true, 'message' => 'Products updated successfully.']);
+    }
+
+    /**
+     * Delete selected products.
+     *
+     * @param HttpRequest $request The HTTP request object.
+     * @return JsonResponse The JSON response indicating success or failure.
+     */
+    public function deleteProducts(HttpRequest $request): JsonResponse
+    {
+        $data = $request->getJsonBody();
+        $productIds = $data['productIds'] ?? [];
+
+        $success = $this->productService->deleteProducts($productIds);
+
+        if (!$success) {
+            return new JsonResponse(400, [], ['success' => false, 'message' => 'Failed to delete products.']);
+        }
+
+        return new JsonResponse(200, [], ['success' => true, 'message' => 'Products deleted successfully.']);
     }
 }

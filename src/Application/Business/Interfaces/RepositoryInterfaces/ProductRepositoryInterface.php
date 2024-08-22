@@ -40,4 +40,20 @@ interface ProductRepositoryInterface
      * @return bool Returns true if the operation was successful, false otherwise.
      */
     public function updateProductsEnabledState(array $productIds, bool $isEnabled): bool;
+
+    /**
+     * Find domain products by their IDs.
+     *
+     * @param array $productIds Array of product IDs.
+     * @return DomainProduct[] Returns an array of domain product models.
+     */
+    public function findDomainProductsByIds(array $productIds): array;
+
+    /**
+     * Delete products by their IDs.
+     *
+     * @param array $productIds Array of product IDs.
+     * @return bool Returns true if the operation was successful, false otherwise.
+     */
+    public function deleteProducts(array $productIds): bool;
 }

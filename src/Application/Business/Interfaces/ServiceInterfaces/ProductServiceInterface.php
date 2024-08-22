@@ -40,4 +40,12 @@ interface ProductServiceInterface
      * @return bool Returns true if the operation was successful, false otherwise.
      */
     public function toggleProductsEnabled(array $productIds, bool $isEnabled): bool;
+
+    /**
+     * Delete products by their IDs.
+     *
+     * @param array $productIds Array of product IDs.
+     * @return bool Returns true if the operation was successful, false otherwise.
+     */
+    public function deleteProducts(array $productIds): bool;
 }

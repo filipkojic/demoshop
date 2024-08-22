@@ -16,6 +16,7 @@ class RouteRegistry
     /**
      * Registers all routes with the router.
      */
+    // ADD MIDDLEWARES AFTER TESTING
     public static function registerRoutes(): void
     {
         // Login controller routes
@@ -48,7 +49,6 @@ class RouteRegistry
         );
 
         // Category controller routes
-        // ADD MIDDLEWARES AFTER TESTING
         Router::getInstance()->addRoute(
             (new Route('GET', '/getCategories', CategoryController::class, 'getAllCategories')
             ));
@@ -72,6 +72,10 @@ class RouteRegistry
 
         Router::getInstance()->addRoute(
             new Route('PATCH', '/toggleProductsEnabled', AdminProductController::class, 'toggleProductsEnabled')
+        );
+
+        Router::getInstance()->addRoute(
+            new Route('DELETE', '/deleteProducts', AdminProductController::class, 'deleteProducts')
         );
 
         // Middleware test

@@ -100,6 +100,45 @@ class ProductRepository implements ProductRepositoryInterface
     }
 
     /**
+     * Find domain products by their IDs.
+     *
+     * @param array $productIds Array of product IDs.
+     * @return DomainProduct[] Returns an array of domain product models.
+     */
+    public function findDomainProductsByIds(array $productIds): array
+    {
+        $products = Product::whereIn('id', $productIds)->get();
+
+        return $products->map(function ($product) {
+            return new DomainProduct(
+                $product->id,
+                $product->category_id,
+                $product->sku,
+                $product->title,
+                $product->brand,
+                $product->price,
+                $product->short_description,
+                $product->description,
+                $product->image,
+                $product->enabled,
+                $product->featured,
+                $product->view_count
+            );
+        })->toArray();
+    }
+
+    /**
+     * Delete products by their IDs.
+     *
+     * @param array $productIds Array of product IDs.
+     * @return bool Returns true if the operation was successful, false otherwise.
+     */
+    public function deleteProducts(array $productIds): bool
+    {
+        return Product::whereIn('id', $productIds)->delete() > 0;
+    }
+
+    /**
      * Map the Eloquent model to a DomainProduct model.
      *
      * @param Product $product

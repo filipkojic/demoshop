@@ -62,4 +62,24 @@ class ProductService implements ProductServiceInterface
         return $this->productRepository->updateProductsEnabledState($productIds, $isEnabled);
     }
 
+    /**
+     * Delete products by their IDs.
+     *
+     * @param array $productIds Array of product IDs.
+     * @return bool Returns true if the operation was successful, false otherwise.
+     */
+    public function deleteProducts(array $productIds): bool
+    {
+        $products = $this->productRepository->findDomainProductsByIds($productIds);
+
+        foreach ($products as $product) {
+            $imagePath = __DIR__ . '/../../../../resources/' . $product->getImage();
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+        }
+
+        return $this->productRepository->deleteProducts($productIds);
+    }
+
 }

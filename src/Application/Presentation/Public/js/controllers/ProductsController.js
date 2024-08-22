@@ -34,6 +34,7 @@ class ProductsController {
 
         enableButton.addEventListener('click', () => this.enableSelectedProducts());
         disableButton.addEventListener('click', () => this.disableSelectedProducts());
+        deleteButton.addEventListener('click', () => this.handleDeleteProducts());
 
         panel.appendChild(addButton);
         panel.appendChild(deleteButton);
@@ -88,9 +89,8 @@ class ProductsController {
         const editButton = DomHelper.createElement('button', { class: 'edit-button' }, '✏️');
         const deleteButton = DomHelper.createElement('button', { class: 'delete-button' }, '🗑️');
 
-        // Adding event listeners for edit and delete actions
         editButton.addEventListener('click', () => this.handleEditProduct(product.id));
-        deleteButton.addEventListener('click', () => this.handleDeleteProduct(product.id));
+        deleteButton.addEventListener('click', () => this.handleDeleteProducts([product.id]));
 
         actionCell.appendChild(editButton);
         actionCell.appendChild(deleteButton);
@@ -232,22 +232,40 @@ class ProductsController {
      * @param {number} productId - The ID of the product to be edited.
      */
     handleEditProduct(productId) {
-        // Your logic to edit the product with this productId
         alert(`Editing product with ID: ${productId}`);
-        // Implement edit logic here...
-        //alert(this.getSelectedProductIds());
     }
 
     /**
-     * Handles the delete product action.
-     * Triggered when the delete button for a product is clicked.
-     *
-     * @param {number} productId - The ID of the product to be deleted.
+     * Deletes the selected products or a specific product if IDs are provided.
+     * @param {Array<number>} [productIds] - An optional array of product IDs to delete.
      */
-    handleDeleteProduct(productId) {
-        // Your logic to delete the product with this productId
-        alert(`Deleting product with ID: ${productId}`);
-        // Implement delete logic here, such as confirming the deletion and then calling a backend service
-        //alert(this.getSelectedProductIds());
+    async handleDeleteProducts(productIds = null) {
+        const idsToDelete = productIds || this.getSelectedProductIds();
+
+        if (idsToDelete.length === 0) {
+            alert('Please select at least one product to delete.');
+            return;
+        }
+
+        const confirmation = confirm('Are you sure you want to delete the selected products? This action cannot be undone.');
+
+        if (!confirmation) {
+            return;
+        }
+
+        try {
+            const response = await AjaxService.delete('/deleteProducts', JSON.stringify({ productIds: idsToDelete }));
+
+            if (response.success) {
+                alert('Products deleted successfully.');
+                await this.loadProducts(); // Reload the products table after deletion
+            } else {
+                alert('Failed to delete products. Please try again later.');
+            }
+        } catch (error) {
+            console.error('Error deleting products:', error);
+            alert('An error occurred while deleting the products. Please try again later.');
+        }
     }
+
 }
