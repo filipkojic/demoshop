@@ -133,15 +133,30 @@ class ProductsController {
             this.contentDiv.innerHTML = '';
 
             const buttonPanel = this.createButtonPanel();
+
+            const searchRow = DomHelper.createElement('div', { class: 'search-row' });
+
+            const searchInput = DomHelper.createElement('input', {
+                type: 'text',
+                class: 'search-input',
+                placeholder: 'Search by title...'
+            });
+
+            searchInput.addEventListener('input', (e) => this.filterProductsByTitle(e.target.value));
+
+            searchRow.appendChild(searchInput);
+
             const table = this.createProductsTable(products);
 
             this.contentDiv.appendChild(buttonPanel);
+            this.contentDiv.appendChild(searchRow);
             this.contentDiv.appendChild(table);
         } catch (error) {
             console.error('Error loading products:', error);
             alert('An error occurred while loading the products. Please try again later.');
         }
     }
+
 
     /**
      * Retrieves the single instance of ProductsController.
@@ -266,6 +281,26 @@ class ProductsController {
             console.error('Error deleting products:', error);
             alert('An error occurred while deleting the products. Please try again later.');
         }
+    }
+
+    /**
+     * Filters products based on the search query in the title field.
+     * @param {string} query - The search query entered by the user.
+     */
+    filterProductsByTitle(query) {
+        const rows = this.contentDiv.querySelectorAll('.product-row');
+        query = query.toLowerCase();
+
+        rows.forEach(row => {
+            const titleCell = row.querySelector('td:nth-child(2)');
+            const titleText = titleCell.textContent.toLowerCase();
+
+            if (titleText.includes(query)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
     }
 
 }

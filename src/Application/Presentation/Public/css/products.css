@@ -109,3 +109,22 @@ body {
 .button-panel .filter-button:hover {
     background-color: #218838;
 }
+
+.button-panel {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.search-row {
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.search-input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
