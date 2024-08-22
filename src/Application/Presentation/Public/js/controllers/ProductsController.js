@@ -20,50 +20,25 @@ class ProductsController {
     }
 
     /**
-     * Loads and displays all products.
+     * Creates a button panel with action buttons.
+     * @returns {HTMLElement} The created button panel element.
      */
-    async loadProducts() {
-        try {
-            // Fetch products from the backend
-            const products = await AjaxService.get('/getAllProducts');
+    createButtonPanel() {
+        const panel = DomHelper.createElement('div', { class: 'button-panel' });
 
-            // Clear the current content
-            this.contentDiv.innerHTML = '';
+        const addButton = DomHelper.createElement('button', { class: 'add-button action-button' }, 'Add new product');
+        const deleteButton = DomHelper.createElement('button', { class: 'delete-button action-button' }, 'Delete selected');
+        const enableButton = DomHelper.createElement('button', { class: 'enable-button action-button' }, 'Enable selected');
+        const disableButton = DomHelper.createElement('button', { class: 'disable-button action-button' }, 'Disable selected');
+        const filterButton = DomHelper.createElement('button', { class: 'filter-button action-button' }, 'Filter');
 
-            // Create the table structure
-            const table = this.createProductsTable(products);
+        panel.appendChild(addButton);
+        panel.appendChild(deleteButton);
+        panel.appendChild(enableButton);
+        panel.appendChild(disableButton);
+        panel.appendChild(filterButton);
 
-            // Append the table to the content div
-            this.contentDiv.appendChild(table);
-        } catch (error) {
-            console.error('Error loading products:', error);
-            alert('An error occurred while loading the products. Please try again later.');
-        }
-    }
-
-    /**
-     * Creates the HTML table structure for products.
-     * @param {array} products - The array of product objects.
-     * @returns {HTMLElement} The created HTML table element.
-     */
-    createProductsTable(products) {
-        const table = DomHelper.createElement('table', { class: 'products-table' });
-
-        const headerRow = DomHelper.createElement('tr', { class: 'header-row' });
-        const headers = ['Selected', 'Title', 'SKU', 'Brand', 'Category', 'Short description', 'Price', 'Enable', ''];
-        headers.forEach(header => {
-            const th = DomHelper.createElement('th', {}, header);
-            headerRow.appendChild(th);
-        });
-
-        table.appendChild(headerRow);
-
-        products.forEach(product => {
-            const row = this.createProductRow(product);
-            table.appendChild(row);
-        });
-
-        return table;
+        return panel;
     }
 
     /**
@@ -72,7 +47,7 @@ class ProductsController {
      * @returns {HTMLElement} The created HTML table row element.
      */
     createProductRow(product) {
-        const row = DomHelper.createElement('tr', { class: 'product-row' });
+        const row = DomHelper.createElement('tr', { class: 'product-row', 'data-id': product.id });
 
         const selectCell = DomHelper.createElement('td', {});
         const selectInput = DomHelper.createElement('input', { type: 'checkbox' });
@@ -105,11 +80,60 @@ class ProductsController {
         const actionCell = DomHelper.createElement('td', { class: 'action-buttons' });
         const editButton = DomHelper.createElement('button', { class: 'edit-button' }, '✏️');
         const deleteButton = DomHelper.createElement('button', { class: 'delete-button' }, '🗑️');
+
+        // Adding event listeners for edit and delete actions
+        editButton.addEventListener('click', () => this.handleEditProduct(product.id));
+        deleteButton.addEventListener('click', () => this.handleDeleteProduct(product.id));
+
         actionCell.appendChild(editButton);
         actionCell.appendChild(deleteButton);
         row.appendChild(actionCell);
 
         return row;
+    }
+
+    /**
+     * Creates the HTML table structure for products.
+     * @param {array} products - The array of product objects.
+     * @returns {HTMLElement} The created HTML table element.
+     */
+    createProductsTable(products) {
+        const table = DomHelper.createElement('table', { class: 'products-table' });
+
+        const headerRow = DomHelper.createElement('tr', { class: 'header-row' });
+        const headers = ['Selected', 'Title', 'SKU', 'Brand', 'Category', 'Short description', 'Price', 'Enable', ''];
+        headers.forEach(header => {
+            const th = DomHelper.createElement('th', {}, header);
+            headerRow.appendChild(th);
+        });
+
+        table.appendChild(headerRow);
+
+        products.forEach(product => {
+            const row = this.createProductRow(product);
+            table.appendChild(row);
+        });
+
+        return table;
+    }
+
+    /**
+     * Loads and displays all products.
+     */
+    async loadProducts() {
+        try {
+            const products = await AjaxService.get('/getAllProducts');
+            this.contentDiv.innerHTML = '';
+
+            const buttonPanel = this.createButtonPanel();
+            const table = this.createProductsTable(products);
+
+            this.contentDiv.appendChild(buttonPanel);
+            this.contentDiv.appendChild(table);
+        } catch (error) {
+            console.error('Error loading products:', error);
+            alert('An error occurred while loading the products. Please try again later.');
+        }
     }
 
     /**
@@ -123,5 +147,50 @@ class ProductsController {
         }
         return ProductsController.instance;
     }
-}
 
+    /**
+     * Gets all selected product IDs.
+     * Iterates through the product rows and collects the IDs of those with selected checkboxes.
+     *
+     * @returns {Array<string>} An array of selected product IDs.
+     */
+    getSelectedProductIds() {
+        const selectedProductIds = [];
+        const rows = this.contentDiv.querySelectorAll('.product-row');
+
+        rows.forEach(row => {
+            const checkbox = row.querySelector('input[type="checkbox"]');
+            if (checkbox.checked) {
+                selectedProductIds.push(row.getAttribute('data-id'));
+            }
+        });
+
+        return selectedProductIds;
+    }
+
+    /**
+     * Handles the edit product action.
+     * Triggered when the edit button for a product is clicked.
+     *
+     * @param {number} productId - The ID of the product to be edited.
+     */
+    handleEditProduct(productId) {
+        // Your logic to edit the product with this productId
+        alert(`Editing product with ID: ${productId}`);
+        // Implement edit logic here...
+        //alert(this.getSelectedProductIds());
+    }
+
+    /**
+     * Handles the delete product action.
+     * Triggered when the delete button for a product is clicked.
+     *
+     * @param {number} productId - The ID of the product to be deleted.
+     */
+    handleDeleteProduct(productId) {
+        // Your logic to delete the product with this productId
+        alert(`Deleting product with ID: ${productId}`);
+        // Implement delete logic here, such as confirming the deletion and then calling a backend service
+        //alert(this.getSelectedProductIds());
+    }
+}
