@@ -84,6 +84,22 @@ class ProductRepository implements ProductRepositoryInterface
     }
 
     /**
+     * Update the enabled state for multiple products.
+     *
+     * @param array $productIds Array of product IDs.
+     * @param bool $isEnabled The new enabled state.
+     * @return bool Returns true if the operation was successful, false otherwise.
+     */
+    public function updateProductsEnabledState(array $productIds, bool $isEnabled): bool
+    {
+        $result = Capsule::table('products')
+            ->whereIn('id', $productIds)
+            ->update(['enabled' => $isEnabled]);
+
+        return $result > 0;
+    }
+
+    /**
      * Map the Eloquent model to a DomainProduct model.
      *
      * @param Product $product

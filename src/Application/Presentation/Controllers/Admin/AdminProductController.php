@@ -37,4 +37,25 @@ class AdminProductController extends AdminController
 
         return new JsonResponse(200, [], array_map(fn($product) => $product->toArray(), $products));
     }
+
+    /**
+     * Toggle the enabled state for multiple products.
+     *
+     * @param HttpRequest $request The HTTP request object.
+     * @return JsonResponse The JSON response indicating success or failure.
+     */
+    public function toggleProductsEnabled(HttpRequest $request): JsonResponse
+    {
+        $data = $request->getJsonBody();
+        $productIds = $data['productIds'] ?? [];
+        $isEnabled = $data['isEnabled'] ?? false;
+
+        $success = $this->productService->toggleProductsEnabled($productIds, $isEnabled);
+
+        if ($success) {
+            return new JsonResponse(200, [], ['success' => true, 'message' => 'Products updated successfully.']);
+        } else {
+            return new JsonResponse(400, [], ['success' => false, 'message' => 'Failed to update products.']);
+        }
+    }
 }

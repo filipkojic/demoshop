@@ -32,6 +32,9 @@ class ProductsController {
         const disableButton = DomHelper.createElement('button', { class: 'disable-button action-button' }, 'Disable selected');
         const filterButton = DomHelper.createElement('button', { class: 'filter-button action-button' }, 'Filter');
 
+        enableButton.addEventListener('click', () => this.enableSelectedProducts());
+        disableButton.addEventListener('click', () => this.disableSelectedProducts());
+
         panel.appendChild(addButton);
         panel.appendChild(deleteButton);
         panel.appendChild(enableButton);
@@ -73,7 +76,11 @@ class ProductsController {
         row.appendChild(priceCell);
 
         const enableCell = DomHelper.createElement('td', {});
-        const enableInput = DomHelper.createElement('input', { type: 'checkbox', checked: product.enabled });
+        const enableInput = DomHelper.createElement('input', { type: 'checkbox' });
+
+        enableInput.checked = product.enabled;
+        enableInput.disabled = true;
+
         enableCell.appendChild(enableInput);
         row.appendChild(enableCell);
 
@@ -167,6 +174,56 @@ class ProductsController {
 
         return selectedProductIds;
     }
+
+    // Handle methods
+
+    /**
+     * Enables all selected products.
+     */
+    async enableSelectedProducts() {
+        const selectedProductIds = this.getSelectedProductIds();
+        if (selectedProductIds.length === 0) {
+            alert('Please select at least one product to enable.');
+            return;
+        }
+
+        await this.toggleProductsEnabledState(selectedProductIds, true);
+    }
+
+    /**
+     * Disables all selected products.
+     */
+    async disableSelectedProducts() {
+        const selectedProductIds = this.getSelectedProductIds();
+        if (selectedProductIds.length === 0) {
+            alert('Please select at least one product to disable.');
+            return;
+        }
+
+        await this.toggleProductsEnabledState(selectedProductIds, false);
+    }
+
+    /**
+     * Toggles the enabled state of multiple products.
+     * @param {array} productIds - The array of product IDs.
+     * @param {boolean} isEnabled - The new enabled state.
+     */
+    async toggleProductsEnabledState(productIds, isEnabled) {
+        try {
+            // Send a request to update the products' enabled state in the backend
+            const response = await AjaxService.patch('/toggleProductsEnabled', JSON.stringify({ productIds, isEnabled }));
+
+            if (response.success) {
+                await this.loadProducts();
+            } else {
+                alert('Failed to update product state. Please try again later.');
+            }
+        } catch (error) {
+            console.error('Error updating products enabled state:', error);
+            alert('An error occurred while updating the products. Please try again later.');
+        }
+    }
+
 
     /**
      * Handles the edit product action.

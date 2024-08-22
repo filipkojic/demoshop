@@ -31,4 +31,13 @@ interface ProductRepositoryInterface
      * @return DomainProduct[] An array of domain product models.
      */
     public function getAllProducts(): array;
+
+    /**
+     * Update the enabled state for multiple products.
+     *
+     * @param array $productIds Array of product IDs.
+     * @param bool $isEnabled The new enabled state.
+     * @return bool Returns true if the operation was successful, false otherwise.
+     */
+    public function updateProductsEnabledState(array $productIds, bool $isEnabled): bool;
 }

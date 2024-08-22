@@ -50,4 +50,16 @@ class ProductService implements ProductServiceInterface
         return $this->productRepository->getAllProducts();
     }
 
+    /**
+     * Toggle the enabled state for multiple products.
+     *
+     * @param array $productIds Array of product IDs.
+     * @param bool $isEnabled The new enabled state.
+     * @return bool Returns true if the operation was successful, false otherwise.
+     */
+    public function toggleProductsEnabled(array $productIds, bool $isEnabled): bool
+    {
+        return $this->productRepository->updateProductsEnabledState($productIds, $isEnabled);
+    }
+
 }

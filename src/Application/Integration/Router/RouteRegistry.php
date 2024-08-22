@@ -70,6 +70,10 @@ class RouteRegistry
             new Route('GET', '/getAllProducts', AdminProductController::class, 'getAllProducts')
         );
 
+        Router::getInstance()->addRoute(
+            new Route('PATCH', '/toggleProductsEnabled', AdminProductController::class, 'toggleProductsEnabled')
+        );
+
         // Middleware test
         Router::getInstance()->addRoute(
             (new Route('GET', '/admin/test', LoginController::class, 'test'))
