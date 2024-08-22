@@ -23,27 +23,49 @@ class ProductsController {
      * Creates a button panel with action buttons.
      * @returns {HTMLElement} The created button panel element.
      */
-    createButtonPanel() {
+    createButtonPanel(categories) {
         const panel = DomHelper.createElement('div', { class: 'button-panel' });
 
         const addButton = DomHelper.createElement('button', { class: 'add-button action-button' }, 'Add new product');
         const deleteButton = DomHelper.createElement('button', { class: 'delete-button action-button' }, 'Delete selected');
         const enableButton = DomHelper.createElement('button', { class: 'enable-button action-button' }, 'Enable selected');
         const disableButton = DomHelper.createElement('button', { class: 'disable-button action-button' }, 'Disable selected');
-        const filterButton = DomHelper.createElement('button', { class: 'filter-button action-button' }, 'Filter');
 
         enableButton.addEventListener('click', () => this.enableSelectedProducts());
         disableButton.addEventListener('click', () => this.disableSelectedProducts());
         deleteButton.addEventListener('click', () => this.handleDeleteProducts());
 
+        const categorySelect = DomHelper.createElement('select', { class: 'category-select' });
+
+        const defaultOption = DomHelper.createElement('option', { value: '' }, 'All Categories');
+        categorySelect.appendChild(defaultOption);
+
+        const addCategoryOptions = (categories, level = 0) => {
+            categories.forEach(category => {
+                const optionText = `${'—'.repeat(level)} ${category.title}`;
+                const option = DomHelper.createElement('option', { value: category.id }, optionText);
+                categorySelect.appendChild(option);
+
+                if (category.subcategories && category.subcategories.length > 0) {
+                    addCategoryOptions(category.subcategories, level + 1);
+                }
+            });
+        };
+
+        addCategoryOptions(categories);
+
+        categorySelect.addEventListener('change', (e) => this.filterProductsByCategory(e.target.value));
+
         panel.appendChild(addButton);
         panel.appendChild(deleteButton);
         panel.appendChild(enableButton);
         panel.appendChild(disableButton);
-        panel.appendChild(filterButton);
+        panel.appendChild(categorySelect);
 
         return panel;
     }
+
+
 
     /**
      * Creates a table row for a single product.
@@ -51,7 +73,11 @@ class ProductsController {
      * @returns {HTMLElement} The created HTML table row element.
      */
     createProductRow(product) {
-        const row = DomHelper.createElement('tr', { class: 'product-row', 'data-id': product.id });
+        const row = DomHelper.createElement('tr', {
+            class: 'product-row',
+            'data-id': product.id,
+            'data-category-id': product.categoryId
+        });
 
         const selectCell = DomHelper.createElement('td', {});
         const selectInput = DomHelper.createElement('input', { type: 'checkbox' });
@@ -130,10 +156,11 @@ class ProductsController {
     async loadProducts() {
         try {
             const products = await AjaxService.get('/getAllProducts');
-            this.contentDiv.innerHTML = ''; //
+            const categories = await AjaxService.get('/getCategories');
 
-            const buttonPanel = this.createButtonPanel();
+            this.contentDiv.innerHTML = '';
 
+            const buttonPanel = this.createButtonPanel(categories);
             const searchRow = DomHelper.createElement('div', { class: 'search-row' });
 
             const searchInput = DomHelper.createElement('input', {
@@ -156,6 +183,7 @@ class ProductsController {
             alert('An error occurred while loading the products. Please try again later.');
         }
     }
+
 
 
     /**
@@ -302,5 +330,25 @@ class ProductsController {
             }
         });
     }
+
+    /**
+     * Filters products based on the selected category.
+     * @param {string} categoryId - The ID of the selected category.
+     */
+    filterProductsByCategory(categoryId) {
+        const rows = this.contentDiv.querySelectorAll('.product-row');
+
+        rows.forEach(row => {
+            const categoryCell = row.querySelector('td:nth-child(5)');
+            const categoryIdValue = row.getAttribute('data-category-id');
+
+            if (categoryId === '' || categoryIdValue === categoryId) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
 
 }
