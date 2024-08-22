@@ -18,8 +18,17 @@ class AppController {
      * Registers routes with the router and associates them with specific controllers.
      */
     registerRoutes() {
+        this.router.registerRoute('/', () => {
+            const dashboardController = DashboardController.getInstance();
+            DomHelper.removeCssFile('/src/Application/Presentation/Public/css/products.css');
+            DomHelper.removeCssFile('/src/Application/Presentation/Public/css/categories.css');
+            DomHelper.loadCssFile('/src/Application/Presentation/Public/css/dashboard.css');
+            dashboardController.loadDashboard();
+        });
+
         this.router.registerRoute('/admin', () => {
             const dashboardController = DashboardController.getInstance();
+            DomHelper.removeCssFile('/src/Application/Presentation/Public/css/products.css');
             DomHelper.removeCssFile('/src/Application/Presentation/Public/css/categories.css');
             DomHelper.loadCssFile('/src/Application/Presentation/Public/css/dashboard.css');
             dashboardController.loadDashboard();
@@ -27,12 +36,15 @@ class AppController {
 
         this.router.registerRoute('/admin/products', () => {
             const productsController = ProductsController.getInstance();
-            DomHelper.loadCssFile('/src/Application/Presentation/Public/css/dashboard.css');
+            DomHelper.removeCssFile('/src/Application/Presentation/Public/css/dashboard.css');
+            DomHelper.removeCssFile('/src/Application/Presentation/Public/css/categories.css');
+            DomHelper.loadCssFile('/src/Application/Presentation/Public/css/products.css');
             productsController.loadProducts();
         });
 
         this.router.registerRoute('/admin/categories', () => {
             const categoriesController = CategoriesController.getInstance();
+            DomHelper.removeCssFile('/src/Application/Presentation/Public/css/products.css');
             DomHelper.removeCssFile('/src/Application/Presentation/Public/css/dashboard.css');
             DomHelper.loadCssFile('/src/Application/Presentation/Public/css/categories.css');
             categoriesController.loadCategories();
