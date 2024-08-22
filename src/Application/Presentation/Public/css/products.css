@@ -40,3 +40,41 @@ body {
     padding: 20px;
     background-color: #fff;
 }
+
+.products-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.products-table th, .products-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.header-row th {
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+.product-row:hover {
+    background-color: #f9f9f9;
+}
+
+.action-buttons {
+    text-align: center;
+}
+
+.edit-button, .delete-button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 18px;
+    margin: 0 5px;
+}
+
+.edit-button:hover, .delete-button:hover {
+    color: #555;
+}
+

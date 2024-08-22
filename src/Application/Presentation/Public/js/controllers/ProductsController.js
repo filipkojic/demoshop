@@ -13,27 +13,103 @@ class ProductsController {
             return ProductsController.instance;
         }
 
-        /**
-         * @property {HTMLElement} contentDiv - The div element where the content will be rendered.
-         */
         this.contentDiv = document.getElementById(contentDivId);
-
-        // Store the instance
         ProductsController.instance = this;
 
         return this;
     }
 
     /**
-     * Loads content for the "Products" page.
-     * Clears any existing content in the contentDiv and appends new elements.
+     * Loads and displays all products.
      */
-    loadProducts() {
-        this.contentDiv.innerHTML = ''; // Clear existing content
-        const productsHeading = DomHelper.createElement('h2', {}, 'Products Section'); // Create heading
-        const noDataMessage = DomHelper.createElement('p', {}, 'No data available.'); // Create no data message
-        this.contentDiv.appendChild(productsHeading); // Append heading to content div
-        this.contentDiv.appendChild(noDataMessage); // Append no data message to content div
+    async loadProducts() {
+        try {
+            // Fetch products from the backend
+            const products = await AjaxService.get('/getAllProducts');
+
+            // Clear the current content
+            this.contentDiv.innerHTML = '';
+
+            // Create the table structure
+            const table = this.createProductsTable(products);
+
+            // Append the table to the content div
+            this.contentDiv.appendChild(table);
+        } catch (error) {
+            console.error('Error loading products:', error);
+            alert('An error occurred while loading the products. Please try again later.');
+        }
+    }
+
+    /**
+     * Creates the HTML table structure for products.
+     * @param {array} products - The array of product objects.
+     * @returns {HTMLElement} The created HTML table element.
+     */
+    createProductsTable(products) {
+        const table = DomHelper.createElement('table', { class: 'products-table' });
+
+        const headerRow = DomHelper.createElement('tr', { class: 'header-row' });
+        const headers = ['Selected', 'Title', 'SKU', 'Brand', 'Category', 'Short description', 'Price', 'Enable', ''];
+        headers.forEach(header => {
+            const th = DomHelper.createElement('th', {}, header);
+            headerRow.appendChild(th);
+        });
+
+        table.appendChild(headerRow);
+
+        products.forEach(product => {
+            const row = this.createProductRow(product);
+            table.appendChild(row);
+        });
+
+        return table;
+    }
+
+    /**
+     * Creates a table row for a single product.
+     * @param {object} product - The product object.
+     * @returns {HTMLElement} The created HTML table row element.
+     */
+    createProductRow(product) {
+        const row = DomHelper.createElement('tr', { class: 'product-row' });
+
+        const selectCell = DomHelper.createElement('td', {});
+        const selectInput = DomHelper.createElement('input', { type: 'checkbox' });
+        selectCell.appendChild(selectInput);
+        row.appendChild(selectCell);
+
+        const titleCell = DomHelper.createElement('td', {}, product.title);
+        row.appendChild(titleCell);
+
+        const skuCell = DomHelper.createElement('td', {}, product.sku);
+        row.appendChild(skuCell);
+
+        const brandCell = DomHelper.createElement('td', {}, product.brand);
+        row.appendChild(brandCell);
+
+        const categoryCell = DomHelper.createElement('td', {}, product.categoryName);
+        row.appendChild(categoryCell);
+
+        const shortDescriptionCell = DomHelper.createElement('td', {}, product.shortDescription);
+        row.appendChild(shortDescriptionCell);
+
+        const priceCell = DomHelper.createElement('td', {}, `$${product.price.toFixed(2)}`);
+        row.appendChild(priceCell);
+
+        const enableCell = DomHelper.createElement('td', {});
+        const enableInput = DomHelper.createElement('input', { type: 'checkbox', checked: product.enabled });
+        enableCell.appendChild(enableInput);
+        row.appendChild(enableCell);
+
+        const actionCell = DomHelper.createElement('td', { class: 'action-buttons' });
+        const editButton = DomHelper.createElement('button', { class: 'edit-button' }, '✏️');
+        const deleteButton = DomHelper.createElement('button', { class: 'delete-button' }, '🗑️');
+        actionCell.appendChild(editButton);
+        actionCell.appendChild(deleteButton);
+        row.appendChild(actionCell);
+
+        return row;
     }
 
     /**
@@ -48,3 +124,4 @@ class ProductsController {
         return ProductsController.instance;
     }
 }
+

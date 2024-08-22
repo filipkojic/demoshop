@@ -59,10 +59,27 @@ class ProductRepository implements ProductRepositoryInterface
      */
     public function getAllProducts(): array
     {
-        $products = Product::all();
+        $products = Capsule::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->select('products.*', 'categories.title as category_name')
+            ->get();
 
         return $products->map(function ($product) {
-            return $this->mapToDomainModel($product);
+            return new DomainProduct(
+                $product->id,
+                $product->category_id,
+                $product->sku,
+                $product->title,
+                $product->brand,
+                $product->price,
+                $product->short_description,
+                $product->description,
+                $product->image,
+                $product->enabled,
+                $product->featured,
+                $product->view_count,
+                $product->category_name
+            );
         })->toArray();
     }
 

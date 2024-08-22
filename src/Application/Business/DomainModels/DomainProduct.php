@@ -42,7 +42,8 @@ class DomainProduct
         private ?string $image = null,
         private bool    $enabled = true,
         private bool    $featured = false,
-        private int     $viewCount = 0
+        private int     $viewCount = 0,
+        private string $categoryName = ""
     )
     {
     }
@@ -67,6 +68,7 @@ class DomainProduct
             'enabled' => $this->isEnabled(),
             'featured' => $this->isFeatured(),
             'viewCount' => $this->getViewCount(),
+            'categoryName' => $this->categoryName
         ];
     }
 
