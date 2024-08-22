@@ -24,4 +24,11 @@ interface ProductServiceInterface
      * @return DomainProduct The most viewed product.
      */
     public function getMostViewedProduct(): DomainProduct;
+
+    /**
+     * Get all products as domain models.
+     *
+     * @return DomainProduct[] An array of domain product models.
+     */
+    public function getAllProducts(): array;
 }

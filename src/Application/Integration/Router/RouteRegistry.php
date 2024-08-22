@@ -3,6 +3,7 @@
 namespace Application\Integration\Router;
 
 use Application\Integration\Middleware\AdminMiddleware;
+use Application\Presentation\Controllers\Admin\AdminProductController;
 use Application\Presentation\Controllers\Admin\CategoryController;
 use Application\Presentation\Controllers\Admin\DashboardController;
 use Application\Presentation\Controllers\Front\LoginController;
@@ -47,6 +48,7 @@ class RouteRegistry
         );
 
         // Category controller routes
+        // ADD MIDDLEWARES AFTER TESTING
         Router::getInstance()->addRoute(
             (new Route('GET', '/getCategories', CategoryController::class, 'getAllCategories')
             ));
@@ -63,6 +65,10 @@ class RouteRegistry
             new Route('PUT', '/updateCategory', CategoryController::class, 'updateCategory')
         );
 
+        // AdminProductsController routes
+        Router::getInstance()->addRoute(
+            new Route('GET', '/getAllProducts', AdminProductController::class, 'getAllProducts')
+        );
 
         // Middleware test
         Router::getInstance()->addRoute(

@@ -39,4 +39,15 @@ class ProductService implements ProductServiceInterface
     {
         return $this->productRepository->getMostViewedProduct();
     }
+
+    /**
+     * Get all products as domain models.
+     *
+     * @return DomainProduct[] An array of domain product models.
+     */
+    public function getAllProducts(): array
+    {
+        return $this->productRepository->getAllProducts();
+    }
+
 }
