@@ -65,8 +65,6 @@ class ProductsController {
         return panel;
     }
 
-
-
     /**
      * Creates a table row for a single product.
      * @param {object} product - The product object.
@@ -189,7 +187,6 @@ class ProductsController {
         form.addEventListener('submit', (e) => this.handleFormSubmit(e));
     }
 
-    // Pomoćne metode za kreiranje input polja, select-a, textarea i checkbox-a
     createFormInput(labelText, name, type = 'text') {
         const div = DomHelper.createElement('div');
         const label = DomHelper.createElement('label', {}, labelText);
@@ -249,7 +246,17 @@ class ProductsController {
         e.preventDefault();
 
         // Get form data
-        const formData = new FormData(document.getElementById('add-product-form'));
+        const formElement = document.getElementById('add-product-form');
+        const formData = new FormData(formElement);
+
+        // Add 'false' value for unchecked checkboxes
+        formElement.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            if (!checkbox.checked) {
+                formData.append(checkbox.name, 'false');
+            } else {
+                formData.set(checkbox.name, 'true'); // Ensures 'true' is set when checked
+            }
+        });
 
         // Perform validation
         const validationErrors = [];
@@ -288,6 +295,7 @@ class ProductsController {
             alert('An error occurred while adding the product.');
         }
     }
+
 
 
     /**
@@ -493,6 +501,5 @@ class ProductsController {
             }
         });
     }
-
 
 }
