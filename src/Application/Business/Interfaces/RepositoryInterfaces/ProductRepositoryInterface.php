@@ -56,4 +56,20 @@ interface ProductRepositoryInterface
      * @return bool Returns true if the operation was successful, false otherwise.
      */
     public function deleteProducts(array $productIds): bool;
+
+    /**
+     * Checks if a given SKU is already taken by another product.
+     *
+     * @param string $sku The SKU to check.
+     * @return bool True if the SKU is already taken, false otherwise.
+     */
+    public function isSkuTaken(string $sku): bool;
+
+    /**
+     * Creates a new product in the database.
+     *
+     * @param array $data Product data.
+     * @return bool Indicator of whether the creation was successful.
+     */
+    public function createProduct(array $data): bool;
 }

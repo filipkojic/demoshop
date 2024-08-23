@@ -48,4 +48,12 @@ interface ProductServiceInterface
      * @return bool Returns true if the operation was successful, false otherwise.
      */
     public function deleteProducts(array $productIds): bool;
+
+    /**
+     * Creates a new product after validating the provided data.
+     *
+     * @param array $data Product data.
+     * @return bool Indicator of whether the creation was successful.
+     */
+    public function createProduct(array $data, ?array $imageFile): bool;
 }

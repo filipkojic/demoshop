@@ -78,4 +78,25 @@ class AdminProductController extends AdminController
 
         return new JsonResponse(200, [], ['success' => true, 'message' => 'Products deleted successfully.']);
     }
+
+    /**
+     * Handle the request to add a new product.
+     *
+     * @param HttpRequest $request The HTTP request object.
+     * @return JsonResponse The JSON response indicating success or failure.
+     */
+    public function addProduct(HttpRequest $request): JsonResponse
+    {
+        $productData = $request->bodyParams;
+        $imageFile = $request->getFile('image');
+
+        $success = $this->productService->createProduct($productData, $imageFile);
+
+        if (!$success) {
+            return new JsonResponse(400, [], ['success' => false, 'message' => $this->productService->getLastError()]);
+        }
+
+        return new JsonResponse(200, [], ['success' => true, 'message' => 'Product added successfully.']);
+    }
+
 }

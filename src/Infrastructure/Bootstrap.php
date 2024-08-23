@@ -74,7 +74,8 @@ class Bootstrap
             ServiceRegistry::getInstance()->get(CategoryRepositoryInterface::class)
         ));
         ServiceRegistry::getInstance()->register(ProductServiceInterface::class, new ProductService(
-            ServiceRegistry::getInstance()->get(ProductRepositoryInterface::class)
+            ServiceRegistry::getInstance()->get(ProductRepositoryInterface::class),
+            ServiceRegistry::getInstance()->get(CategoryRepositoryInterface::class)
         ));
         ServiceRegistry::getInstance()->register(StatisticsServiceInterface::class, new StatisticsService(
             ServiceRegistry::getInstance()->get(StatisticsRepositoryInterface::class)

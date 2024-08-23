@@ -78,6 +78,10 @@ class RouteRegistry
             new Route('DELETE', '/deleteProducts', AdminProductController::class, 'deleteProducts')
         );
 
+        Router::getInstance()->addRoute(
+            new Route('POST', '/addProduct', AdminProductController::class, 'addProduct')
+        );
+
         // Middleware test
         Router::getInstance()->addRoute(
             (new Route('GET', '/admin/test', LoginController::class, 'test'))

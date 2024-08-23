@@ -130,4 +130,15 @@ class HttpRequest
         $jsonData = file_get_contents('php://input');
         return json_decode($jsonData, true);
     }
+
+    /**
+     * Get a file from the $_FILES array.
+     *
+     * @param string $key The key of the file input.
+     * @return array|null The file information or null if not found.
+     */
+    public function getFile(string $key): ?array
+    {
+        return GlobalWrapper::getFiles()[$key] ?? null;
+    }
 }

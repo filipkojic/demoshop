@@ -128,6 +128,30 @@ class ProductRepository implements ProductRepositoryInterface
     }
 
     /**
+     * Checks if a given SKU is already taken by another product.
+     *
+     * @param string $sku The SKU to check.
+     * @return bool True if the SKU is already taken, false otherwise.
+     */
+    public function isSkuTaken(string $sku): bool
+    {
+        return Capsule::table('products')->where('sku', $sku)->exists();
+    }
+
+
+    /**
+     * Creates a new product in the database.
+     *
+     * @param array $data Product data.
+     * @return bool Indicator of whether the creation was successful.
+     */
+    public function createProduct(array $data): bool
+    {
+        $product = new Product($data);
+        return $product->save();
+    }
+
+    /**
      * Delete products by their IDs.
      *
      * @param array $productIds Array of product IDs.

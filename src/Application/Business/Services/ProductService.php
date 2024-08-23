@@ -3,8 +3,10 @@
 namespace Application\Business\Services;
 
 use Application\Business\DomainModels\DomainProduct;
+use Application\Business\Interfaces\RepositoryInterfaces\CategoryRepositoryInterface;
 use Application\Business\Interfaces\RepositoryInterfaces\ProductRepositoryInterface;
 use Application\Business\Interfaces\ServiceInterfaces\ProductServiceInterface;
+use Infrastructure\Utility\GlobalWrapper;
 
 /**
  * Class ProductService
@@ -14,9 +16,15 @@ use Application\Business\Interfaces\ServiceInterfaces\ProductServiceInterface;
 class ProductService implements ProductServiceInterface
 {
     /**
+     * @var string Error message.
+     */
+    protected string $lastError;
+
+    /**
      * @param ProductRepositoryInterface $productRepository Repository for product manipulation.
      */
-    public function __construct(protected ProductRepositoryInterface $productRepository)
+    public function __construct(protected ProductRepositoryInterface $productRepository,
+    protected CategoryRepositoryInterface $categoryRepository)
     {
     }
 
@@ -82,4 +90,74 @@ class ProductService implements ProductServiceInterface
         return $this->productRepository->deleteProducts($productIds);
     }
 
+    /**
+     * Creates a new product after validating the provided data.
+     *
+     * @param array $data Product data.
+     * @return bool Indicator of whether the creation was successful.
+     */
+    public function createProduct(array $data, ?array $imageFile): bool
+    {
+        // Check if required fields are not empty
+        if (empty($data['sku']) || empty($data['title']) || empty($data['brand']) || empty($data['price']) || empty($data['category_id'])) {
+            $this->lastError = 'Required fields must not be empty.';
+            return false;
+        }
+
+        // Validate that the category_id exists
+        if (!$this->categoryRepository->findCategoryById($data['category_id'])) {
+            $this->lastError = 'The specified category does not exist.';
+            return false;
+        }
+
+        // Validate that the SKU is unique
+        if ($this->productRepository->isSkuTaken($data['sku'])) {
+            $this->lastError = 'The SKU must be unique.';
+            return false;
+        }
+
+        if ($imageFile) {
+            $imageFileName = $this->processImage($imageFile);
+            if (!$imageFileName) {
+                $this->lastError = 'Image processing failed.';
+                return false;
+            }
+            $data['image'] = $imageFileName;
+        }
+
+        $data['enabled'] = filter_var($data['enabled'], FILTER_VALIDATE_BOOLEAN);
+        $data['featured'] = filter_var($data['featured'], FILTER_VALIDATE_BOOLEAN);
+
+        return $this->productRepository->createProduct($data);
+    }
+
+    private function processImage(array $imageFile): ?string
+    {
+        list($width, $height) = getimagesize($imageFile['tmp_name']);
+        /*if ($width < 600 || ($width / $height) < (4/3) || ($width / $height) > (16/9)) {
+            $this->lastError = 'Invalid image dimensions.';
+            return null;
+        }*/
+
+        $uploadDir = __DIR__ . '/../../../../resources/';
+        $imageFileName = uniqid() . '-' . basename($imageFile['name']);
+        $uploadPath = $uploadDir . $imageFileName;
+
+        if (!move_uploaded_file($imageFile['tmp_name'], $uploadPath)) {
+            $this->lastError = 'Failed to upload image.';
+            return null;
+        }
+
+        return $imageFileName;
+    }
+
+    /**
+     * Get error message for JSON response
+     *
+     * @return string Indicator if creating category was successfull.
+     */
+    public function getLastError(): string
+    {
+        return $this->lastError ?? '';
+    }
 }
