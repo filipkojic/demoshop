@@ -99,4 +99,22 @@ class AdminProductController extends AdminController
         return new JsonResponse(200, [], ['success' => true, 'message' => 'Product added successfully.']);
     }
 
+    /**
+     * Get paginated, filtered, and sorted products.
+     *
+     * @param HttpRequest $request The HTTP request object.
+     * @return JsonResponse The JSON response containing the paginated, sorted, and filtered list of products.
+     */
+    public function getFilteredAndPaginatedProducts(HttpRequest $request): JsonResponse
+    {
+        $page = $request->getQueryParam('page', 1);
+        $sort = $request->getQueryParam('sort', 'asc');
+        $filter = (int)$request->getQueryParam('filter', null);
+        $search = $request->getQueryParam('search', null);
+
+        $products = $this->productService->getFilteredAndPaginatedProducts($page, $sort, $filter, $search);
+
+        return new JsonResponse(200, [], array_map(fn($product) => $product->toArray(), $products));
+    }
+
 }

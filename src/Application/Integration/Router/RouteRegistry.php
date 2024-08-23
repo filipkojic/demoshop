@@ -82,6 +82,10 @@ class RouteRegistry
             new Route('POST', '/addProduct', AdminProductController::class, 'addProduct')
         );
 
+        Router::getInstance()->addRoute(
+            new Route('GET', '/getFilteredAndPaginatedProducts', AdminProductController::class, 'getFilteredAndPaginatedProducts')
+        );
+
         // Middleware test
         Router::getInstance()->addRoute(
             (new Route('GET', '/admin/test', LoginController::class, 'test'))

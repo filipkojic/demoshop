@@ -163,6 +163,64 @@ class ProductRepository implements ProductRepositoryInterface
     }
 
     /**
+     * Get paginated products with filtering, sorting, and searching.
+     *
+     * @param int $page The current page number.
+     * @param string $sort The sort direction ('asc' or 'desc').
+     * @param int|null $filter The category ID to filter by.
+     * @param string|null $search The search term to filter products by title.
+     * @return DomainProduct[] The paginated, sorted, and filtered list of products.
+     */
+    public function getFilteredAndPaginatedProducts(int $page, string $sort = 'asc', ?int $filter = null, ?string $search = null): array
+    {
+        $query = Product::query();
+
+        // Apply category filter if provided and valid
+        if ($filter && is_int($filter)) {
+            $query->where('category_id', $filter);
+        }
+
+        // Apply search filter if provided
+        if ($search) {
+            $query->where('title', 'like', '%' . $search . '%');
+        }
+
+        // Apply sorting
+        $query->orderBy('price', $sort);
+
+        // Number of products per page
+        $productsPerPage = 3;
+
+        // Calculate the offset
+        $offset = ($page - 1) * $productsPerPage;
+
+        // Get paginated products
+        $products = $query->skip($offset)->take($productsPerPage)->get();
+
+        $domainProducts = $products->map(function ($product) {
+            return new DomainProduct(
+                $product->id,
+                $product->category_id,
+                $product->sku,
+                $product->title,
+                $product->brand,
+                $product->price,
+                $product->short_description,
+                $product->description,
+                $product->image,
+                $product->enabled,
+                $product->featured,
+                $product->view_count,
+                $product->category->title ?? ''
+            );
+        })->toArray();
+
+        return $domainProducts;
+    }
+
+
+
+    /**
      * Map the Eloquent model to a DomainProduct model.
      *
      * @param Product $product

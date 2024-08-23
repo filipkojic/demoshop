@@ -152,6 +152,20 @@ class ProductService implements ProductServiceInterface
     }
 
     /**
+     * Get paginated products with filtering, sorting, and searching.
+     *
+     * @param int $page The current page number.
+     * @param string $sort The sort direction ('asc' or 'desc').
+     * @param int|null $filter The category ID to filter by.
+    * @param string|null $search The search term to filter products by title.
+     * @return DomainProduct[] The paginated, sorted, and filtered list of products as domain models.
+     */
+    public function getFilteredAndPaginatedProducts(int $page, string $sort = 'asc', ?int $filter = null, ?string $search = null): array
+    {
+        return $this->productRepository->getFilteredAndPaginatedProducts($page, $sort, $filter, $search);
+    }
+
+    /**
      * Get error message for JSON response
      *
      * @return string Indicator if creating category was successfull.
