@@ -150,6 +150,146 @@ class ProductsController {
         return table;
     }
 
+    displayAddProductForm(categories) {
+        // Sakrij trenutni sadržaj
+        this.contentDiv.innerHTML = '';
+
+        // Kreiraj formu
+        const form = DomHelper.createElement('form', { id: 'add-product-form' });
+
+        // Kreiraj input polja prema slici
+        form.appendChild(this.createFormInput('SKU', 'sku'));
+        form.appendChild(this.createFormInput('Title', 'title'));
+        form.appendChild(this.createFormInput('Brand', 'brand'));
+        form.appendChild(this.createFormSelect('Category', 'category_id', categories));
+        form.appendChild(this.createFormInput('Price', 'price', 'number'));
+        form.appendChild(this.createFormTextArea('Short description', 'short_description'));
+        form.appendChild(this.createFormTextArea('Description', 'description'));
+
+        // Dodavanje checkbox-ova za enabled i featured
+        form.appendChild(this.createFormCheckbox('Enabled in shop', 'enabled'));
+        form.appendChild(this.createFormCheckbox('Featured', 'featured'));
+
+        // Dodavanje upload dugmeta za sliku
+        const imageDiv = DomHelper.createElement('div');
+        const imageLabel = DomHelper.createElement('label', {}, 'Image:');
+        const imageInput = DomHelper.createElement('input', { type: 'file', id: 'image', name: 'image' });
+        imageDiv.appendChild(imageLabel);
+        imageDiv.appendChild(imageInput);
+        form.appendChild(imageDiv);
+
+        // Dodavanje dugmeta za submit
+        const submitButton = DomHelper.createElement('button', { type: 'submit' }, 'Save');
+        form.appendChild(submitButton);
+
+        // Dodavanje forme u sadržaj
+        this.contentDiv.appendChild(form);
+
+        // Dodavanje event listener-a za slanje forme
+        form.addEventListener('submit', (e) => this.handleFormSubmit(e));
+    }
+
+    // Pomoćne metode za kreiranje input polja, select-a, textarea i checkbox-a
+    createFormInput(labelText, name, type = 'text') {
+        const div = DomHelper.createElement('div');
+        const label = DomHelper.createElement('label', {}, labelText);
+        const input = DomHelper.createElement('input', { type, name });
+        div.appendChild(label);
+        div.appendChild(input);
+        return div;
+    }
+
+    createFormSelect(labelText, name, categories) {
+        const div = DomHelper.createElement('div');
+        const label = DomHelper.createElement('label', {}, labelText);
+        const select = DomHelper.createElement('select', { name });
+
+        const addCategoryOptions = (categories, level = 0) => {
+            categories.forEach(category => {
+                const optionText = `${'—'.repeat(level)} ${category.title}`;
+                const option = DomHelper.createElement('option', { value: category.id }, optionText);
+                select.appendChild(option);
+
+                if (category.subcategories && category.subcategories.length > 0) {
+                    addCategoryOptions(category.subcategories, level + 1);
+                }
+            });
+        };
+
+        addCategoryOptions(categories);
+
+        div.appendChild(label);
+        div.appendChild(select);
+        return div;
+    }
+
+    createFormTextArea(labelText, name) {
+        const div = DomHelper.createElement('div');
+        const label = DomHelper.createElement('label', {}, labelText);
+        const textarea = DomHelper.createElement('textarea', { name });
+        div.appendChild(label);
+        div.appendChild(textarea);
+        return div;
+    }
+
+    createFormCheckbox(labelText, name) {
+        const div = DomHelper.createElement('div');
+        const label = DomHelper.createElement('label', {}, labelText);
+        const checkbox = DomHelper.createElement('input', { type: 'checkbox', name });
+        div.appendChild(label);
+        div.appendChild(checkbox);
+        return div;
+    }
+
+    /**
+     * Handles the form submission for adding a new product.
+     * @param {Event} e - The submit event.
+     */
+    async handleFormSubmit(e) {
+        e.preventDefault();
+
+        // Get form data
+        const formData = new FormData(document.getElementById('add-product-form'));
+
+        // Perform validation
+        const validationErrors = [];
+
+        // Required fields
+        const requiredFields = ['sku', 'title', 'brand', 'category_id', 'price'];
+        requiredFields.forEach(field => {
+            if (!formData.get(field)) {
+                validationErrors.push(`${field} is required.`);
+            }
+        });
+
+        // Additional checks
+        const price = formData.get('price');
+        if (price && isNaN(price)) {
+            validationErrors.push('Price must be a number.');
+        }
+
+        // If there are validation errors, show an alert and return
+        if (validationErrors.length > 0) {
+            alert('Please fix the following errors:\n' + validationErrors.join('\n'));
+            return;
+        }
+
+        // If validation passes, proceed with the form submission
+        try {
+            const response = await AjaxService.postForm('/addProduct', formData);
+            if (response.success) {
+                alert('Product added successfully');
+                await this.loadProducts();
+            } else {
+                alert('Error adding product: ' + response.message);
+            }
+        } catch (error) {
+            console.error('Error adding product:', error);
+            alert('An error occurred while adding the product.');
+        }
+    }
+
+
     /**
      * Loads and displays all products.
      */
@@ -178,6 +318,10 @@ class ProductsController {
             this.contentDiv.appendChild(buttonPanel);
             this.contentDiv.appendChild(searchRow);
             this.contentDiv.appendChild(table);
+
+            buttonPanel.querySelector('.add-button').addEventListener('click', () => {
+                this.displayAddProductForm(categories);
+            });
         } catch (error) {
             console.error('Error loading products:', error);
             alert('An error occurred while loading the products. Please try again later.');

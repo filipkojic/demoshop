@@ -85,4 +85,19 @@ class AjaxService {
         });
         return response.json();
     }
+
+    /**
+     * Send an AJAX POST request with FormData to the specified URL.
+     *
+     * @param {string} url - The URL to send the request to.
+     * @param {FormData} formData - The FormData object containing the form data, including files.
+     * @returns {Promise<object>} - A promise that resolves to the response JSON.
+     */
+    static async postForm(url, formData) {
+        const response = await fetch(url, {
+            method: 'POST',
+            body: formData
+        });
+        return response.json();
+    }
 }
