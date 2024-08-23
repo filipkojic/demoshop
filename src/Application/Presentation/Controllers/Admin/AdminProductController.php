@@ -107,7 +107,7 @@ class AdminProductController extends AdminController
      */
     public function getFilteredAndPaginatedProducts(HttpRequest $request): JsonResponse
     {
-        $page = $request->getQueryParam('page', 1);
+        $page = (int)$request->getQueryParam('page', 1);
         $sort = $request->getQueryParam('sort', 'asc');
         $filter = (int)$request->getQueryParam('filter', null);
         $search = $request->getQueryParam('search', null);
