@@ -49,7 +49,14 @@ class HttpRequest
      */
     public function getQueryParam(string $key, ?string $default = null): ?string
     {
-        return $this->queryParams[$key] ?? $default;
+        $value = $this->queryParams[$key] ?? $default;
+
+        // Return default if value is an empty string
+        if ($value === '') {
+            return $default;
+        }
+
+        return $value;
     }
 
     /**
