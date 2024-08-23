@@ -116,7 +116,7 @@ class ProductService implements ProductServiceInterface
             return false;
         }
 
-        if ($imageFile) {
+        if ($imageFile['name'] !== "") {
             $imageFileName = $this->processImage($imageFile);
             if (!$imageFileName) {
                 $this->lastError = 'Image processing failed.';
