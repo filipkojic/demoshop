@@ -3,6 +3,7 @@
  * Implements the Singleton pattern to ensure only one instance is used across the application.
  */
 class ProductsController {
+
     /**
      * Creates an instance of ProductsController or returns the existing instance.
      * @param {string} contentDivId - The ID of the div where the content will be rendered.
@@ -14,6 +15,14 @@ class ProductsController {
         }
 
         this.contentDiv = document.getElementById(contentDivId);
+
+        this.page = 1;
+        this.sortOrder = 'asc';
+        this.categoryId = '';
+        this.searchQuery = '';
+
+        this.debounceTimeout = null;
+
         ProductsController.instance = this;
 
         return this;
@@ -54,16 +63,40 @@ class ProductsController {
 
         addCategoryOptions(categories);
 
-        categorySelect.addEventListener('change', (e) => this.filterProductsByCategory(e.target.value));
+        // Set the selected category from the current filter
+        categorySelect.value = this.categoryId;
+
+        categorySelect.addEventListener('change', (e) => {
+            this.categoryId = e.target.value;
+            this.page = 1;
+            this.loadProducts();
+        });
+
+        const sortSelect = DomHelper.createElement('select', { class: 'sort-select' });
+        const ascOption = DomHelper.createElement('option', { value: 'asc' }, 'Price: Low to High');
+        const descOption = DomHelper.createElement('option', { value: 'desc' }, 'Price: High to Low');
+        sortSelect.appendChild(ascOption);
+        sortSelect.appendChild(descOption);
+
+        sortSelect.addEventListener('change', (e) => {
+            this.sortOrder = e.target.value;
+            this.page = 1;
+            this.loadProducts();
+        });
+
+        // Set the selected sort order from the current filter
+        sortSelect.value = this.sortOrder;
 
         panel.appendChild(addButton);
         panel.appendChild(deleteButton);
         panel.appendChild(enableButton);
         panel.appendChild(disableButton);
         panel.appendChild(categorySelect);
+        panel.appendChild(sortSelect);
 
         return panel;
     }
+
 
     /**
      * Creates a table row for a single product.
@@ -148,6 +181,126 @@ class ProductsController {
         return table;
     }
 
+    createPaginationControls(totalPages) {
+        const paginationRow = DomHelper.createElement('div', { class: 'pagination-row' });
+
+        const firstButton = DomHelper.createElement('button', {}, '<<');
+        const prevButton = DomHelper.createElement('button', {}, '<');
+        const nextButton = DomHelper.createElement('button', {}, '>');
+        const lastButton = DomHelper.createElement('button', {}, '>>');
+
+        firstButton.addEventListener('click', () => {
+            if (this.page > 1) {
+                this.page = 1;
+                this.loadProducts();
+            }
+        });
+
+        prevButton.addEventListener('click', () => {
+            if (this.page > 1) {
+                this.page--;
+                this.loadProducts();
+            }
+        });
+
+        nextButton.addEventListener('click', () => {
+            if (this.page < totalPages) {
+                this.page++;
+                this.loadProducts();
+            }
+        });
+
+        lastButton.addEventListener('click', () => {
+            if (this.page < totalPages) {
+                this.page = totalPages;
+                this.loadProducts();
+            }
+        });
+
+        paginationRow.appendChild(firstButton);
+        paginationRow.appendChild(prevButton);
+        paginationRow.appendChild(DomHelper.createElement('span', {}, `${this.page} / ${totalPages}`));
+        paginationRow.appendChild(nextButton);
+        paginationRow.appendChild(lastButton);
+
+        return paginationRow;
+    }
+
+    /**
+     * Loads and displays products with the current filters (pagination, search, category).
+     */
+    async loadProducts() {
+        try {
+            const params = new URLSearchParams({
+                page: this.page,
+                sort: this.sortOrder,
+                filter: this.categoryId || '',
+                search: this.searchQuery || ''
+            });
+
+            const response = await AjaxService.get(`/getFilteredAndPaginatedProducts?${params.toString()}`);
+            const { products, total, per_page } = response;
+
+            this.contentDiv.innerHTML = '';
+
+            const categories = await AjaxService.get('/getCategories');
+            const buttonPanel = this.createButtonPanel(categories);
+            const searchRow = DomHelper.createElement('div', { class: 'search-row' });
+
+            const searchInput = DomHelper.createElement('input', {
+                type: 'text',
+                class: 'search-input',
+                placeholder: 'Search by title...',
+                value: this.searchQuery // Setuje trenutnu vrednost pretrage
+            });
+
+            searchInput.addEventListener('input', (e) => {
+                clearTimeout(this.debounceTimeout);
+                this.searchQuery = e.target.value;
+
+                this.debounceTimeout = setTimeout(() => {
+                    this.page = 1;
+                    this.loadProducts();
+                }, 300);
+            });
+
+            searchRow.appendChild(searchInput);
+
+            const table = this.createProductsTable(products);
+            const totalPages = Math.ceil(total / per_page);
+            const paginationControls = this.createPaginationControls(totalPages);
+
+            this.contentDiv.appendChild(buttonPanel);
+            this.contentDiv.appendChild(searchRow);
+            this.contentDiv.appendChild(table);
+            this.contentDiv.appendChild(paginationControls);
+
+            buttonPanel.querySelector('.add-button').addEventListener('click', () => {
+                this.displayAddProductForm(categories);
+            });
+
+        } catch (error) {
+            console.error('Error loading products:', error);
+            alert('An error occurred while loading the products. Please try again later.');
+        }
+    }
+
+    /**
+     * Retrieves the single instance of ProductsController.
+     * If the instance does not exist, it creates it using the provided contentDivId.
+     * @returns {ProductsController} The single instance of ProductsController.
+     */
+    static getInstance() {
+        if (!ProductsController.instance) {
+            ProductsController.instance = new ProductsController('content');
+        }
+        return ProductsController.instance;
+    }
+
+    /**
+     * Renders the form for adding a new product.
+     * @param {Array} categories - The array of category objects used to populate the category select dropdown.
+     */
     displayAddProductForm(categories) {
         // Sakrij trenutni sadržaj
         this.contentDiv.innerHTML = '';
@@ -187,6 +340,13 @@ class ProductsController {
         form.addEventListener('submit', (e) => this.handleFormSubmit(e));
     }
 
+    /**
+     * Creates a standard input field.
+     * @param {string} labelText - The label text for the input field.
+     * @param {string} name - The name attribute for the input field.
+     * @param {string} [type='text'] - The type attribute for the input field.
+     * @returns {HTMLElement} The created input field wrapped in a div element.
+     */
     createFormInput(labelText, name, type = 'text') {
         const div = DomHelper.createElement('div');
         const label = DomHelper.createElement('label', {}, labelText);
@@ -196,6 +356,13 @@ class ProductsController {
         return div;
     }
 
+    /**
+     * Creates a select dropdown field for selecting a category.
+     * @param {string} labelText - The label text for the select field.
+     * @param {string} name - The name attribute for the select field.
+     * @param {Array} categories - The array of category objects to populate the select options.
+     * @returns {HTMLElement} The created select field wrapped in a div element.
+     */
     createFormSelect(labelText, name, categories) {
         const div = DomHelper.createElement('div');
         const label = DomHelper.createElement('label', {}, labelText);
@@ -220,6 +387,12 @@ class ProductsController {
         return div;
     }
 
+    /**
+     * Creates a textarea field for multi-line text input.
+     * @param {string} labelText - The label text for the textarea field.
+     * @param {string} name - The name attribute for the textarea field.
+     * @returns {HTMLElement} The created textarea field wrapped in a div element.
+     */
     createFormTextArea(labelText, name) {
         const div = DomHelper.createElement('div');
         const label = DomHelper.createElement('label', {}, labelText);
@@ -229,6 +402,12 @@ class ProductsController {
         return div;
     }
 
+    /**
+     * Creates a checkbox field.
+     * @param {string} labelText - The label text for the checkbox field.
+     * @param {string} name - The name attribute for the checkbox field.
+     * @returns {HTMLElement} The created checkbox field wrapped in a div element.
+     */
     createFormCheckbox(labelText, name) {
         const div = DomHelper.createElement('div');
         const label = DomHelper.createElement('label', {}, labelText);
@@ -294,60 +473,6 @@ class ProductsController {
             console.error('Error adding product:', error);
             alert('An error occurred while adding the product.');
         }
-    }
-
-
-
-    /**
-     * Loads and displays all products.
-     */
-    async loadProducts() {
-        try {
-            const products = await AjaxService.get('/getAllProducts');
-            const categories = await AjaxService.get('/getCategories');
-
-            this.contentDiv.innerHTML = '';
-
-            const buttonPanel = this.createButtonPanel(categories);
-            const searchRow = DomHelper.createElement('div', { class: 'search-row' });
-
-            const searchInput = DomHelper.createElement('input', {
-                type: 'text',
-                class: 'search-input',
-                placeholder: 'Search by title...'
-            });
-
-            searchInput.addEventListener('input', (e) => this.filterProductsByTitle(e.target.value));
-
-            searchRow.appendChild(searchInput);
-
-            const table = this.createProductsTable(products);
-
-            this.contentDiv.appendChild(buttonPanel);
-            this.contentDiv.appendChild(searchRow);
-            this.contentDiv.appendChild(table);
-
-            buttonPanel.querySelector('.add-button').addEventListener('click', () => {
-                this.displayAddProductForm(categories);
-            });
-        } catch (error) {
-            console.error('Error loading products:', error);
-            alert('An error occurred while loading the products. Please try again later.');
-        }
-    }
-
-
-
-    /**
-     * Retrieves the single instance of ProductsController.
-     * If the instance does not exist, it creates it using the provided contentDivId.
-     * @returns {ProductsController} The single instance of ProductsController.
-     */
-    static getInstance() {
-        if (!ProductsController.instance) {
-            ProductsController.instance = new ProductsController('content');
-        }
-        return ProductsController.instance;
     }
 
     /**
@@ -462,6 +587,7 @@ class ProductsController {
             alert('An error occurred while deleting the products. Please try again later.');
         }
     }
+
 
     /**
      * Filters products based on the search query in the title field.

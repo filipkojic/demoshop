@@ -198,3 +198,72 @@ body {
 #add-product-form button[type="submit"]:hover {
     background-color: #0056b3;
 }
+
+/* pagination + select asc/desc */
+
+.pagination-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination-row button,
+.pagination-row select {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.pagination-row button:hover,
+.pagination-row select:hover {
+    background-color: #0056b3;
+}
+
+.pagination-row button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.pagination-row .page-number {
+    margin: 0 10px;
+    font-size: 16px;
+}
+
+.pagination-row select {
+    padding: 8px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+.sort-select {
+    margin-left: auto; /* Aligns the dropdown to the right if used in a flex container */
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.sort-select option {
+    background-color: white;
+    color: black;
+}
+
+.sort-select:hover {
+    background-color: #0056b3;
+}
+
+
