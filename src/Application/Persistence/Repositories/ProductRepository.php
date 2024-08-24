@@ -194,6 +194,9 @@ class ProductRepository implements ProductRepositoryInterface
         // Calculate the offset
         $offset = ($page - 1) * $productsPerPage;
 
+        // Get total count before pagination
+        $totalProducts = $query->count();
+
         // Get paginated products
         $products = $query->skip($offset)->take($productsPerPage)->get();
 
@@ -215,7 +218,10 @@ class ProductRepository implements ProductRepositoryInterface
             );
         })->toArray();
 
-        return $domainProducts;
+        return [
+            'products' => $domainProducts,
+            'total' => $totalProducts,
+        ];
     }
 
 

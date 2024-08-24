@@ -112,9 +112,13 @@ class AdminProductController extends AdminController
         $filter = (int)$request->getQueryParam('filter', null);
         $search = $request->getQueryParam('search', null);
 
-        $products = $this->productService->getFilteredAndPaginatedProducts($page, $sort, $filter, $search);
+        $result = $this->productService->getFilteredAndPaginatedProducts($page, $sort, $filter, $search);
 
-        return new JsonResponse(200, [], array_map(fn($product) => $product->toArray(), $products));
+        return new JsonResponse(200, [], [
+            'products' => array_map(fn($product) => $product->toArray(), $result['products']),
+            'total' => $result['total'],
+            'per_page' => 3, // or whatever number of products per page you're using
+        ]);
     }
 
 }
