@@ -16,7 +16,6 @@ class RouteRegistry
     /**
      * Registers all routes with the router.
      */
-    // ADD MIDDLEWARES AFTER TESTING
     public static function registerRoutes(): void
     {
         // Login controller routes
@@ -44,46 +43,56 @@ class RouteRegistry
 
 
         // Dashboard controller routes
-        Router::getInstance()->addRoute(
-            (new Route('GET', '/getStatistics', DashboardController::class, 'getStatistics'))
+        Router::getInstance()->addRoute((
+            new Route('GET', '/getStatistics', DashboardController::class, 'getStatistics'))
+            ->addMiddleware(new AdminMiddleware())
         );
 
         // Category controller routes
-        Router::getInstance()->addRoute(
-            (new Route('GET', '/getCategories', CategoryController::class, 'getAllCategories')
-            ));
-
-        Router::getInstance()->addRoute(
-            new Route('POST', '/addCategory', CategoryController::class, 'addCategory')
+        Router::getInstance()->addRoute((
+            new Route('GET', '/getCategories', CategoryController::class, 'getAllCategories'))
+            ->addMiddleware(new AdminMiddleware())
         );
 
-        Router::getInstance()->addRoute(
-            new Route('DELETE', '/deleteCategory', CategoryController::class, 'deleteCategory')
+        Router::getInstance()->addRoute((
+            new Route('POST', '/addCategory', CategoryController::class, 'addCategory'))
+            ->addMiddleware(new AdminMiddleware())
         );
 
-        Router::getInstance()->addRoute(
-            new Route('PUT', '/updateCategory', CategoryController::class, 'updateCategory')
+        Router::getInstance()->addRoute((
+            new Route('DELETE', '/deleteCategory', CategoryController::class, 'deleteCategory'))
+            ->addMiddleware(new AdminMiddleware())
+        );
+
+        Router::getInstance()->addRoute((
+            new Route('PUT', '/updateCategory', CategoryController::class, 'updateCategory'))
+            ->addMiddleware(new AdminMiddleware())
         );
 
         // AdminProductsController routes
-        Router::getInstance()->addRoute(
-            new Route('GET', '/getAllProducts', AdminProductController::class, 'getAllProducts')
+        Router::getInstance()->addRoute((
+            new Route('GET', '/getAllProducts', AdminProductController::class, 'getAllProducts'))
+            ->addMiddleware(new AdminMiddleware())
+        );
+
+        Router::getInstance()->addRoute((
+            new Route('PATCH', '/toggleProductsEnabled', AdminProductController::class, 'toggleProductsEnabled'))
+            ->addMiddleware(new AdminMiddleware())
+        );
+
+        Router::getInstance()->addRoute((
+            new Route('DELETE', '/deleteProducts', AdminProductController::class, 'deleteProducts'))
+            ->addMiddleware(new AdminMiddleware())
+        );
+
+        Router::getInstance()->addRoute((
+            new Route('POST', '/addProduct', AdminProductController::class, 'addProduct'))
+            ->addMiddleware(new AdminMiddleware())
         );
 
         Router::getInstance()->addRoute(
-            new Route('PATCH', '/toggleProductsEnabled', AdminProductController::class, 'toggleProductsEnabled')
-        );
-
-        Router::getInstance()->addRoute(
-            new Route('DELETE', '/deleteProducts', AdminProductController::class, 'deleteProducts')
-        );
-
-        Router::getInstance()->addRoute(
-            new Route('POST', '/addProduct', AdminProductController::class, 'addProduct')
-        );
-
-        Router::getInstance()->addRoute(
-            new Route('GET', '/getFilteredAndPaginatedProducts', AdminProductController::class, 'getFilteredAndPaginatedProducts')
+            (new Route('GET', '/getFilteredAndPaginatedProducts', AdminProductController::class, 'getFilteredAndPaginatedProducts'))
+                ->addMiddleware(new AdminMiddleware())
         );
 
         // Middleware test
