@@ -134,10 +134,10 @@ class ProductService implements ProductServiceInterface
     private function processImage(array $imageFile): ?string
     {
         list($width, $height) = getimagesize($imageFile['tmp_name']);
-        /*if ($width < 600 || ($width / $height) < (4/3) || ($width / $height) > (16/9)) {
+        if ($width < 600 || ($width / $height) < (4/3) || ($width / $height) > (16/9)) {
             $this->lastError = 'Invalid image dimensions.';
             return null;
-        }*/
+        }
 
         $uploadDir = __DIR__ . '/../../../../resources/';
         $imageFileName = uniqid() . '-' . basename($imageFile['name']);
