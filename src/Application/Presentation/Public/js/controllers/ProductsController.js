@@ -302,13 +302,10 @@ class ProductsController {
      * @param {Array} categories - The array of category objects used to populate the category select dropdown.
      */
     displayAddProductForm(categories) {
-        // Sakrij trenutni sadržaj
         this.contentDiv.innerHTML = '';
 
-        // Kreiraj formu
         const form = DomHelper.createElement('form', { id: 'add-product-form' });
 
-        // Kreiraj input polja prema slici
         form.appendChild(this.createFormInput('SKU', 'sku'));
         form.appendChild(this.createFormInput('Title', 'title'));
         form.appendChild(this.createFormInput('Brand', 'brand'));
@@ -317,11 +314,9 @@ class ProductsController {
         form.appendChild(this.createFormTextArea('Short description', 'short_description'));
         form.appendChild(this.createFormTextArea('Description', 'description'));
 
-        // Dodavanje checkbox-ova za enabled i featured
         form.appendChild(this.createFormCheckbox('Enabled in shop', 'enabled'));
         form.appendChild(this.createFormCheckbox('Featured', 'featured'));
 
-        // Dodavanje upload dugmeta za sliku
         const imageDiv = DomHelper.createElement('div');
         const imageLabel = DomHelper.createElement('label', {}, 'Image:');
         const imageInput = DomHelper.createElement('input', { type: 'file', id: 'image', name: 'image' });
@@ -329,14 +324,11 @@ class ProductsController {
         imageDiv.appendChild(imageInput);
         form.appendChild(imageDiv);
 
-        // Dodavanje dugmeta za submit
         const submitButton = DomHelper.createElement('button', { type: 'submit' }, 'Save');
         form.appendChild(submitButton);
 
-        // Dodavanje forme u sadržaj
         this.contentDiv.appendChild(form);
 
-        // Dodavanje event listener-a za slanje forme
         form.addEventListener('submit', (e) => this.handleFormSubmit(e));
     }
 
@@ -586,46 +578,6 @@ class ProductsController {
             console.error('Error deleting products:', error);
             alert('An error occurred while deleting the products. Please try again later.');
         }
-    }
-
-
-    /**
-     * Filters products based on the search query in the title field.
-     * @param {string} query - The search query entered by the user.
-     */
-    filterProductsByTitle(query) {
-        const rows = this.contentDiv.querySelectorAll('.product-row');
-        query = query.toLowerCase();
-
-        rows.forEach(row => {
-            const titleCell = row.querySelector('td:nth-child(2)');
-            const titleText = titleCell.textContent.toLowerCase();
-
-            if (titleText.includes(query)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
-    }
-
-    /**
-     * Filters products based on the selected category.
-     * @param {string} categoryId - The ID of the selected category.
-     */
-    filterProductsByCategory(categoryId) {
-        const rows = this.contentDiv.querySelectorAll('.product-row');
-
-        rows.forEach(row => {
-            const categoryCell = row.querySelector('td:nth-child(5)');
-            const categoryIdValue = row.getAttribute('data-category-id');
-
-            if (categoryId === '' || categoryIdValue === categoryId) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
     }
 
 }
