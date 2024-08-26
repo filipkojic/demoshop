@@ -131,6 +131,18 @@ class ProductService implements ProductServiceInterface
         return $this->productRepository->createProduct($data);
     }
 
+    /**
+     * Processes the uploaded image by validating its dimensions and moving it to the designated directory.
+     *
+     * This function first checks if the image meets the specified width and aspect ratio requirements.
+     * If the image is valid, it generates a unique file name, moves the file to the designated upload directory,
+     * and returns the file name. If the image fails validation or the upload process fails, an error message is set,
+     * and the function returns null.
+     *
+     * @param array $imageFile The uploaded image file from the $_FILES array. Expected to contain 'tmp_name' and 'name' keys.
+     *
+     * @return string|null The unique file name of the uploaded image on success, or null if the image is invalid or the upload fails.
+     */
     private function processImage(array $imageFile): ?string
     {
         list($width, $height) = getimagesize($imageFile['tmp_name']);
