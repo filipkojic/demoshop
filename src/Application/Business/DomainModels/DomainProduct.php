@@ -191,24 +191,4 @@ class DomainProduct
     {
         return $this->viewCount;
     }
-
-    /**
-     * Get the category to which this product belongs.
-     *
-     * @return DomainCategory|null The category of the product, or null if not set.
-     */
-    public function getCategory(): ?DomainCategory
-    {
-        return $this->category;
-    }
-
-    /**
-     * Set the category for this product.
-     *
-     * @param DomainCategory $category The category to set.
-     */
-    public function setCategory(DomainCategory $category): void
-    {
-        $this->category = $category;
-    }
 }

@@ -54,7 +54,6 @@ class DomainCategory
             'description' => $this->getDescription(),
             'subcategories' => array_map(fn($subcategory) => $subcategory->toArray(), $this->getSubcategories()),
             'productCount' => $this->productCount
-            //'products' => array_map(fn($product) => $product->toArray(), $this->getProducts()),
         ];
     }
 
@@ -127,26 +126,6 @@ class DomainCategory
     public function addSubcategory(DomainCategory $subcategory): void
     {
         $this->subcategories[] = $subcategory;
-    }
-
-    /**
-     * Get the products under this category.
-     *
-     * @return DomainProduct[] An array of products.
-     */
-    public function getProducts(): array
-    {
-        return $this->products;
-    }
-
-    /**
-     * Add a product to this category.
-     *
-     * @param DomainProduct $product The product to add.
-     */
-    public function addProduct(DomainProduct $product): void
-    {
-        $this->products[] = $product;
     }
 
     /**

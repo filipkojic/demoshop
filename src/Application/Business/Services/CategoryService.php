@@ -149,11 +149,9 @@ class CategoryService implements CategoryServiceInterface
             if ($this->isDescendant($newParentId, $id)) {
                 // two-way reassigning
                 $this->categoryRepository->reassignParent($newParentId, $category->getParentId());
-                $this->categoryRepository->reassignParent($id, $newParentId);
-            } else {
-                // one-way reassigning
-                $this->categoryRepository->reassignParent($id, $newParentId);
             }
+            // one-way reassigning
+            $this->categoryRepository->reassignParent($id, $newParentId);
             // $category->setParentId($newParentId);
         }
 

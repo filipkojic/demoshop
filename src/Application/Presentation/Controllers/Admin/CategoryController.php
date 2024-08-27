@@ -51,7 +51,8 @@ class CategoryController extends AdminController
         $success = $this->categoryService->createCategory($request->getJsonBody());
 
         if (!$success) {
-            return new JsonResponse(400, [], ['success' => false, 'message' => $this->categoryService->getLastError()]);
+            return new JsonResponse(400, [],
+                ['success' => false, 'message' => $this->categoryService->getLastError()]);
         }
 
         return new JsonResponse(200, [], ['success' => true, 'message' => 'Category added successfully.']);
@@ -69,10 +70,12 @@ class CategoryController extends AdminController
         $success = $this->categoryService->deleteCategory($request->getJsonBody());
 
         if (!$success) {
-            return new JsonResponse(400, [], ['success' => false, 'message' => 'Category cannot be deleted because it has products.']);
+            return new JsonResponse(400, [],
+                ['success' => false, 'message' => 'Category cannot be deleted because it has products.']);
         }
 
-        return new JsonResponse(200, [], ['success' => true, 'message' => 'Category deleted successfully.']);
+        return new JsonResponse(200, [],
+            ['success' => true, 'message' => 'Category deleted successfully.']);
     }
 
     /**
@@ -87,15 +90,18 @@ class CategoryController extends AdminController
         $id = $data['id'] ?? null;
 
         if (!$id) {
-            return new JsonResponse(400, [], ['success' => false, 'message' => 'Category ID is required.']);
+            return new JsonResponse(400, [],
+                ['success' => false, 'message' => 'Category ID is required.']);
         }
 
         $success = $this->categoryService->updateCategory($id, $data);
 
         if (!$success) {
-            return new JsonResponse(400, [], ['success' => false, 'message' => $this->categoryService->getLastError()]);
+            return new JsonResponse(400, [],
+                ['success' => false, 'message' => $this->categoryService->getLastError()]);
         }
 
-        return new JsonResponse(200, [], ['success' => true, 'message' => 'Category updated successfully.']);
+        return new JsonResponse(200, [],
+            ['success' => true, 'message' => 'Category updated successfully.']);
     }
 }

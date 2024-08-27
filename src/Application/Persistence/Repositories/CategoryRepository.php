@@ -62,26 +62,6 @@ class CategoryRepository implements CategoryRepositoryInterface
             $domainCategory->addSubcategory($this->mapToDomainModel($subcategory));
         }
 
-        // Add products
-//        foreach ($category->products as $product) {
-//            $domainProduct = new DomainProduct(
-//                $product->id,
-//                $product->category_id,
-//                $product->sku,
-//                $product->title,
-//                $product->brand,
-//                $product->price,
-//                $product->short_description,
-//                $product->description,
-//                $product->image,
-//                $product->enabled,
-//                $product->featured,
-//                $product->view_count
-//            );
-//
-//            $domainCategory->addProduct($domainProduct);
-//        }
-
         return $domainCategory;
     }
 
@@ -95,6 +75,7 @@ class CategoryRepository implements CategoryRepositoryInterface
     public function createCategory(array $data): bool
     {
         $category = new Category($data);
+
         return $category->save();
     }
 

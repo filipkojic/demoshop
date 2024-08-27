@@ -6,7 +6,6 @@ use Application\Business\DomainModels\DomainProduct;
 use Application\Business\Interfaces\RepositoryInterfaces\CategoryRepositoryInterface;
 use Application\Business\Interfaces\RepositoryInterfaces\ProductRepositoryInterface;
 use Application\Business\Interfaces\ServiceInterfaces\ProductServiceInterface;
-use Infrastructure\Utility\GlobalWrapper;
 
 /**
  * Class ProductService

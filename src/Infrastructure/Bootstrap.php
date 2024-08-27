@@ -6,7 +6,6 @@ use Application\Business\Interfaces\RepositoryInterfaces\AdminRepositoryInterfac
 use Application\Business\Interfaces\RepositoryInterfaces\CategoryRepositoryInterface;
 use Application\Business\Interfaces\RepositoryInterfaces\ProductRepositoryInterface;
 use Application\Business\Interfaces\RepositoryInterfaces\StatisticsRepositoryInterface;
-use Application\Business\Interfaces\ServiceInterfaces\AdminServiceInterface;
 use Application\Business\Interfaces\ServiceInterfaces\CategoryServiceInterface;
 use Application\Business\Interfaces\ServiceInterfaces\LoginServiceInterface;
 use Application\Business\Interfaces\ServiceInterfaces\ProductServiceInterface;
@@ -23,7 +22,6 @@ use Application\Presentation\Controllers\Admin\AdminProductController;
 use Application\Presentation\Controllers\Admin\CategoryController;
 use Application\Presentation\Controllers\Admin\DashboardController;
 use Application\Presentation\Controllers\Front\LoginController;
-use Application\Presentation\Controllers\Front\ProductController;
 use Exception;
 use Infrastructure\Utility\ServiceRegistry;
 

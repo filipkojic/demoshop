@@ -2,8 +2,6 @@
 
 namespace Application\Presentation\Controllers\Front;
 
-use Infrastructure\HTTP\Response\HtmlResponse;
-
 /**
  * Class HomeController
  *

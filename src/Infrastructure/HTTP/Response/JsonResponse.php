@@ -17,7 +17,8 @@ class JsonResponse extends HttpResponse
      * @param array $headers Headers to be sent with the response.
      * @param array $body Body of the response.
      */
-    public function __construct(protected int $statusCode = 200, protected array $headers = [], protected array $body = [])
+    public function __construct(protected int   $statusCode = 200, protected array $headers = [],
+                                protected array $body = [])
     {
         parent::__construct($statusCode, $headers);
         $this->addHeader('Content-Type', 'application/json');

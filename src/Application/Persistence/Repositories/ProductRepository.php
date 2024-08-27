@@ -171,7 +171,8 @@ class ProductRepository implements ProductRepositoryInterface
      * @param string|null $search The search term to filter products by title.
      * @return DomainProduct[] The paginated, sorted, and filtered list of products.
      */
-    public function getFilteredAndPaginatedProducts(int $page, string $sort = 'asc', ?int $filter = null, ?string $search = null): array
+    public function getFilteredAndPaginatedProducts(int  $page, string $sort = 'asc',
+                                                    ?int $filter = null, ?string $search = null): array
     {
         $query = Product::query();
 
@@ -222,31 +223,5 @@ class ProductRepository implements ProductRepositoryInterface
             'products' => $domainProducts,
             'total' => $totalProducts,
         ];
-    }
-
-
-
-    /**
-     * Map the Eloquent model to a DomainProduct model.
-     *
-     * @param Product $product
-     * @return DomainProduct
-     */
-    private function mapToDomainModel(Product $product): DomainProduct
-    {
-        return new DomainProduct(
-            $product->id,
-            $product->category_id,
-            $product->sku,
-            $product->title,
-            $product->brand,
-            $product->price,
-            $product->short_description,
-            $product->description,
-            $product->image,
-            $product->enabled,
-            $product->featured,
-            $product->view_count
-        );
     }
 }

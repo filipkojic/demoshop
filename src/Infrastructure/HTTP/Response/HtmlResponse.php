@@ -18,7 +18,8 @@ class HtmlResponse extends HttpResponse
      * @param array $headers Headers to be sent with the response.
      * @param string $body The body content of the response.
      */
-    public function __construct(protected int $statusCode = 200, protected array $headers = [], protected string $body = '')
+    public function __construct(protected int    $statusCode = 200, protected array $headers = [],
+                                protected string $body = '')
     {
         parent::__construct($statusCode, $headers);
     }
@@ -32,7 +33,8 @@ class HtmlResponse extends HttpResponse
      * @param array $headers Headers to be sent with the response.
      * @return HtmlResponse
      */
-    public static function fromView(string $viewFile, array $data = [], int $statusCode = 200, array $headers = []): HtmlResponse
+    public static function fromView(string $viewFile, array $data = [], int $statusCode = 200,
+                                    array  $headers = []): HtmlResponse
     {
         // Extract data to variables
         extract($data);

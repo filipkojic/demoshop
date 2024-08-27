@@ -4,7 +4,6 @@ namespace Application\Presentation\Controllers\Admin;
 
 use Application\Business\Interfaces\ServiceInterfaces\ProductServiceInterface;
 use Infrastructure\HTTP\HttpRequest;
-use Infrastructure\HTTP\Response\HtmlResponse;
 use Infrastructure\HTTP\Response\JsonResponse;
 
 /**
